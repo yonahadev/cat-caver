@@ -37,7 +37,6 @@ std::string Shader::readShaderFile(const char *filePath) const{
     std::string fileOutput;
     std::string fileLine;
     while (std::getline(FileObject, fileLine)) {
-//            std::cout << fileLine;
         fileOutput.append(fileLine + "\n");
     };
     FileObject.close();

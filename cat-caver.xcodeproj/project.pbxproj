@@ -17,6 +17,8 @@
 		E262ABD22B1B6A32002F988D /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E262ABBD2B1B6413002F988D /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E262ABD92B1B6C07002F988D /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABD52B1B6C06002F988D /* math.cpp */; };
 		E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABD82B1B6C06002F988D /* mat3.cpp */; };
+		E262ABDD2B1B7399002F988D /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABDB2B1B7399002F988D /* window.cpp */; };
+		E262ABE12B1B79B4002F988D /* application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABDF2B1B79B4002F988D /* application.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +69,10 @@
 		E262ABD62B1B6C06002F988D /* mat3.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mat3.hpp; sourceTree = "<group>"; };
 		E262ABD72B1B6C06002F988D /* math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = math.hpp; sourceTree = "<group>"; };
 		E262ABD82B1B6C06002F988D /* mat3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mat3.cpp; sourceTree = "<group>"; };
+		E262ABDB2B1B7399002F988D /* window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = window.cpp; sourceTree = "<group>"; };
+		E262ABDC2B1B7399002F988D /* window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = window.hpp; sourceTree = "<group>"; };
+		E262ABDF2B1B79B4002F988D /* application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = application.cpp; sourceTree = "<group>"; };
+		E262ABE22B1B7A27002F988D /* application.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = application.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 		E262ABA12B1B6331002F988D /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E262ABDE2B1B79A3002F988D /* application */,
 				E262ABD42B1B6C06002F988D /* maths */,
 				E262ABC02B1B658E002F988D /* graphics */,
 				E262ABA22B1B6331002F988D /* main.cpp */,
@@ -185,6 +192,8 @@
 				E262ABC52B1B658E002F988D /* texture.hpp */,
 				E262ABC62B1B658E002F988D /* shader.hpp */,
 				E262ABC72B1B658E002F988D /* vertexBuffer.hpp */,
+				E262ABDB2B1B7399002F988D /* window.cpp */,
+				E262ABDC2B1B7399002F988D /* window.hpp */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -198,6 +207,15 @@
 				E262ABD82B1B6C06002F988D /* mat3.cpp */,
 			);
 			path = maths;
+			sourceTree = "<group>";
+		};
+		E262ABDE2B1B79A3002F988D /* application */ = {
+			isa = PBXGroup;
+			children = (
+				E262ABE22B1B7A27002F988D /* application.hpp */,
+				E262ABDF2B1B79B4002F988D /* application.cpp */,
+			);
+			path = application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,7 +279,9 @@
 				E262ABCF2B1B687B002F988D /* glad.c in Sources */,
 				E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */,
 				E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */,
+				E262ABDD2B1B7399002F988D /* window.cpp in Sources */,
 				E262ABCC2B1B6731002F988D /* texture.cpp in Sources */,
+				E262ABE12B1B79B4002F988D /* application.cpp in Sources */,
 				E262ABCD2B1B6731002F988D /* shader.cpp in Sources */,
 				E262ABA32B1B6331002F988D /* main.cpp in Sources */,
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,

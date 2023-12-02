@@ -21,9 +21,6 @@ unsigned char * Texture::loadImage(const char *filePath) {
 Texture::Texture(const char * filePath,unsigned int program) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     unsigned char * textureData = loadImage(filePath);
-    //sets how colours are sampled when scale is magnified
-    //bindTextures(program);
-    //passes texture data
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
     glEnable(GL_BLEND);
     glGenerateMipmap(GL_TEXTURE_2D);

@@ -6,7 +6,6 @@
 //
 
 #include "vertexBuffer.hpp"
-#include <vector>
 #include "glad/glad.h"
 
 void VertexBuffer::bindArray() const {
@@ -29,7 +28,7 @@ void VertexBuffer::bindBuffer(std::vector<Vertex> vertices) const {
     //position coords
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, 4 * sizeof(float), (void*)0);
-    //tex coords
+    //texture coords
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }

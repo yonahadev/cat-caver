@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-int runApplication();
+void runApplication();
 
 
 #endif /* application_hpp */

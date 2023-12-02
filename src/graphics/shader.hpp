@@ -19,7 +19,7 @@ private:
     unsigned int configureFragmentShader(const char *filePath) const;
     void configureShaderProgram(const char *vertexShaderFilePath,const char *fragmentShaderFilePath);
 public:
-    void loadUniform(Matrix3 matrix,std::string uniformName) const;
+    void loadUniform(Mat3 matrix,std::string uniformName) const;
     unsigned int shaderProgram;
     void bind() const;
     void unBind() const;

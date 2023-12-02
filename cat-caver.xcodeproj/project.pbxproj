@@ -19,6 +19,11 @@
 		E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABD82B1B6C06002F988D /* mat3.cpp */; };
 		E262ABDD2B1B7399002F988D /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABDB2B1B7399002F988D /* window.cpp */; };
 		E262ABE12B1B79B4002F988D /* application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABDF2B1B79B4002F988D /* application.cpp */; };
+		E262ABEA2B1BB844002F988D /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABE92B1BB844002F988D /* input.cpp */; };
+		E262ABEF2B1BB9E6002F988D /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABED2B1BB9E6002F988D /* player.cpp */; };
+		E262ABF32B1BBE9C002F988D /* terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF12B1BBE9B002F988D /* terrain.cpp */; };
+		E262ABF62B1BBFBE002F988D /* layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF52B1BBFBE002F988D /* layer.cpp */; };
+		E262ABF92B1BC059002F988D /* quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF72B1BC059002F988D /* quad.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,6 +78,19 @@
 		E262ABDC2B1B7399002F988D /* window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = window.hpp; sourceTree = "<group>"; };
 		E262ABDF2B1B79B4002F988D /* application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = application.cpp; sourceTree = "<group>"; };
 		E262ABE22B1B7A27002F988D /* application.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = application.hpp; sourceTree = "<group>"; };
+		E262ABE42B1B7E92002F988D /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
+		E262ABE52B1B7E92002F988D /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		E262ABE72B1BB6BD002F988D /* vec2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec2.hpp; sourceTree = "<group>"; };
+		E262ABE92B1BB844002F988D /* input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
+		E262ABEB2B1BB84B002F988D /* input.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = input.hpp; sourceTree = "<group>"; };
+		E262ABED2B1BB9E6002F988D /* player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
+		E262ABEE2B1BB9E6002F988D /* player.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = player.hpp; sourceTree = "<group>"; };
+		E262ABF12B1BBE9B002F988D /* terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = terrain.cpp; sourceTree = "<group>"; };
+		E262ABF22B1BBE9C002F988D /* terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = terrain.hpp; sourceTree = "<group>"; };
+		E262ABF42B1BBFBE002F988D /* layer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = layer.hpp; sourceTree = "<group>"; };
+		E262ABF52B1BBFBE002F988D /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layer.cpp; sourceTree = "<group>"; };
+		E262ABF72B1BC059002F988D /* quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quad.cpp; sourceTree = "<group>"; };
+		E262ABF82B1BC059002F988D /* quad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quad.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +130,9 @@
 		E262ABA12B1B6331002F988D /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E262ABF02B1BBE81002F988D /* tilemap */,
+				E262ABEC2B1BB9D5002F988D /* entity */,
+				E262ABE32B1B7E92002F988D /* shaders */,
 				E262ABDE2B1B79A3002F988D /* application */,
 				E262ABD42B1B6C06002F988D /* maths */,
 				E262ABC02B1B658E002F988D /* graphics */,
@@ -205,6 +226,7 @@
 				E262ABD62B1B6C06002F988D /* mat3.hpp */,
 				E262ABD72B1B6C06002F988D /* math.hpp */,
 				E262ABD82B1B6C06002F988D /* mat3.cpp */,
+				E262ABE72B1BB6BD002F988D /* vec2.hpp */,
 			);
 			path = maths;
 			sourceTree = "<group>";
@@ -212,10 +234,43 @@
 		E262ABDE2B1B79A3002F988D /* application */ = {
 			isa = PBXGroup;
 			children = (
+				E262ABEB2B1BB84B002F988D /* input.hpp */,
+				E262ABE92B1BB844002F988D /* input.cpp */,
 				E262ABE22B1B7A27002F988D /* application.hpp */,
 				E262ABDF2B1B79B4002F988D /* application.cpp */,
 			);
 			path = application;
+			sourceTree = "<group>";
+		};
+		E262ABE32B1B7E92002F988D /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				E262ABE42B1B7E92002F988D /* fragment.glsl */,
+				E262ABE52B1B7E92002F988D /* vertex.glsl */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
+		E262ABEC2B1BB9D5002F988D /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				E262ABED2B1BB9E6002F988D /* player.cpp */,
+				E262ABEE2B1BB9E6002F988D /* player.hpp */,
+			);
+			path = entity;
+			sourceTree = "<group>";
+		};
+		E262ABF02B1BBE81002F988D /* tilemap */ = {
+			isa = PBXGroup;
+			children = (
+				E262ABF52B1BBFBE002F988D /* layer.cpp */,
+				E262ABF42B1BBFBE002F988D /* layer.hpp */,
+				E262ABF12B1BBE9B002F988D /* terrain.cpp */,
+				E262ABF22B1BBE9C002F988D /* terrain.hpp */,
+				E262ABF72B1BC059002F988D /* quad.cpp */,
+				E262ABF82B1BC059002F988D /* quad.hpp */,
+			);
+			path = tilemap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,10 +333,15 @@
 			files = (
 				E262ABCF2B1B687B002F988D /* glad.c in Sources */,
 				E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */,
+				E262ABEA2B1BB844002F988D /* input.cpp in Sources */,
 				E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */,
+				E262ABF62B1BBFBE002F988D /* layer.cpp in Sources */,
+				E262ABEF2B1BB9E6002F988D /* player.cpp in Sources */,
+				E262ABF32B1BBE9C002F988D /* terrain.cpp in Sources */,
 				E262ABDD2B1B7399002F988D /* window.cpp in Sources */,
 				E262ABCC2B1B6731002F988D /* texture.cpp in Sources */,
 				E262ABE12B1B79B4002F988D /* application.cpp in Sources */,
+				E262ABF92B1BC059002F988D /* quad.cpp in Sources */,
 				E262ABCD2B1B6731002F988D /* shader.cpp in Sources */,
 				E262ABA32B1B6331002F988D /* main.cpp in Sources */,
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,

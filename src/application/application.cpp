@@ -11,19 +11,27 @@
 #include <iostream>
 #include "window.hpp"
 
-constexpr unsigned int SCREEN_WIDTH = 854;
-constexpr unsigned int SCREEN_HEIGHT = 480;
+unsigned int screenWidth = 854;
+unsigned int screenHeight = 480;
+const char *WINDOW_NAME = "Cat Caver";
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
 };
 
-int runApplication() {
-    Window window(SCREEN_WIDTH,SCREEN_HEIGHT,"Cat Caver");
+void resizeWindow(GLFWwindow* window, int width, int height) {
+    screenWidth = width;
+    screenHeight = height;
+    glViewport(0, 0, width, height);
+}
+
+void runApplication() {
+    Window window(screenWidth,screenHeight,WINDOW_NAME);
     
-    glfwSetKeyCallback(window.ptr, keyCallback);
+    glfwSetKeyCallback(window.ptr, handleKeypress);
+    glfwSetFramebufferSizeCallback(window.ptr, resizeWindow);
     
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -31,6 +39,6 @@ int runApplication() {
         glfwPollEvents();
         glfwSwapBuffers(window.ptr);
     }
+    
     glfwTerminate();
-    return 0;
 }

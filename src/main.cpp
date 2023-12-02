@@ -8,7 +8,6 @@
 #include <iostream>
 
 int main() {
-    
     try {
         runApplication();
     } catch (const char *errorMessage) {

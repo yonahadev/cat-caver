@@ -14,8 +14,8 @@
 
 class VertexBuffer {
 private:
-    unsigned int VAO;
-    unsigned int VBO;
+    int VAO;
+    int VBO;
     int numberOfVertices;
     void bindBuffer(std::vector<Vertex> vertices) const;
     void bindArray() const;

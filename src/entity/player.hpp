@@ -32,6 +32,10 @@ public:
     void getHitbox() const;
     void getMatrix() const;
     float moveSpeed = 0.03;
+    float airborne = 0;
+    std::string direction;
+    void jump (const Terrain &terrain);
+    void accelerate(const Terrain &terrain);
     void move(const float x,const float y);
     void moveCamera(const float x,const float y, const Terrain &dungeon);
     Player(float offsetX,float offsetY, const int textureIndex);

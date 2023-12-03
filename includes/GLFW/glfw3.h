@@ -1532,7 +1532,7 @@ typedef void (* GLFWkeyfun)(GLFWwindow* window, int key, int scancode, int actio
  *  This is the function pointer type for Unicode character callbacks.
  *  A Unicode character callback function has the following signature:
  *  @code
- *  void function_name(GLFWwindow* window, unsigned int codepoint)
+ *  void function_name(GLFWwindow* window, int codepoint)
  *  @endcode
  *
  *  @param[in] window The window that received the event.
@@ -1546,7 +1546,7 @@ typedef void (* GLFWkeyfun)(GLFWwindow* window, int key, int scancode, int actio
  *
  *  @ingroup input
  */
-typedef void (* GLFWcharfun)(GLFWwindow* window, unsigned int codepoint);
+typedef void (* GLFWcharfun)(GLFWwindow* window, int codepoint);
 
 /*! @brief The function pointer type for Unicode character with modifiers
  *  callbacks.
@@ -1556,7 +1556,7 @@ typedef void (* GLFWcharfun)(GLFWwindow* window, unsigned int codepoint);
  *  modifier keys are held down.  A Unicode character with modifiers callback
  *  function has the following signature:
  *  @code
- *  void function_name(GLFWwindow* window, unsigned int codepoint, int mods)
+ *  void function_name(GLFWwindow* window, int codepoint, int mods)
  *  @endcode
  *
  *  @param[in] window The window that received the event.
@@ -1573,7 +1573,7 @@ typedef void (* GLFWcharfun)(GLFWwindow* window, unsigned int codepoint);
  *
  *  @ingroup input
  */
-typedef void (* GLFWcharmodsfun)(GLFWwindow* window, unsigned int codepoint, int mods);
+typedef void (* GLFWcharmodsfun)(GLFWwindow* window, int codepoint, int mods);
 
 /*! @brief The function pointer type for path drop callbacks.
  *
@@ -1701,7 +1701,7 @@ typedef struct GLFWgammaramp
     unsigned short* blue;
     /*! The number of elements in each array.
      */
-    unsigned int size;
+    int size;
 } GLFWgammaramp;
 
 /*! @brief Image data.
@@ -4609,7 +4609,7 @@ GLFWAPI GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun callback);
  *
  *  @callback_signature
  *  @code
- *  void function_name(GLFWwindow* window, unsigned int codepoint)
+ *  void function_name(GLFWwindow* window, int codepoint)
  *  @endcode
  *  For more information about the callback parameters, see the
  *  [function pointer type](@ref GLFWcharfun).
@@ -4650,7 +4650,7 @@ GLFWAPI GLFWcharfun glfwSetCharCallback(GLFWwindow* window, GLFWcharfun callback
  *
  *  @callback_signature
  *  @code
- *  void function_name(GLFWwindow* window, unsigned int codepoint, int mods)
+ *  void function_name(GLFWwindow* window, int codepoint, int mods)
  *  @endcode
  *  For more information about the callback parameters, see the
  *  [function pointer type](@ref GLFWcharmodsfun).

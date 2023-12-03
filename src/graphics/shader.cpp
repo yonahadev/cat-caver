@@ -29,7 +29,7 @@ void Shader::unBind() const {
 
 void Shader::loadUniform(Mat3 matrix, std::string uniformName) const {
     bind();
-    unsigned int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniformMatrix3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
 }
 
@@ -44,8 +44,8 @@ std::string Shader::readShaderFile(const char *filePath) const{
     return fileOutput;
 }
 
-unsigned int Shader::configureVertexShader(const char *filePath) const {
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+int Shader::configureVertexShader(const char *filePath) const {
+    int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     std::string fileString = readShaderFile(filePath);
     const char* c_str = fileString.c_str();
     glShaderSource(vertexShader, 1, &c_str, NULL);
@@ -64,8 +64,8 @@ unsigned int Shader::configureVertexShader(const char *filePath) const {
 }
 
 
-unsigned int Shader::configureFragmentShader(const char *filePath) const {
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+int Shader::configureFragmentShader(const char *filePath) const {
+    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     std::string fileString = readShaderFile(filePath);
     const char* c_str = fileString.c_str();
     glShaderSource(fragmentShader, 1, &c_str, NULL);
@@ -84,8 +84,8 @@ unsigned int Shader::configureFragmentShader(const char *filePath) const {
 
 void Shader::configureShaderProgram(const char *vertexShaderFilePath,const char *fragmentShaderFilePath) {
     shaderProgram = glCreateProgram();
-    unsigned int vertexShader = configureVertexShader(vertexShaderFilePath);
-    unsigned int fragmentShader = configureFragmentShader(fragmentShaderFilePath);
+    int vertexShader = configureVertexShader(vertexShaderFilePath);
+    int fragmentShader = configureFragmentShader(fragmentShaderFilePath);
     glAttachShader(shaderProgram,vertexShader);
     glAttachShader(shaderProgram,fragmentShader);
     glLinkProgram(shaderProgram);

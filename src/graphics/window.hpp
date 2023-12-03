@@ -14,10 +14,10 @@
 
 class Window {
 private:
-    void setupWindow(const unsigned int width, const unsigned int height, const char *name);
+    void setupWindow(const int width, const int height, const char *name);
 public:
     GLFWwindow* ptr;
-    Window(const unsigned int width, const unsigned int height, const char *name);
+    Window(const int width, const int height, const char *name);
 };
 
 #endif /* window_hpp */

@@ -15,7 +15,6 @@ const float * Mat3::getFloatArray() const {
     return &matrix_Array[0];
 };
 
-//creates ortho matrix - translations not neccesary in 2d context
 Mat3 Mat3::Orthographic(float left, float right, float bottom, float top) {
     
     return Mat3(

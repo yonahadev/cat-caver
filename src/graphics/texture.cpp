@@ -18,7 +18,7 @@ unsigned char * Texture::loadImage(const char *filePath) {
     return textureData;
 };
 
-Texture::Texture(const char * filePath,unsigned int program) {
+Texture::Texture(const char * filePath,int program) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     unsigned char * textureData = loadImage(filePath);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);

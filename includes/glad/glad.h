@@ -87,16 +87,16 @@ GLAPI int gladLoadGL(void);
 GLAPI int gladLoadGLLoader(GLADloadproc);
 
 #include <KHR/khrplatform.h>
-typedef unsigned int GLenum;
+typedef int GLenum;
 typedef unsigned char GLboolean;
-typedef unsigned int GLbitfield;
+typedef int GLbitfield;
 typedef void GLvoid;
 typedef khronos_int8_t GLbyte;
 typedef khronos_uint8_t GLubyte;
 typedef khronos_int16_t GLshort;
 typedef khronos_uint16_t GLushort;
 typedef int GLint;
-typedef unsigned int GLuint;
+typedef int GLuint;
 typedef khronos_int32_t GLclampx;
 typedef int GLsizei;
 typedef khronos_float_t GLfloat;
@@ -110,7 +110,7 @@ typedef char GLcharARB;
 #ifdef __APPLE__
 typedef void *GLhandleARB;
 #else
-typedef unsigned int GLhandleARB;
+typedef int GLhandleARB;
 #endif
 typedef khronos_uint16_t GLhalf;
 typedef khronos_uint16_t GLhalfARB;

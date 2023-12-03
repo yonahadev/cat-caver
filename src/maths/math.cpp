@@ -16,7 +16,7 @@ float radians(float degrees) {
 int getRandomInt(const int lower, const int upper) {
     std::random_device randomDevice;
     std::default_random_engine engine(randomDevice());
-    std::uniform_int_distribution<unsigned int> integerGenerator(lower,upper);
+    std::uniform_int_distribution<int> integerGenerator(lower,upper);
     int randomInt = integerGenerator(engine);
     return randomInt;
 }

@@ -15,7 +15,11 @@
 class Terrain {
 private:
 public:
+    int width;
+    int height;
+    std::vector<int> tiles;
     VertexBuffer buffer;
+    int getTile(const int x,const int y) const;
     Terrain(const std::vector<int> &tiles, const int width, const int height);
 };
 #endif /* terrainClass_hpp */

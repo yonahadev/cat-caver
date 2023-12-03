@@ -14,8 +14,8 @@ private:
     int imageWidth;
     int imageHeight;
     unsigned char * loadImage(const char * filePath);
-    void bindTextures(unsigned int program) const;
+    void bindTextures(int program) const;
 public:
-    Texture(const char * filePath, unsigned int program);
+    Texture(const char * filePath, int program);
 };
 #endif /* textureClass_hpp */

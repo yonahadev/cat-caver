@@ -199,7 +199,7 @@ typedef unsigned __int64        khronos_uint64_t;
  * Sun or Digital
  */
 typedef int                     khronos_int32_t;
-typedef unsigned int            khronos_uint32_t;
+typedef int            khronos_uint32_t;
 #if defined(__arch64__) || defined(_LP64)
 typedef long int                khronos_int64_t;
 typedef unsigned long int       khronos_uint64_t;
@@ -216,7 +216,7 @@ typedef unsigned long long int  khronos_uint64_t;
  * Hypothetical platform with no float or int64 support
  */
 typedef int                     khronos_int32_t;
-typedef unsigned int            khronos_uint32_t;
+typedef int            khronos_uint32_t;
 #define KHRONOS_SUPPORT_INT64   0
 #define KHRONOS_SUPPORT_FLOAT   0
 

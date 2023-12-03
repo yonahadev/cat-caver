@@ -9,6 +9,7 @@
 #include <iostream>
 #include "vertex.hpp"
 #include "quad.hpp"
+#include <string>
 
 void Player::getCoordinates() const{
     std::cout << "Current coordinates: " << "x: " << coordinates.x << " y: " << coordinates.y << "\n";
@@ -25,10 +26,11 @@ void Player::checkCollisions(const Terrain &terrain) {
     //calculate coordinates that the Player is touching
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
-//            int currentTile = dungeon.getTile(x, y);
-//            if (currentTile == 0) {
-//                colliding = true;
-//            }
+            int currentTile = terrain.getTile(x, y);
+            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
+            if (currentTile == 0 || currentTile == 1 || currentTile == 4) {
+                colliding = true;
+            }
         }
     }
 }
@@ -37,6 +39,34 @@ void Player::move(const float x,const float y) {
     matrix *= Mat3(1.0f,0.0f,x,
                           0.0f,1.0f,y,
                          0.0f,0.0f,1.0f);
+}
+
+void Player::jump(const Terrain &terrain) {
+    if (airborne == false) {
+        airborne += 16;
+        direction = "up";
+    }
+}
+
+void Player::accelerate(const Terrain &terrain) {
+    float frameTime = 16; //ms
+    float speed = 0.016;
+    if (airborne > 0) {
+        airborne += frameTime;
+        
+        speed += airborne/2500;
+        
+        if (airborne > 300) {
+            direction = "down";
+        }
+        
+        if (direction == "up") {
+            moveCamera(0, speed, terrain);
+        } else if (direction == "down"){
+            moveCamera(0, -speed/4, terrain);
+        }
+    }
+
 }
 
 void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
@@ -49,7 +79,8 @@ void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
     move(0,-y);
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
     if (colliding) {
-        move(0, y);
+        airborne = 0;
+        move(0,y);
     }
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
 }

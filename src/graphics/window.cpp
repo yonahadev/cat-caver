@@ -8,7 +8,7 @@
 #include "window.hpp"
 #include <iostream>
 
-void Window::setupWindow(const unsigned int width, const unsigned int height, const char *name) {
+void Window::setupWindow(const int width, const int height, const char *name) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -29,6 +29,6 @@ void Window::setupWindow(const unsigned int width, const unsigned int height, co
     }
 }
 
-Window::Window(const unsigned int width, const unsigned int height, const char *name) {
+Window::Window(const int width, const int height, const char *name) {
     setupWindow(width,height,name);
 }

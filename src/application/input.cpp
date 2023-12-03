@@ -30,11 +30,31 @@ void calculateCoordinates(GLFWwindow* window,Vec2 pos) {
 };
 
 void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {
-     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        player.moveCamera(-player.moveSpeed,0,terrain);
-    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        player.moveCamera(player.moveSpeed,0,terrain);
+    
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+       player.moveCamera(-player.moveSpeed,0,terrain);
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            player.jump(terrain);
+        }
+   } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+       player.moveCamera(player.moveSpeed,0,terrain);
+       if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+           player.jump(terrain);
+       }
+   } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+       player.jump(terrain);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+           player.moveCamera(-player.moveSpeed,0,terrain);
+            
+            
+       } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+           player.moveCamera(player.moveSpeed,0,terrain);
+       }
     }
+    
+    player.accelerate(terrain);
+    
     player.colliding = false;
 }
         

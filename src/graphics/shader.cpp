@@ -31,7 +31,6 @@ void Shader::loadUniform(Mat3 matrix, std::string uniformName) const {
     bind();
     unsigned int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniformMatrix3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
-    unBind();
 }
 
 std::string Shader::readShaderFile(const char *filePath) const{

@@ -5,6 +5,7 @@
 //  Created by tom on 2023/12/02.
 //
 
+
 #include "application.hpp"
 #include "glad.h"
 #include "glfw3.h"
@@ -19,14 +20,14 @@
 unsigned int screenWidth = 854;
 unsigned int screenHeight = 480;
 const char *WINDOW_NAME = "Cat Caver";
-constexpr unsigned int HORIZONTAL_TILES = 16;
-constexpr unsigned int VERTICAL_TILES = 10;
+constexpr float HORIZONTAL_TILES = 16.0f;
+constexpr float VERTICAL_TILES = 10.0f;
 
-std::vector<int> tiles = { 5,5,5,5,5,
-                            5,5,5,5,5,
-                            5,5,5,5,5,
-                            5,5,5,5,5,
-                            5,5,5,5,5
+std::vector<int> tiles = { 3,3,3,3,3,
+                            3,3,3,3,3,
+                            3,3,3,3,3,
+                            1,1,1,1,4,
+                            1,1,1,1,4
 };
 
 void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -50,11 +51,12 @@ void runApplication() {
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",shader.shaderProgram);
     
-    Player player(0,0,1);
+    Player player(0,0,7);
     
     Terrain terrain(tiles,5,5);
     
-    Mat3 orthoMatrix = Mat3::Orthographic((-HORIZONTAL_TILES/2)+0.5,
+    Mat3 orthoMatrix = Mat3::Orthographic(
+                                    (-HORIZONTAL_TILES/2)+0.5,
                                     (HORIZONTAL_TILES/2)+0.5,
                                     (-VERTICAL_TILES/2)+0.5,
                                     (VERTICAL_TILES/2)+0.5
@@ -66,11 +68,12 @@ void runApplication() {
         glClear(GL_COLOR_BUFFER_BIT);
         
         
+        
+        shader.loadUniform(player.matrix*orthoMatrix,"u_Transformation");
+        terrain.buffer.draw();
+        
         shader.loadUniform(orthoMatrix,"u_Transformation");
         player.buffer.draw();
-        
-        shader.loadUniform(orthoMatrix*player.matrix,"u_Transformation");
-        terrain.buffer.draw();
         
         glfwPollEvents();
         glfwSwapBuffers(window.ptr);

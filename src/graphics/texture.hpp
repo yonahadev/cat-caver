@@ -7,7 +7,6 @@
 
 #ifndef textureClass_hpp
 #define textureClass_hpp
-
 #include <stdio.h>
 
 class Texture {

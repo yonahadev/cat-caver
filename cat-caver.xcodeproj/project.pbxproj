@@ -275,8 +275,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E262ABA62B1B6331002F988D /* Build configuration list for PBXNativeTarget "cat-caver" */;
 			buildPhases = (
-				E262AB9B2B1B6331002F988D /* Sources */,
 				E225B08B2B1CA2FF003A5B17 /* Embed Libraries */,
+				E262AB9B2B1B6331002F988D /* Sources */,
 				E262AB9C2B1B6331002F988D /* Frameworks */,
 				E262AB9D2B1B6331002F988D /* CopyFiles */,
 			);

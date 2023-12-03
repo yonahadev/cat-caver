@@ -27,9 +27,11 @@ void Shader::unBind() const {
     glUseProgram(0);
 }
 
-void Shader::loadUniform(Mat3 matrix,std::string uniformName) const {
-    unsigned int uniformLocation = glGetUniformLocation(shaderProgram,uniformName.c_str());
-    glUniformMat3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
+void Shader::loadUniform(Mat3 matrix, std::string uniformName) const {
+    bind();
+    unsigned int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniformMatrix3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
+    unBind();
 }
 
 std::string Shader::readShaderFile(const char *filePath) const{
@@ -87,7 +89,7 @@ void Shader::configureShaderProgram(const char *vertexShaderFilePath,const char 
     unsigned int fragmentShader = configureFragmentShader(fragmentShaderFilePath);
     glAttachShader(shaderProgram,vertexShader);
     glAttachShader(shaderProgram,fragmentShader);
-    glLinkProgram(shaderProgram); //issue linking duplicate definition of main?
+    glLinkProgram(shaderProgram);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     GLsizei length;

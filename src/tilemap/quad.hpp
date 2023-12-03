@@ -11,7 +11,7 @@
 #include "vertex.hpp"
 #include <vector>
 
-void generateQuad(int offsetX, int offsetY, const int textureIndex, std::vector<Vertex> &vertices);
+void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices);
 
 #include <stdio.h>
 

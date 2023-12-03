@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E225B0832B1C9E24003A5B17 /* libglfw.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */; };
+		E225B0852B1C9E24003A5B17 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = E225B0812B1C9E24003A5B17 /* glad.c */; };
+		E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABAD2B1B63D1002F988D /* OpenGL.framework */; };
+		E225B08A2B1CA2FF003A5B17 /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E262ABA32B1B6331002F988D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABA22B1B6331002F988D /* main.cpp */; };
-		E262ABBF2B1B6477002F988D /* libglfw.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABBD2B1B6413002F988D /* libglfw.3.dylib */; };
 		E262ABCC2B1B6731002F988D /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC32B1B658E002F988D /* texture.cpp */; };
 		E262ABCD2B1B6731002F988D /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC42B1B658E002F988D /* shader.cpp */; };
 		E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC12B1B658E002F988D /* vertexBuffer.cpp */; };
-		E262ABCF2B1B687B002F988D /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = E262ABBE2B1B6413002F988D /* glad.c */; };
-		E262ABD02B1B6A1A002F988D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABAD2B1B63D1002F988D /* OpenGL.framework */; };
-		E262ABD22B1B6A32002F988D /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E262ABBD2B1B6413002F988D /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E262ABD92B1B6C07002F988D /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABD52B1B6C06002F988D /* math.cpp */; };
 		E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABD82B1B6C06002F988D /* mat3.cpp */; };
 		E262ABDD2B1B7399002F988D /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABDB2B1B7399002F988D /* window.cpp */; };
@@ -22,11 +22,21 @@
 		E262ABEA2B1BB844002F988D /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABE92B1BB844002F988D /* input.cpp */; };
 		E262ABEF2B1BB9E6002F988D /* player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABED2B1BB9E6002F988D /* player.cpp */; };
 		E262ABF32B1BBE9C002F988D /* terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF12B1BBE9B002F988D /* terrain.cpp */; };
-		E262ABF62B1BBFBE002F988D /* layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF52B1BBFBE002F988D /* layer.cpp */; };
 		E262ABF92B1BC059002F988D /* quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF72B1BC059002F988D /* quad.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		E225B08B2B1CA2FF003A5B17 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E225B08A2B1CA2FF003A5B17 /* libglfw.3.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E262AB9D2B1B6331002F988D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -36,33 +46,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		E262ABD32B1B6A32002F988D /* Embed Libraries */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E262ABD22B1B6A32002F988D /* libglfw.3.dylib in Embed Libraries */,
-			);
-			name = "Embed Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E225B0762B1C9DFC003A5B17 /* khrplatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
+		E225B0792B1C9DFC003A5B17 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		E225B07B2B1C9DFC003A5B17 /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
+		E225B07D2B1C9DFC003A5B17 /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
+		E225B07E2B1C9DFC003A5B17 /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
+		E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
+		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
+		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		E262AB9F2B1B6331002F988D /* cat-caver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cat-caver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E262ABA22B1B6331002F988D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E262ABAA2B1B638D002F988D /* spritesheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spritesheet.png; sourceTree = "<group>"; };
 		E262ABAB2B1B63B6002F988D /* .gitattributes */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
 		E262ABAD2B1B63D1002F988D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		E262ABB32B1B6413002F988D /* khrplatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
-		E262ABB42B1B6413002F988D /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
-		E262ABB62B1B6413002F988D /* glad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
-		E262ABB82B1B6413002F988D /* glfw3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
-		E262ABB92B1B6413002F988D /* glfw3native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
-		E262ABBB2B1B6413002F988D /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
-		E262ABBD2B1B6413002F988D /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
-		E262ABBE2B1B6413002F988D /* glad.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		E262ABC12B1B658E002F988D /* vertexBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertexBuffer.cpp; sourceTree = "<group>"; };
 		E262ABC22B1B658E002F988D /* vertex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertex.hpp; sourceTree = "<group>"; };
 		E262ABC32B1B658E002F988D /* texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
@@ -87,8 +86,6 @@
 		E262ABEE2B1BB9E6002F988D /* player.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = player.hpp; sourceTree = "<group>"; };
 		E262ABF12B1BBE9B002F988D /* terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = terrain.cpp; sourceTree = "<group>"; };
 		E262ABF22B1BBE9C002F988D /* terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = terrain.hpp; sourceTree = "<group>"; };
-		E262ABF42B1BBFBE002F988D /* layer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = layer.hpp; sourceTree = "<group>"; };
-		E262ABF52B1BBFBE002F988D /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layer.cpp; sourceTree = "<group>"; };
 		E262ABF72B1BC059002F988D /* quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quad.cpp; sourceTree = "<group>"; };
 		E262ABF82B1BC059002F988D /* quad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quad.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,14 +95,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E262ABBF2B1B6477002F988D /* libglfw.3.dylib in Frameworks */,
-				E262ABD02B1B6A1A002F988D /* OpenGL.framework in Frameworks */,
+				E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */,
+				E225B0832B1C9E24003A5B17 /* libglfw.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E225B0752B1C9DFC003A5B17 /* KHR */ = {
+			isa = PBXGroup;
+			children = (
+				E225B0762B1C9DFC003A5B17 /* khrplatform.h */,
+			);
+			path = KHR;
+			sourceTree = "<group>";
+		};
+		E225B07A2B1C9DFC003A5B17 /* glad */ = {
+			isa = PBXGroup;
+			children = (
+				E225B07B2B1C9DFC003A5B17 /* glad.h */,
+			);
+			path = glad;
+			sourceTree = "<group>";
+		};
+		E225B07C2B1C9DFC003A5B17 /* GLFW */ = {
+			isa = PBXGroup;
+			children = (
+				E225B07D2B1C9DFC003A5B17 /* glfw3.h */,
+				E225B07E2B1C9DFC003A5B17 /* glfw3native.h */,
+			);
+			path = GLFW;
+			sourceTree = "<group>";
+		};
 		E262AB962B1B6331002F988D = {
 			isa = PBXGroup;
 			children = (
@@ -132,11 +154,11 @@
 			children = (
 				E262ABF02B1BBE81002F988D /* tilemap */,
 				E262ABEC2B1BB9D5002F988D /* entity */,
-				E262ABE32B1B7E92002F988D /* shaders */,
 				E262ABDE2B1B79A3002F988D /* application */,
 				E262ABD42B1B6C06002F988D /* maths */,
 				E262ABC02B1B658E002F988D /* graphics */,
 				E262ABA22B1B6331002F988D /* main.cpp */,
+				E262ABE32B1B7E92002F988D /* shaders */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -160,45 +182,20 @@
 		E262ABAF2B1B6413002F988D /* includes */ = {
 			isa = PBXGroup;
 			children = (
-				E262ABB22B1B6413002F988D /* KHR */,
-				E262ABB42B1B6413002F988D /* stb_image.h */,
-				E262ABB52B1B6413002F988D /* glad */,
-				E262ABB72B1B6413002F988D /* GLFW */,
+				E225B07A2B1C9DFC003A5B17 /* glad */,
+				E225B07C2B1C9DFC003A5B17 /* GLFW */,
+				E225B0752B1C9DFC003A5B17 /* KHR */,
+				E225B0792B1C9DFC003A5B17 /* stb_image.h */,
 			);
 			path = includes;
-			sourceTree = "<group>";
-		};
-		E262ABB22B1B6413002F988D /* KHR */ = {
-			isa = PBXGroup;
-			children = (
-				E262ABB32B1B6413002F988D /* khrplatform.h */,
-			);
-			path = KHR;
-			sourceTree = "<group>";
-		};
-		E262ABB52B1B6413002F988D /* glad */ = {
-			isa = PBXGroup;
-			children = (
-				E262ABB62B1B6413002F988D /* glad.h */,
-			);
-			path = glad;
-			sourceTree = "<group>";
-		};
-		E262ABB72B1B6413002F988D /* GLFW */ = {
-			isa = PBXGroup;
-			children = (
-				E262ABB82B1B6413002F988D /* glfw3.h */,
-				E262ABB92B1B6413002F988D /* glfw3native.h */,
-			);
-			path = GLFW;
 			sourceTree = "<group>";
 		};
 		E262ABBA2B1B6413002F988D /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				E262ABBB2B1B6413002F988D /* libglfw3.a */,
-				E262ABBD2B1B6413002F988D /* libglfw.3.dylib */,
-				E262ABBE2B1B6413002F988D /* glad.c */,
+				E225B0812B1C9E24003A5B17 /* glad.c */,
+				E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */,
+				E225B0802B1C9E24003A5B17 /* libglfw3.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -263,8 +260,6 @@
 		E262ABF02B1BBE81002F988D /* tilemap */ = {
 			isa = PBXGroup;
 			children = (
-				E262ABF52B1BBFBE002F988D /* layer.cpp */,
-				E262ABF42B1BBFBE002F988D /* layer.hpp */,
 				E262ABF12B1BBE9B002F988D /* terrain.cpp */,
 				E262ABF22B1BBE9C002F988D /* terrain.hpp */,
 				E262ABF72B1BC059002F988D /* quad.cpp */,
@@ -281,9 +276,9 @@
 			buildConfigurationList = E262ABA62B1B6331002F988D /* Build configuration list for PBXNativeTarget "cat-caver" */;
 			buildPhases = (
 				E262AB9B2B1B6331002F988D /* Sources */,
+				E225B08B2B1CA2FF003A5B17 /* Embed Libraries */,
 				E262AB9C2B1B6331002F988D /* Frameworks */,
 				E262AB9D2B1B6331002F988D /* CopyFiles */,
-				E262ABD32B1B6A32002F988D /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -331,11 +326,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E262ABCF2B1B687B002F988D /* glad.c in Sources */,
 				E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */,
 				E262ABEA2B1BB844002F988D /* input.cpp in Sources */,
 				E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */,
-				E262ABF62B1BBFBE002F988D /* layer.cpp in Sources */,
 				E262ABEF2B1BB9E6002F988D /* player.cpp in Sources */,
 				E262ABF32B1BBE9C002F988D /* terrain.cpp in Sources */,
 				E262ABDD2B1B7399002F988D /* window.cpp in Sources */,
@@ -345,6 +338,7 @@
 				E262ABCD2B1B6731002F988D /* shader.cpp in Sources */,
 				E262ABA32B1B6331002F988D /* main.cpp in Sources */,
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,
+				E225B0852B1C9E24003A5B17 /* glad.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

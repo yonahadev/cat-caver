@@ -7,6 +7,7 @@
 
 #include "vertexBuffer.hpp"
 #include "glad/glad.h"
+#include <iostream>
 
 void VertexBuffer::bindArray() const {
     glBindVertexArray(VAO);
@@ -19,10 +20,10 @@ void VertexBuffer::unbindArray() const {
 void VertexBuffer::draw() const {
     bindArray();
     glDrawArrays(GL_TRIANGLES,0,numberOfVertices);
+    unbindArray();
 };
 
 void VertexBuffer::bindBuffer(std::vector<Vertex> vertices) const {
-    bindArray();
     glBindBuffer(GL_ARRAY_BUFFER,VBO);
     glBufferData(GL_ARRAY_BUFFER,numberOfVertices * 4 * sizeof(float),vertices.data(),GL_DYNAMIC_DRAW);
     //position coords
@@ -36,9 +37,10 @@ void VertexBuffer::bindBuffer(std::vector<Vertex> vertices) const {
 VertexBuffer::VertexBuffer(std::vector<Vertex> vertices) {
     numberOfVertices = static_cast<int>(vertices.size());
     glGenVertexArrays(1,&VAO);
-    glGenBuffers(1,&VBO);
     bindArray();
+    glGenBuffers(1,&VBO);
     bindBuffer(vertices);
+    unbindArray();
 };
 
 VertexBuffer::VertexBuffer() {};

@@ -9,15 +9,13 @@
 #include "quad.hpp"
 #include <iostream>
 
-Terrain::Terrain() {};
-
-void Terrain::generateLayer(const int offsetX, const int offsetY) {
-    std::vector<Vertex> layerVertices;
+Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height) {
+    std::vector<Vertex> vertices;
     for (int y = 0; y<height; y++) {
         for (int x = 0; x<width; x++) {
-            generateQuad(offsetX+x, -(offsetY+y), tiles[x+y*width], layerVertices);
+//            std::cout << x << "," << y << "\n";
+            generateQuad(x, -y, tiles[x+y*width], vertices);
         }
     }
-    layers.emplace_back(layerVertices,tiles);
+    buffer = VertexBuffer(vertices);
 };
-

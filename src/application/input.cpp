@@ -14,7 +14,6 @@
 #include "vertex.hpp"
 #include <sstream>
 #include <vector>
-#include "movement.hpp"
 #include "vec2.hpp"
 
 void calculateCoordinates(GLFWwindow* window,Vec2 pos) {
@@ -30,15 +29,14 @@ void calculateCoordinates(GLFWwindow* window,Vec2 pos) {
     };
 };
 
-//void processInput(GLFWwindow *window, Player &player, const Terrain &dungeon) {
-//
-//     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-//        moveCamera(viewMatrix, -cameraSpeed, 0,player,dungeon);
-//    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-//        moveCamera(viewMatrix, cameraSpeed, 0,player,dungeon);
-//    }
-//}
-//        player.colliding = false;
-//        
-//    }
+void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {
+     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        player.moveCamera(-player.moveSpeed,0,terrain);
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        player.moveCamera(player.moveSpeed,0,terrain);
+    }
+    player.colliding = false;
+}
+        
+
     

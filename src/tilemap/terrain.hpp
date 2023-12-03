@@ -10,16 +10,12 @@
 #include <stdio.h>
 #include <vector>
 #include "vertex.hpp"
-#include "layer.hpp"
+#include "vertexBuffer.hpp"
 
 class Terrain {
 private:
 public:
-    unsigned int width;
-    unsigned int height;
-    std::vector<Layer> layers;
-    std::vector<int> tiles;
-    void generateLayer(const int offsetX, const int offsetY);
-    Terrain();
+    VertexBuffer buffer;
+    Terrain(const std::vector<int> &tiles, const int width, const int height);
 };
 #endif /* terrainClass_hpp */

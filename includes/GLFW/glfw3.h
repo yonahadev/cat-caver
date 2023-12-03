@@ -1567,6 +1567,7 @@ typedef void (* GLFWcharfun)(GLFWwindow* window, unsigned int codepoint);
  *  @sa @ref input_char
  *  @sa @ref glfwSetCharModsCallback
  *
+ *  @deprecated Scheduled for removal in version 4.0.
  *
  *  @since Added in version 3.1.
  *
@@ -1974,6 +1975,7 @@ GLFWAPI int glfwGetError(const char** description);
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set.
  *
+ *  @callback_signature
  *  @code
  *  void callback_name(int error_code, const char* description)
  *  @endcode
@@ -2257,6 +2259,7 @@ GLFWAPI void* glfwGetMonitorUserPointer(GLFWmonitor* monitor);
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWmonitor* monitor, int event)
  *  @endcode
@@ -3621,6 +3624,7 @@ GLFWAPI void* glfwGetWindowUserPointer(GLFWwindow* window);
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int xpos, int ypos)
  *  @endcode
@@ -3654,6 +3658,7 @@ GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* window, GLFWwindow
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int width, int height)
  *  @endcode
@@ -3690,6 +3695,7 @@ GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* window, GLFWwind
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window)
  *  @endcode
@@ -3728,6 +3734,7 @@ GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* window, GLFWwi
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window);
  *  @endcode
@@ -3763,6 +3770,7 @@ GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* window, GL
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int focused)
  *  @endcode
@@ -3792,6 +3800,7 @@ GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* window, GLFWwi
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int iconified)
  *  @endcode
@@ -3824,6 +3833,7 @@ GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* window, GL
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int maximized)
  *  @endcode
@@ -3853,6 +3863,7 @@ GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* window, 
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int width, int height)
  *  @endcode
@@ -3882,6 +3893,7 @@ GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* window
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
  *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, float xscale, float yscale)
  *  @endcode
@@ -4551,6 +4563,8 @@ GLFWAPI void glfwSetCursor(GLFWwindow* window, GLFWcursor* cursor);
  *  set callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int key, int scancode, int action, int mods)
  *  @endcode
@@ -4592,6 +4606,8 @@ GLFWAPI GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun callback);
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, unsigned int codepoint)
  *  @endcode
@@ -4631,11 +4647,15 @@ GLFWAPI GLFWcharfun glfwSetCharCallback(GLFWwindow* window, GLFWcharfun callback
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or an
  *  [error](@ref error_handling) occurred.
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, unsigned int codepoint, int mods)
  *  @endcode
  *  For more information about the callback parameters, see the
  *  [function pointer type](@ref GLFWcharmodsfun).
+ *
+ *  @deprecated Scheduled for removal in version 4.0.
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
  *
@@ -4665,6 +4685,8 @@ GLFWAPI GLFWcharmodsfun glfwSetCharModsCallback(GLFWwindow* window, GLFWcharmods
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int button, int action, int mods)
  *  @endcode
@@ -4696,6 +4718,8 @@ GLFWAPI GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* window, GLFWmo
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, double xpos, double ypos);
  *  @endcode
@@ -4725,6 +4749,8 @@ GLFWAPI GLFWcursorposfun glfwSetCursorPosCallback(GLFWwindow* window, GLFWcursor
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int entered)
  *  @endcode
@@ -4757,6 +4783,8 @@ GLFWAPI GLFWcursorenterfun glfwSetCursorEnterCallback(GLFWwindow* window, GLFWcu
  *  currently set callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, double xoffset, double yoffset)
  *  @endcode
@@ -4790,6 +4818,8 @@ GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun ca
  *  currently set callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(GLFWwindow* window, int path_count, const char* paths[])
  *  @endcode
@@ -5131,6 +5161,8 @@ GLFWAPI int glfwJoystickIsGamepad(int jid);
  *  callback.
  *  @return The previously set callback, or `NULL` if no callback was set or the
  *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
  *  @code
  *  void function_name(int jid, int event)
  *  @endcode

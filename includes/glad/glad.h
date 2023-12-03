@@ -3037,9 +3037,9 @@ GLAPI PFNGLUNIFORM4IVPROC glad_glUniform4iv;
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX2FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX2FVPROC glad_glUniformMatrix2fv;
 #define glUniformMatrix2fv glad_glUniformMatrix2fv
-typedef void (APIENTRYP PFNGLUNIFORMMat3FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLUNIFORMMat3FVPROC glad_glUniformMat3fv;
-#define glUniformMat3fv glad_glUniformMat3fv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLUNIFORMMATRIX3FVPROC glad_glUniformMatrix3fv;
+#define glUniformMatrix3fv glad_glUniformMatrix3fv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX4FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX4FVPROC glad_glUniformMatrix4fv;
 #define glUniformMatrix4fv glad_glUniformMatrix4fv
@@ -3164,18 +3164,18 @@ GLAPI int GLAD_GL_VERSION_2_1;
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX2X3FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX2X3FVPROC glad_glUniformMatrix2x3fv;
 #define glUniformMatrix2x3fv glad_glUniformMatrix2x3fv
-typedef void (APIENTRYP PFNGLUNIFORMMat3X2FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLUNIFORMMat3X2FVPROC glad_glUniformMat3x2fv;
-#define glUniformMat3x2fv glad_glUniformMat3x2fv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3X2FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLUNIFORMMATRIX3X2FVPROC glad_glUniformMatrix3x2fv;
+#define glUniformMatrix3x2fv glad_glUniformMatrix3x2fv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX2X4FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX2X4FVPROC glad_glUniformMatrix2x4fv;
 #define glUniformMatrix2x4fv glad_glUniformMatrix2x4fv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX4X2FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX4X2FVPROC glad_glUniformMatrix4x2fv;
 #define glUniformMatrix4x2fv glad_glUniformMatrix4x2fv
-typedef void (APIENTRYP PFNGLUNIFORMMat3X4FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLUNIFORMMat3X4FVPROC glad_glUniformMat3x4fv;
-#define glUniformMat3x4fv glad_glUniformMat3x4fv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3X4FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLUNIFORMMATRIX3X4FVPROC glad_glUniformMatrix3x4fv;
+#define glUniformMatrix3x4fv glad_glUniformMatrix3x4fv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX4X3FVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLUNIFORMMATRIX4X3FVPROC glad_glUniformMatrix4x3fv;
 #define glUniformMatrix4x3fv glad_glUniformMatrix4x3fv
@@ -3766,9 +3766,9 @@ GLAPI PFNGLUNIFORM4DVPROC glad_glUniform4dv;
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX2DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLUNIFORMMATRIX2DVPROC glad_glUniformMatrix2dv;
 #define glUniformMatrix2dv glad_glUniformMatrix2dv
-typedef void (APIENTRYP PFNGLUNIFORMMat3DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLUNIFORMMat3DVPROC glad_glUniformMat3dv;
-#define glUniformMat3dv glad_glUniformMat3dv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLUNIFORMMATRIX3DVPROC glad_glUniformMatrix3dv;
+#define glUniformMatrix3dv glad_glUniformMatrix3dv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX4DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLUNIFORMMATRIX4DVPROC glad_glUniformMatrix4dv;
 #define glUniformMatrix4dv glad_glUniformMatrix4dv
@@ -3778,12 +3778,12 @@ GLAPI PFNGLUNIFORMMATRIX2X3DVPROC glad_glUniformMatrix2x3dv;
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX2X4DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLUNIFORMMATRIX2X4DVPROC glad_glUniformMatrix2x4dv;
 #define glUniformMatrix2x4dv glad_glUniformMatrix2x4dv
-typedef void (APIENTRYP PFNGLUNIFORMMat3X2DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLUNIFORMMat3X2DVPROC glad_glUniformMat3x2dv;
-#define glUniformMat3x2dv glad_glUniformMat3x2dv
-typedef void (APIENTRYP PFNGLUNIFORMMat3X4DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLUNIFORMMat3X4DVPROC glad_glUniformMat3x4dv;
-#define glUniformMat3x4dv glad_glUniformMat3x4dv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3X2DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLUNIFORMMATRIX3X2DVPROC glad_glUniformMatrix3x2dv;
+#define glUniformMatrix3x2dv glad_glUniformMatrix3x2dv
+typedef void (APIENTRYP PFNGLUNIFORMMATRIX3X4DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLUNIFORMMATRIX3X4DVPROC glad_glUniformMatrix3x4dv;
+#define glUniformMatrix3x4dv glad_glUniformMatrix3x4dv
 typedef void (APIENTRYP PFNGLUNIFORMMATRIX4X2DVPROC)(GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLUNIFORMMATRIX4X2DVPROC glad_glUniformMatrix4x2dv;
 #define glUniformMatrix4x2dv glad_glUniformMatrix4x2dv
@@ -4007,54 +4007,54 @@ GLAPI PFNGLPROGRAMUNIFORM4UIVPROC glad_glProgramUniform4uiv;
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2FVPROC glad_glProgramUniformMatrix2fv;
 #define glProgramUniformMatrix2fv glad_glProgramUniformMatrix2fv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3FVPROC glad_glProgramUniformMat3fv;
-#define glProgramUniformMat3fv glad_glProgramUniformMat3fv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3FVPROC glad_glProgramUniformMatrix3fv;
+#define glProgramUniformMatrix3fv glad_glProgramUniformMatrix3fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4FVPROC glad_glProgramUniformMatrix4fv;
 #define glProgramUniformMatrix4fv glad_glProgramUniformMatrix4fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2DVPROC glad_glProgramUniformMatrix2dv;
 #define glProgramUniformMatrix2dv glad_glProgramUniformMatrix2dv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3DVPROC glad_glProgramUniformMat3dv;
-#define glProgramUniformMat3dv glad_glProgramUniformMat3dv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3DVPROC glad_glProgramUniformMatrix3dv;
+#define glProgramUniformMatrix3dv glad_glProgramUniformMatrix3dv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4DVPROC glad_glProgramUniformMatrix4dv;
 #define glProgramUniformMatrix4dv glad_glProgramUniformMatrix4dv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC glad_glProgramUniformMatrix2x3fv;
 #define glProgramUniformMatrix2x3fv glad_glProgramUniformMatrix2x3fv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3X2FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3X2FVPROC glad_glProgramUniformMat3x2fv;
-#define glProgramUniformMat3x2fv glad_glProgramUniformMat3x2fv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC glad_glProgramUniformMatrix3x2fv;
+#define glProgramUniformMatrix3x2fv glad_glProgramUniformMatrix3x2fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC glad_glProgramUniformMatrix2x4fv;
 #define glProgramUniformMatrix2x4fv glad_glProgramUniformMatrix2x4fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC glad_glProgramUniformMatrix4x2fv;
 #define glProgramUniformMatrix4x2fv glad_glProgramUniformMatrix4x2fv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3X4FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3X4FVPROC glad_glProgramUniformMat3x4fv;
-#define glProgramUniformMat3x4fv glad_glProgramUniformMat3x4fv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC glad_glProgramUniformMatrix3x4fv;
+#define glProgramUniformMatrix3x4fv glad_glProgramUniformMatrix3x4fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC glad_glProgramUniformMatrix4x3fv;
 #define glProgramUniformMatrix4x3fv glad_glProgramUniformMatrix4x3fv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC glad_glProgramUniformMatrix2x3dv;
 #define glProgramUniformMatrix2x3dv glad_glProgramUniformMatrix2x3dv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3X2DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3X2DVPROC glad_glProgramUniformMat3x2dv;
-#define glProgramUniformMat3x2dv glad_glProgramUniformMat3x2dv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC glad_glProgramUniformMatrix3x2dv;
+#define glProgramUniformMatrix3x2dv glad_glProgramUniformMatrix3x2dv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC glad_glProgramUniformMatrix2x4dv;
 #define glProgramUniformMatrix2x4dv glad_glProgramUniformMatrix2x4dv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC glad_glProgramUniformMatrix4x2dv;
 #define glProgramUniformMatrix4x2dv glad_glProgramUniformMatrix4x2dv
-typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMat3X4DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
-GLAPI PFNGLPROGRAMUNIFORMMat3X4DVPROC glad_glProgramUniformMat3x4dv;
-#define glProgramUniformMat3x4dv glad_glProgramUniformMat3x4dv
+typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
+GLAPI PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC glad_glProgramUniformMatrix3x4dv;
+#define glProgramUniformMatrix3x4dv glad_glProgramUniformMatrix3x4dv
 typedef void (APIENTRYP PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble *value);
 GLAPI PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC glad_glProgramUniformMatrix4x3dv;
 #define glProgramUniformMatrix4x3dv glad_glProgramUniformMatrix4x3dv

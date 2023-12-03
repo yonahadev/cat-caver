@@ -15,7 +15,7 @@ class Mat3 {
 private:
 public:
     std::array<float,9> matrix_Array;
-    Mat3(float left, float right, float bottom, float top);
+    static Mat3 Orthographic(float left, float right, float bottom, float top);
     Mat3();
     Mat3(float v);
     Mat3(

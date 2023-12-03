@@ -16,12 +16,13 @@ const float * Mat3::getFloatArray() const {
 };
 
 //creates ortho matrix - translations not neccesary in 2d context
-Mat3::Mat3(float left, float right, float bottom, float top) {
-    matrix_Array = {
+Mat3 Mat3::Orthographic(float left, float right, float bottom, float top) {
+    
+    return Mat3(
         2.0f/(right-left), 0.0f, 1.0f*-((right+left)/(right-left)),
         0.0f, 2.0f/(top-bottom), 1.0f*-((top+bottom)/(top-bottom)),
         0.0f, 0.0f, 1.0f
-    };
+    );
 };
 
 Mat3::Mat3() { //initialises zero matrix

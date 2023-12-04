@@ -17,6 +17,7 @@
 #include "mat3.hpp"
 #include <vector>
 #include "input.hpp"
+#include "mouse.hpp"
 
 float screenWidth = 854.0f;
 float screenHeight = 480.0f;
@@ -67,21 +68,22 @@ void runApplication() {
                                           (VERTICAL_TILES/2)+0.5
                                           );
     
+    Mouse mouse;
+    
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         
-        VertexBuffer highlight = calculateMousePosition(window.ptr, player.coordinates, screenSize, aspectRatio,terrain);
-        
-        
-        processInput(window.ptr, player, terrain);
+        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
+        handleMouseHold(window.ptr,terrain,mouse);
+        handleKeyPress(window.ptr, player, terrain);
         
         
         //order does matter of multiplication...
         shader.loadUniform(orthoMatrix*player.matrix,"u_Transformation");
         terrain.buffer.draw();
-        highlight.draw();
+        mouse.buffer.draw();
         
         shader.loadUniform(orthoMatrix,"u_Transformation");
         player.buffer.draw();

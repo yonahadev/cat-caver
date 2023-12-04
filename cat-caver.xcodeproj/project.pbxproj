@@ -11,6 +11,7 @@
 		E225B0852B1C9E24003A5B17 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = E225B0812B1C9E24003A5B17 /* glad.c */; };
 		E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABAD2B1B63D1002F988D /* OpenGL.framework */; };
 		E225B08A2B1CA2FF003A5B17 /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E259A7E72B1E2D2A007CE0C9 /* mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */; };
 		E262ABA32B1B6331002F988D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABA22B1B6331002F988D /* main.cpp */; };
 		E262ABCC2B1B6731002F988D /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC32B1B658E002F988D /* texture.cpp */; };
 		E262ABCD2B1B6731002F988D /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC42B1B658E002F988D /* shader.cpp */; };
@@ -57,6 +58,8 @@
 		E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
 		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
 		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mouse.cpp; sourceTree = "<group>"; };
+		E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mouse.hpp; sourceTree = "<group>"; };
 		E262AB9F2B1B6331002F988D /* cat-caver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cat-caver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E262ABA22B1B6331002F988D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E262ABAA2B1B638D002F988D /* spritesheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spritesheet.png; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 			children = (
 				E262ABED2B1BB9E6002F988D /* player.cpp */,
 				E262ABEE2B1BB9E6002F988D /* player.hpp */,
+				E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */,
+				E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */,
 			);
 			path = entity;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				E262ABCC2B1B6731002F988D /* texture.cpp in Sources */,
 				E262ABE12B1B79B4002F988D /* application.cpp in Sources */,
 				E262ABF92B1BC059002F988D /* quad.cpp in Sources */,
+				E259A7E72B1E2D2A007CE0C9 /* mouse.cpp in Sources */,
 				E262ABCD2B1B6731002F988D /* shader.cpp in Sources */,
 				E262ABA32B1B6331002F988D /* main.cpp in Sources */,
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,

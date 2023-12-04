@@ -16,9 +16,12 @@
 #include "vec2.hpp"
 #include "terrain.hpp"
 #include "vertex.hpp"
+#include "mouse.hpp"
 
-VertexBuffer calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio, const Terrain &terrain);
+void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio, const Terrain &terrain, Mouse &mouse);
 
-void processInput(GLFWwindow *window, Player &player, const Terrain &dungeon);
+void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse);
+
+void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon);
 
 #endif /* windowInput_hpp */

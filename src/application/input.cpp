@@ -16,7 +16,7 @@
 #include <vector>
 #include "quad.hpp"
 
-VertexBuffer calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain) {
+void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain, Mouse &mouse) {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     
@@ -37,30 +37,46 @@ VertexBuffer calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec
     mouseX += 0.5;
     mouseY += 0.5;
     
+    
 //    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
     
-    int tileX = floor(mouseX);
-    int tileY = floor(mouseY);
+    mouse.tileX = floor(mouseX);
+    mouse.tileY = floor(mouseY);
     
     
-//    std::cout << "Tile coordinates: " << tileX << "," << tileY << "\n";
+//    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
     
-    int currentTile = terrain.getTile(tileX, tileY);
-//    
-//    std::cout << "Current tile is: " << currentTile << "\n";
+    mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
+//
+//    std::cout << "Current tile is: " << mouse.currentTile << "\n";
     
-    
-    if (currentTile == 4) {
+    if (mouse.currentTile == 4) {
         std::vector<Vertex> vertices;
-        generateQuad(tileX,tileY,6,vertices);
+        generateQuad(mouse.tileX,mouse.tileY,6,vertices);
         VertexBuffer highlight(vertices);
-        return highlight;
+        mouse.buffer = highlight;
 
+    } else {
+        mouse.buffer = VertexBuffer();
     }
-    return VertexBuffer();
 };
 
-void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {
+void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        mouse.holding += 16.6667;
+        if (mouse.holding > 1000) {
+            terrain.mineBlock(mouse.tileX, mouse.tileY);
+            mouse.holding = 0;
+            terrain.generateBuffer();
+        }
+        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
+    } else {
+        mouse.holding = 0;
+    }
+}
+
+
+void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain) {
     
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {

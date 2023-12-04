@@ -20,6 +20,9 @@ public:
     std::vector<int> tiles;
     VertexBuffer buffer;
     int getTile(const int x,const int y) const;
+    int getTileIndex(const int x,const int y) const;
+    void mineBlock(const int x,const int y);
+    void generateBuffer();
     Terrain(const std::vector<int> &tiles, const int width, const int height);
 };
 #endif /* terrainClass_hpp */

@@ -11,10 +11,20 @@
 
 
 int Terrain::getTile(const int x,const int y) const{
-    return tiles[x+(-y*width)];
+    int index = getTileIndex(x,y);
+    return tiles[index];
 }
 
-Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height): tiles(tiles), width(width),height(height) {
+int Terrain::getTileIndex(const int x, const int y) const{
+    return x+(-y*width);
+}
+
+void Terrain::mineBlock(const int x, const int y) {
+    int index = getTileIndex(x,y);
+    tiles[index] = 3;
+}
+
+void Terrain::generateBuffer() {
     std::vector<Vertex> vertices;
     for (int y = 0; y<height; y++) {
         for (int x = 0; x<width; x++) {
@@ -22,4 +32,8 @@ Terrain::Terrain(const std::vector<int> &tiles, const int width, const int heigh
         }
     }
     buffer = VertexBuffer(vertices);
+}
+
+Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height): tiles(tiles), width(width),height(height) {
+    generateBuffer();
 };

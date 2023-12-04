@@ -13,6 +13,8 @@
 #include "vertexBuffer.hpp"
 #include "vec2.hpp"
 #include "terrain.hpp"
+#include <vector>
+#include <string>
 
 class Player {
 private:
@@ -25,8 +27,9 @@ public:
     Mat3 matrix;
     Vec2 coordinates;
     VertexBuffer buffer;
-    bool colliding;
+    std::vector<std::string> collisions;
     void update(const Terrain &terrain,float xPos,float yPos);
+    bool getCollision(const std::string &search) const;
     void checkCollisions(const Terrain &terrain);
     void getCoordinates() const;
     void getHitbox() const;

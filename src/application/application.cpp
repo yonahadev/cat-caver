@@ -30,9 +30,11 @@ Vec2 screenSize = {screenWidth,screenHeight};
 Vec2 aspectRatio = {HORIZONTAL_TILES,VERTICAL_TILES};
 
 std::vector<int> tiles = { 1,1,1,1,1,
+                            1,1,1,1,1,
                             1,3,3,3,1,
                             1,3,3,3,1,
-                            1,3,3,3,1,
+                            1,4,4,4,1,
+                            1,4,4,4,1,
                             1,4,4,4,1
 };
 
@@ -59,7 +61,7 @@ void runApplication() {
     
     Player player(1,-3,7);
     
-    Terrain terrain(tiles,5,5);
+    Terrain terrain(tiles,5,7);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-HORIZONTAL_TILES/2)+0.5,

@@ -22,6 +22,15 @@ void Player::getMatrix() const {
     std::cout << "Current matrix:\n" << std::string(matrix) << "\n";
 }
 
+bool Player::getCollision(const std::string &search) const {
+    for (const std::string &collision: collisions) {
+        if (search == collision) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Player::checkCollisions(const Terrain &terrain) {
     //calculate coordinates that the Player is touching
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
@@ -29,7 +38,22 @@ void Player::checkCollisions(const Terrain &terrain) {
             int currentTile = terrain.getTile(x, y);
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
             if (currentTile == 0 || currentTile == 1 || currentTile == 4) {
-                colliding = true;
+                if (x > coordinates.x) {
+                    collisions.push_back("right");
+                }
+                if (x < coordinates.x) {
+                    collisions.push_back("left");
+
+                }
+                if (y > coordinates.x) {
+                    collisions.push_back("top");
+
+                }
+                if (y < coordinates.x) {
+                    collisions.push_back("bottom");
+
+                }
+                
             }
         }
     }
@@ -42,7 +66,7 @@ void Player::move(const float x,const float y) {
 }
 
 void Player::jump(const Terrain &terrain) {
-    if (airborne == false) {
+    if (airborne == 0) {
         airborne += 16;
         direction = "up";
     }
@@ -51,12 +75,24 @@ void Player::jump(const Terrain &terrain) {
 void Player::accelerate(const Terrain &terrain) {
     float frameTime = 16; //ms
     float speed = 0.016;
+
+    if (getCollision("bottom") == false && direction != "up") {
+        airborne += 50;
+        direction = "down";
+    }
+    
+    if (getCollision("top")) {
+        airborne += 50;
+        direction = "down";
+    }
+    
     if (airborne > 0) {
         airborne += frameTime;
         
-        speed += airborne/2500;
+        speed += airborne/3000;
         
         if (airborne > 300) {
+            airborne = 200;
             direction = "down";
         }
         
@@ -72,14 +108,17 @@ void Player::accelerate(const Terrain &terrain) {
 void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
     move(-x,0);
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
-    if (colliding) {
+    if (collisions.size() > 0) {
         move(x,0);
-        colliding = false;
+        collisions = {};
     }
     move(0,-y);
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
-    if (colliding) {
-        airborne = 0;
+    if (collisions.size() > 0) {
+        if (getCollision("bottom") == true) {
+//            std::cout << "removing airborne" << "\n";
+            airborne = 0;
+        }
         move(0,y);
     }
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);

@@ -40,8 +40,15 @@ void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,c
     
 //    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
     
-    mouse.tileX = floor(mouseX);
-    mouse.tileY = floor(mouseY);
+    int newX = floor(mouseX);
+    int newY = floor(mouseY);
+    
+    if (newX != mouse.tileX || newY != mouse.tileY) {
+        mouse.holding = 0;
+    }
+    
+    mouse.tileX = newX;
+    mouse.tileY = newY;
     
     
 //    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
@@ -69,7 +76,7 @@ void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
             mouse.holding = 0;
             terrain.generateBuffer();
         }
-        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
+//        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
     } else {
         mouse.holding = 0;
     }
@@ -102,7 +109,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain) 
     
     player.accelerate(terrain);
     
-    player.colliding = false;
+    player.collisions = {};
 }
         
 

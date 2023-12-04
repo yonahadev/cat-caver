@@ -19,7 +19,8 @@ private:
     int configureFragmentShader(const char *filePath) const;
     void configureShaderProgram(const char *vertexShaderFilePath,const char *fragmentShaderFilePath);
 public:
-    void loadUniform(Mat3 matrix,std::string uniformName) const;
+    void loadMatrix(Mat3 matrix,const std::string &uniformName) const;
+    void loadBool(const bool isTexture,const std::string &uniformName) const;
     int shaderProgram;
     void bind() const;
     void unBind() const;

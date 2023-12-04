@@ -72,9 +72,11 @@ void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         mouse.holding += 16.6667;
         if (mouse.holding > 1000) {
-            terrain.mineBlock(mouse.tileX, mouse.tileY);
-            mouse.holding = 0;
-            terrain.generateBuffer();
+            if (terrain.getTile(mouse.tileX, mouse.tileY) == 4) {
+                terrain.mineBlock(mouse.tileX, mouse.tileY);
+                mouse.holding = 0;
+                terrain.generateBuffer();
+            }
         }
 //        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
     } else {

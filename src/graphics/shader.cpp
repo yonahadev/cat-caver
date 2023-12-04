@@ -27,10 +27,16 @@ void Shader::unBind() const {
     glUseProgram(0);
 }
 
-void Shader::loadUniform(Mat3 matrix, std::string uniformName) const {
+void Shader::loadMatrix(Mat3 matrix,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniformMatrix3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
+}
+
+void Shader::loadBool(const bool boolean,const std::string &uniformName) const {
+    bind();
+    int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform1i(uniformLocation,boolean);
 }
 
 std::string Shader::readShaderFile(const char *filePath) const{

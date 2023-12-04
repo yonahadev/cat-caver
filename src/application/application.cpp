@@ -53,6 +53,7 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 void runApplication() {
     Window window(screenWidth,screenHeight,WINDOW_NAME);
     
+    
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetFramebufferSizeCallback(window.ptr, resizeWindow);
     
@@ -83,11 +84,12 @@ void runApplication() {
         
         
         //order does matter of multiplication...
-        shader.loadUniform(orthoMatrix*player.matrix,"u_Transformation");
+        shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
         terrain.buffer.draw();
+        shader.loadBool(false, "u_IsTexture");
         mouse.buffer.draw();
-        
-        shader.loadUniform(orthoMatrix,"u_Transformation");
+        shader.loadBool(true, "u_IsTexture");
+        shader.loadMatrix(orthoMatrix,"u_Transformation");
         player.buffer.draw();
         
         glfwPollEvents();

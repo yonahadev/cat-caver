@@ -23,6 +23,7 @@ Texture::Texture(const char * filePath,int program) {
     unsigned char * textureData = loadImage(filePath);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
     glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(textureData);
 }

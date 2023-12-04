@@ -24,6 +24,26 @@ void Terrain::mineBlock(const int x, const int y) {
     tiles[index] = 3;
 }
 
+void Terrain::generateLayer() {
+    int layerDepth = 5;
+    
+    for (int y = 0; y<layerDepth; y++) {
+        for (int x = 0; x<width; x++) {
+            if (x == 0 || x == width-1) {
+                tiles.push_back(1);
+            } else {
+                tiles.push_back(4);
+            }
+        }
+    }
+    
+    height += layerDepth;
+    
+    generateBuffer();
+    
+    std::cout << "Generated layer at" << height << "\n";
+}
+
 void Terrain::generateBuffer() {
     std::vector<Vertex> vertices;
     for (int y = 0; y<height; y++) {

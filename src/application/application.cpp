@@ -29,14 +29,16 @@ constexpr float VERTICAL_TILES = 10.0f;
 Vec2 screenSize = {screenWidth,screenHeight};
 Vec2 aspectRatio = {HORIZONTAL_TILES,VERTICAL_TILES};
 
-std::vector<int> tiles = { 1,1,1,1,1,
-                            1,1,1,1,1,
-                            1,3,3,3,1,
-                            1,3,3,3,1,
-                            1,4,4,4,1,
-                            1,4,4,4,1,
-                            1,4,4,4,1
+std::vector<int> startingTiles = { 
+    1,1,1,1,1,1,1,1,1,1,
+    1,3,3,3,3,3,3,3,3,1,
+    1,3,3,3,3,3,3,3,3,1,
+    1,3,3,3,3,3,3,3,3,1,
+    1,4,4,4,4,4,4,4,4,1,
 };
+
+int width = 10;
+int height = static_cast<int>(startingTiles.size()/width);
 
 void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
@@ -62,7 +64,7 @@ void runApplication() {
     
     Player player(1,-3,7);
     
-    Terrain terrain(tiles,5,7);
+    Terrain terrain(startingTiles,width,height);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-HORIZONTAL_TILES/2)+0.5,
@@ -77,6 +79,11 @@ void runApplication() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        int depth = abs(floor(player.coordinates.y));
+        
+        if (depth > terrain.height-3) {
+            terrain.generateLayer();
+        }
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleMouseHold(window.ptr,terrain,mouse);

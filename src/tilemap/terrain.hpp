@@ -23,6 +23,7 @@ public:
     int getTileIndex(const int x,const int y) const;
     void mineBlock(const int x,const int y);
     void generateBuffer();
+    void generateLayer();
     Terrain(const std::vector<int> &tiles, const int width, const int height);
 };
 #endif /* terrainClass_hpp */

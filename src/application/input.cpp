@@ -14,8 +14,9 @@
 #include "vertex.hpp"
 #include <sstream>
 #include <vector>
+#include "quad.hpp"
 
-void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain ) {
+VertexBuffer calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain) {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     
@@ -36,21 +37,27 @@ void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &scree
     mouseX += 0.5;
     mouseY += 0.5;
     
-    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
+//    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
     
     int tileX = floor(mouseX);
     int tileY = floor(mouseY);
     
     
-    std::cout << "Tile coordinates: " << tileX << "," << tileY << "\n";
-    
-    
-    
-    
+//    std::cout << "Tile coordinates: " << tileX << "," << tileY << "\n";
     
     int currentTile = terrain.getTile(tileX, tileY);
+//    
+//    std::cout << "Current tile is: " << currentTile << "\n";
     
-    std::cout << "Current tile is: " << currentTile << "\n";
+    
+    if (currentTile == 4) {
+        std::vector<Vertex> vertices;
+        generateQuad(tileX,tileY,6,vertices);
+        VertexBuffer highlight(vertices);
+        return highlight;
+
+    }
+    return VertexBuffer();
 };
 
 void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {

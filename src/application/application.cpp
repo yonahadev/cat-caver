@@ -71,7 +71,8 @@ void runApplication() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        calculateMousePosition(window.ptr, player.coordinates, screenSize, aspectRatio,terrain);
+        
+        VertexBuffer highlight = calculateMousePosition(window.ptr, player.coordinates, screenSize, aspectRatio,terrain);
         
         
         processInput(window.ptr, player, terrain);
@@ -80,6 +81,7 @@ void runApplication() {
         //order does matter of multiplication...
         shader.loadUniform(orthoMatrix*player.matrix,"u_Transformation");
         terrain.buffer.draw();
+        highlight.draw();
         
         shader.loadUniform(orthoMatrix,"u_Transformation");
         player.buffer.draw();

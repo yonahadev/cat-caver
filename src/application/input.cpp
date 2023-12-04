@@ -14,31 +14,43 @@
 #include "vertex.hpp"
 #include <sstream>
 #include <vector>
-#include "vec2.hpp"
 
-void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio) {
+void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain ) {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     
-    
     float xMultiplier = screenSize.x/aspectRatio.x;
     float yMultiplier = screenSize.y/aspectRatio.y;
-    
-//    std::cout << screenSize.x << "," << aspectRatio.y << "\n";
-    
+
     mouseX *= 1/xMultiplier;
     mouseY *= 1/yMultiplier;
-    
-//    mouseX *= 16;
-//    mouseY *= 10;
     
     mouseX -= aspectRatio.x*0.5;
     mouseY -= aspectRatio.y*0.5;
     
+    mouseY *=  -1;
+    
+    mouseX += pos.x;
+    mouseY += pos.y;
+    
     mouseX += 0.5;
     mouseY += 0.5;
     
-    std::cout << "Mouse coordinates: " << mouseX+pos.x << "," << mouseY+pos.y << "\n";
+    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
+    
+    int tileX = floor(mouseX);
+    int tileY = floor(mouseY);
+    
+    
+    std::cout << "Tile coordinates: " << tileX << "," << tileY << "\n";
+    
+    
+    
+    
+    
+    int currentTile = terrain.getTile(tileX, tileY);
+    
+    std::cout << "Current tile is: " << currentTile << "\n";
 };
 
 void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {

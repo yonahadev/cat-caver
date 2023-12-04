@@ -16,7 +16,7 @@
 #include "vec2.hpp"
 #include "terrain.hpp"
 
-void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio);
+void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio, const Terrain &terrain);
 
 void processInput(GLFWwindow *window, Player &player, const Terrain &dungeon);
 

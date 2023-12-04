@@ -27,7 +27,7 @@ void Player::checkCollisions(const Terrain &terrain) {
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
             int currentTile = terrain.getTile(x, y);
-            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
+//            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
             if (currentTile == 0 || currentTile == 1 || currentTile == 4) {
                 colliding = true;
             }

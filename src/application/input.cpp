@@ -16,17 +16,29 @@
 #include <vector>
 #include "vec2.hpp"
 
-void calculateCoordinates(GLFWwindow* window,Vec2 pos) {
+void calculateMousePosition(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio) {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
-    if (mouseX < 800 & mouseY < 800 & mouseX > 0 & mouseY > 0) {
-        //makes the centre of the screen 0,0 and cartesian coordinate system
-        mouseX -= 400;
-        mouseY -= 400;
-        mouseY *= -1;
-//        std::cout << "Window coordinates: " << mouseX << " " << mouseY << "\n";
-        std::cout << "Mouse coordinates: " << (mouseX/pos.x) << " " << (mouseY/pos.y) << "\n";
-    };
+    
+    
+    float xMultiplier = screenSize.x/aspectRatio.x;
+    float yMultiplier = screenSize.y/aspectRatio.y;
+    
+//    std::cout << screenSize.x << "," << aspectRatio.y << "\n";
+    
+    mouseX *= 1/xMultiplier;
+    mouseY *= 1/yMultiplier;
+    
+//    mouseX *= 16;
+//    mouseY *= 10;
+    
+    mouseX -= aspectRatio.x*0.5;
+    mouseY -= aspectRatio.y*0.5;
+    
+    mouseX += 0.5;
+    mouseY += 0.5;
+    
+    std::cout << "Mouse coordinates: " << mouseX+pos.x << "," << mouseY+pos.y << "\n";
 };
 
 void processInput(GLFWwindow *window, Player &player, const Terrain &terrain) {

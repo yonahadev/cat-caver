@@ -18,11 +18,15 @@
 #include <vector>
 #include "input.hpp"
 
-int screenWidth = 854;
-int screenHeight = 480;
+float screenWidth = 854.0f;
+float screenHeight = 480.0f;
+
 const char *WINDOW_NAME = "Cat Caver";
 constexpr float HORIZONTAL_TILES = 16.0f;
 constexpr float VERTICAL_TILES = 10.0f;
+
+Vec2 screenSize = {screenWidth,screenHeight};
+Vec2 aspectRatio = {HORIZONTAL_TILES,VERTICAL_TILES};
 
 std::vector<int> tiles = { 1,1,1,1,1,
                             1,3,3,3,1,
@@ -67,10 +71,9 @@ void runApplication() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-//
-//        player.getCoordinates();
-//        player.getMatrix();
-//        
+        calculateMousePosition(window.ptr, player.coordinates, screenSize, aspectRatio);
+        
+        
         processInput(window.ptr, player, terrain);
         
         

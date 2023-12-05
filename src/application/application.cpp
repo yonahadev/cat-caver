@@ -19,6 +19,7 @@
 #include "input.hpp"
 #include "mouse.hpp"
 
+
 float screenWidth = 854.0f;
 float screenHeight = 480.0f;
 
@@ -52,6 +53,8 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+
+
 void runApplication() {
     Window window(screenWidth,screenHeight,WINDOW_NAME);
     
@@ -75,6 +78,9 @@ void runApplication() {
     
     Mouse mouse;
     
+    
+    float time = glfwGetTime();
+    
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -87,7 +93,7 @@ void runApplication() {
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleMouseHold(window.ptr,terrain,mouse);
-        handleKeyPress(window.ptr, player, terrain);
+        handleKeyPress(window.ptr, player,terrain,time);
         
         
         //order does matter of multiplication...

@@ -22,6 +22,6 @@ void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,c
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse);
 
-void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon);
+void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon, float &time);
 
 #endif /* windowInput_hpp */

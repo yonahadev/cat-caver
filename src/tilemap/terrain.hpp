@@ -11,6 +11,9 @@
 #include <vector>
 #include "vertex.hpp"
 #include "vertexBuffer.hpp"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 
 class Terrain {
 private:
@@ -19,6 +22,9 @@ public:
     int height;
     std::vector<int> tiles;
     VertexBuffer buffer;
+    json blockData;
+    bool isCollideable(const int tile) const;
+    int getBlockHP(const int tile) const;
     int getTile(const int x,const int y) const;
     int getTileIndex(const int x,const int y) const;
     void mineBlock(const int x,const int y);

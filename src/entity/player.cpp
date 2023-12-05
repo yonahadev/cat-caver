@@ -37,7 +37,7 @@ void Player::checkCollisions(const Terrain &terrain) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
             int currentTile = terrain.getTile(x, y);
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
-            if (currentTile == 0 || currentTile == 1 || currentTile == 4) {
+            if (terrain.isCollideable(currentTile) == true) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }
@@ -81,11 +81,6 @@ void Player::accelerate(const Terrain &terrain) {
         direction = "down";
     }
     
-    if (getCollision("top")) {
-        airborne += 50;
-        direction = "down";
-    }
-    
     if (airborne > 0) {
         airborne += frameTime;
         
@@ -118,6 +113,9 @@ void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
         if (getCollision("bottom") == true) {
 //            std::cout << "removing airborne" << "\n";
             airborne = 0;
+        } else if (getCollision("top") == true) {
+            direction = "down";
+            airborne += 50;
         }
         move(0,y);
     }

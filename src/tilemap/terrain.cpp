@@ -8,11 +8,24 @@
 #include "terrain.hpp"
 #include "quad.hpp"
 #include <iostream>
-
+#include <fstream>
 
 int Terrain::getTile(const int x,const int y) const{
     int index = getTileIndex(x,y);
     return tiles[index];
+}
+
+int Terrain::getBlockHP(const int tile) const {
+    int hp = blockData["blocks"][tile]["time"];
+    return hp;
+}
+
+bool Terrain::isCollideable(const int tile) const {
+    bool collideable = blockData["blocks"][tile]["canMine"];
+    if (collideable) {
+        return true;
+    }
+    return false;
 }
 
 int Terrain::getTileIndex(const int x, const int y) const{
@@ -41,7 +54,7 @@ void Terrain::generateLayer() {
     
     generateBuffer();
     
-    std::cout << "Generated layer at" << height << "\n";
+//    std::cout << "Generated layer at" << height << "\n";
 }
 
 void Terrain::generateBuffer() {
@@ -55,5 +68,7 @@ void Terrain::generateBuffer() {
 }
 
 Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height): tiles(tiles), width(width),height(height) {
+    std::ifstream file("/Users/tom/Documents/cplusplus/cat-caver/res/blockData.json");
+    blockData = json::parse(file);
     generateBuffer();
 };

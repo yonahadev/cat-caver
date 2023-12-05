@@ -71,8 +71,9 @@ void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,c
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         mouse.holding += 16.6667;
-        if (mouse.holding > 1000) {
-            if (terrain.getTile(mouse.tileX, mouse.tileY) == 4) {
+        int tile = terrain.getTile(mouse.tileX, mouse.tileY);
+        if (mouse.holding > terrain.getBlockHP(tile)) {
+            if (terrain.isCollideable(tile)) {
                 terrain.mineBlock(mouse.tileX, mouse.tileY);
                 mouse.holding = 0;
                 terrain.generateBuffer();
@@ -85,21 +86,35 @@ void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
 }
 
 
-void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain) {
+void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, float &time) {
     
-
+    float jumpDelay = 0.1f;
+    
+    
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
        player.moveCamera(-player.moveSpeed,0,terrain);
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            player.jump(terrain);
+            float currentTime = glfwGetTime();
+            if (currentTime - time > jumpDelay ) {
+                player.jump(terrain);
+                time = currentTime;
+            }
         }
    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
        player.moveCamera(player.moveSpeed,0,terrain);
        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-           player.jump(terrain);
+           float currentTime = glfwGetTime();
+           if (currentTime - time > jumpDelay ) {
+               player.jump(terrain);
+               time = currentTime;
+           }
        }
    } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-       player.jump(terrain);
+       float currentTime = glfwGetTime();
+       if (currentTime - time > jumpDelay ) {
+           player.jump(terrain);
+           time = currentTime;
+       }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
            player.moveCamera(-player.moveSpeed,0,terrain);
             

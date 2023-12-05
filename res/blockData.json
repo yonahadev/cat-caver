@@ -1,0 +1,47 @@
+{
+    "blocks": [
+        {
+            "id":0,
+            "name":"stone",
+            "time": 1000,
+            "canMine": true
+        },
+        {
+            "id":1,
+            "name":"copper",
+            "time": 2000,
+            "canMine": true
+        },
+        {
+            "id":2,
+            "name":"iron",
+            "time": 1500,
+            "canMine":true
+        },
+        {
+            "id":3,
+            "name":"dirt",
+            "time": 1000,
+            "canMine": false
+        },
+        {
+            "id":4,
+            "name":"coal",
+            "time": 1250,
+            "canMine": true
+        },
+        {
+            "id":5,
+            "name":"gold",
+            "time": 3000,
+            "canMine": true
+        },
+        {
+            "id":6,
+            "name":"diamond",
+            "time": 5000,
+            "canMine": true
+        }
+        
+    ]
+}

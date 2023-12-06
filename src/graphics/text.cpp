@@ -19,18 +19,29 @@ const std::regex expression("id=([0-9]+)\\s+x=([0-9]+)\\s+y=([0-9]+)\\s+width=([
 
 void Text::generateBuffer() {
     std::vector<Vertex> vertices;
-    std::string string = "johncook";
-    Character current = getCharacter(string[0]);
-    std::cout << string[0] << " is current letter with id: " << current.id << "\n";
-    generateTextQuad(0, 0, current, vertices);
+    std::string string = "johncook23";
+    int xOffset = 0;
+    for (char &ch: string) {
+        Character current = getCharacter(ch);
+        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
+        xOffset += current.xOffset;
+        xOffset += current.xAdvance;
+        int yOffset = current.yOffset;
+        generateTextQuad(xOffset, yOffset, current, vertices);
+    }
     buffer = VertexBuffer(vertices);
 }
 
 Character Text::getCharacter(const char character) {
     int charIndex = int(character);
     //subtraction offsets to find right character
-    Character charData = characterData[charIndex-36];
-    return charData;
+    
+    if (charMap.find(charIndex) != charMap.end()) {
+        Character charData = charMap[charIndex];
+        return charData;
+    } else {
+        throw std::runtime_error("Could not find char data in map");
+    }
 }
 
 void Text::processStream(std::ifstream &stream) {
@@ -53,7 +64,7 @@ void Text::processStream(std::ifstream &stream) {
             
 //            std::cout << id << "\n";
             
-            characterData.push_back(currentChar);
+            charMap[currentChar.id] = currentChar;
             
         } else {
 //            std::cout << "No info on line " << count << "\n";

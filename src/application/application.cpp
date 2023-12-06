@@ -111,7 +111,7 @@ void runApplication() {
 //        shader.loadMatrix(orthoMatrix,"u_Transformation");
 //        player.buffer.draw();
         
-//        shader.loadMatrix(textMatrix, "u_Transformation");
+        shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadBool(true, "u_IsTexture");
         text.buffer.draw();
         

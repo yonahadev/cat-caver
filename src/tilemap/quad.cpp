@@ -20,17 +20,22 @@ void generateQuad(const int offsetX,const int offsetY, const int textureIndex, s
 }
 
 void generateTextQuad(const int offsetX,const int offsetY,const Character &ch, std::vector<Vertex> &vertices) {
-    float endX = (ch.x+ch.width)/278.0f;
-    float startX = ch.x/278.0f;
-    float endY = 1-(ch.y/278.0f);
-    float startY = 1-((ch.y+ch.height)/278.0f);
+    float endX = (ch.x+ch.width)/309.0f;
+    float startX = ch.x/309.0f;
+    float endY = 1-(ch.y/309.0f);
+    float startY = 1-((ch.y+ch.height)/309.0f);
     std::cout << "endx: " <<  endX  << " startX: "<< startX << " endY: " << endY << " startY: "  << startY << "\n";
     
-        vertices.emplace_back(0.0f,0.0f,          startX,startY);
-        vertices.emplace_back(1.0f,0.0f,         endX,startY);
-        vertices.emplace_back(1.0f,1.0f,        endX,endY);
-        vertices.emplace_back(0.0f,0.0f,          startX,startY);
-        vertices.emplace_back(1.0f,1.0f,        endX,endY);
-        vertices.emplace_back(0.0f,1.0f,         startX,endY);
+    float posX = 0.0f + offsetX;
+    float endPosX = posX + ch.width;
+    float posY = 0.0f + offsetY;
+    float endPosY = posY + ch.height;
+    
+        vertices.emplace_back(posX,posY,          startX,startY);
+        vertices.emplace_back(endPosX,posY,         endX,startY);
+        vertices.emplace_back(endPosX,endPosY,        endX,endY);
+        vertices.emplace_back(posX,posY,          startX,startY);
+        vertices.emplace_back(endPosX,endPosY,        endX,endY);
+        vertices.emplace_back(posX,endPosY,         startX,endY);
 }
 

@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <string>
-#include <vector>
+#include <unordered_map>
 #include "character.hpp"
 #include "vertexBuffer.hpp"
 
@@ -18,7 +18,7 @@ class Text {
 private:
     void processStream(std::ifstream &stream);
     std::ifstream readFile(const std::string &fileName);
-    std::vector<Character> characterData;
+    std::unordered_map<int,Character> charMap;
     Character getCharacter(const char character);
     void generateBuffer();
 public:

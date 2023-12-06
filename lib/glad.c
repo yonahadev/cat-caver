@@ -97,7 +97,7 @@ int open_gl(void) {
     static const char *NAMES[] = {"libGL.so.1", "libGL.so"};
 #endif
 
-    int index = 0;
+    unsigned int index = 0;
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
 
@@ -176,7 +176,7 @@ static int get_exts(void) {
         exts = (const char *)glGetString(GL_EXTENSIONS);
 #ifdef _GLAD_IS_SOME_NEW_VERSION
     } else {
-        int index;
+        unsigned int index;
 
         num_exts_i = 0;
         glGetIntegerv(GL_NUM_EXTENSIONS, &num_exts_i);

@@ -5,7 +5,6 @@
 //  Created by tom on 2023/12/02.
 //
 
-
 #include "application.hpp"
 #include "glad.h"
 #include "glfw3.h"
@@ -18,6 +17,8 @@
 #include <vector>
 #include "input.hpp"
 #include "mouse.hpp"
+#include "vec2i.hpp"
+#include "text.hpp"
 
 
 float screenWidth = 854.0f;
@@ -53,9 +54,11 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-
-
 void runApplication() {
+
+    Text("/Users/tom/Documents/cplusplus/cat-caver/res/fontInfo.fnt");
+    
+    
     Window window(screenWidth,screenHeight,WINDOW_NAME);
     
     

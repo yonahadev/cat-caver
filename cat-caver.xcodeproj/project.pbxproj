@@ -11,6 +11,7 @@
 		E225B0852B1C9E24003A5B17 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = E225B0812B1C9E24003A5B17 /* glad.c */; };
 		E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABAD2B1B63D1002F988D /* OpenGL.framework */; };
 		E225B08A2B1CA2FF003A5B17 /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E2364D7E2B20A3B700E2D395 /* text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2364D7C2B20A15C00E2D395 /* text.cpp */; };
 		E259A7E72B1E2D2A007CE0C9 /* mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */; };
 		E262ABA32B1B6331002F988D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABA22B1B6331002F988D /* main.cpp */; };
 		E262ABCC2B1B6731002F988D /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABC32B1B658E002F988D /* texture.cpp */; };
@@ -103,6 +104,12 @@
 		E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
 		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
 		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		E2364D6D2B20576900E2D395 /* vec2i.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec2i.hpp; sourceTree = "<group>"; };
+		E2364D7A2B209FB300E2D395 /* font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font.png; sourceTree = "<group>"; };
+		E2364D7B2B209FB300E2D395 /* fontInfo.fnt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fontInfo.fnt; sourceTree = "<group>"; };
+		E2364D7C2B20A15C00E2D395 /* text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text.cpp; sourceTree = "<group>"; };
+		E2364D7D2B20A15C00E2D395 /* text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text.hpp; sourceTree = "<group>"; };
+		E2364D822B20C05400E2D395 /* character.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
 		E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mouse.cpp; sourceTree = "<group>"; };
 		E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mouse.hpp; sourceTree = "<group>"; };
 		E262AB9F2B1B6331002F988D /* cat-caver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cat-caver"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,8 +151,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */,
 				E225B0832B1C9E24003A5B17 /* libglfw.3.dylib in Frameworks */,
+				E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +346,8 @@
 		E262ABA92B1B6382002F988D /* res */ = {
 			isa = PBXGroup;
 			children = (
+				E2364D7A2B209FB300E2D395 /* font.png */,
+				E2364D7B2B209FB300E2D395 /* fontInfo.fnt */,
 				E262ABAA2B1B638D002F988D /* spritesheet.png */,
 				E2ECA42E2B1F06250065FB52 /* blockData.json */,
 			);
@@ -387,6 +396,9 @@
 				E262ABC72B1B658E002F988D /* vertexBuffer.hpp */,
 				E262ABDB2B1B7399002F988D /* window.cpp */,
 				E262ABDC2B1B7399002F988D /* window.hpp */,
+				E2364D7C2B20A15C00E2D395 /* text.cpp */,
+				E2364D7D2B20A15C00E2D395 /* text.hpp */,
+				E2364D822B20C05400E2D395 /* character.hpp */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -399,6 +411,7 @@
 				E262ABD72B1B6C06002F988D /* math.hpp */,
 				E262ABD82B1B6C06002F988D /* mat3.cpp */,
 				E262ABE72B1BB6BD002F988D /* vec2.hpp */,
+				E2364D6D2B20576900E2D395 /* vec2i.hpp */,
 			);
 			path = maths;
 			sourceTree = "<group>";
@@ -503,6 +516,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2364D7E2B20A3B700E2D395 /* text.cpp in Sources */,
 				E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */,
 				E262ABEA2B1BB844002F988D /* input.cpp in Sources */,
 				E262ABDA2B1B6C07002F988D /* mat3.cpp in Sources */,
@@ -641,6 +655,8 @@
 		E262ABA72B1B6331002F988D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "cat-caver.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LFPDYBBY9R;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -656,6 +672,8 @@
 		E262ABA82B1B6331002F988D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "cat-caver.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LFPDYBBY9R;
 				ENABLE_HARDENED_RUNTIME = YES;

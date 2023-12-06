@@ -20,11 +20,11 @@ void generateQuad(const int offsetX,const int offsetY, const int textureIndex, s
 }
 
 void generateTextQuad(const int offsetX,const int offsetY,const Character &ch, std::vector<Vertex> &vertices) {
-    float endX = (ch.x+ch.width)/309.0f;
-    float startX = ch.x/309.0f;
-    float endY = 1-(ch.y/309.0f);
-    float startY = 1-((ch.y+ch.height)/309.0f);
-    std::cout << "endx: " <<  endX  << " startX: "<< startX << " endY: " << endY << " startY: "  << startY << "\n";
+    float endX = (ch.x+ch.width)/199.0f;
+    float startX = ch.x/199.0f;
+    float endY = 1-(ch.y/199.0f);
+    float startY = 1-((ch.y+ch.height)/199.0f);
+//    std::cout << "endx: " <<  endX  << " startX: "<< startX << " endY: " << endY << " startY: "  << startY << "\n";
     
     float posX = 0.0f + offsetX;
     float endPosX = posX + ch.width;

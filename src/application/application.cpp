@@ -66,9 +66,10 @@ void runApplication() {
 //    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",shader.shaderProgram);
     Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png",shader.shaderProgram);
     
+    Text text("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
+    
     Player player(0,0,7);
     
-    Text text("/Users/tom/Documents/cplusplus/cat-caver/res/font.fnt");
     
     Terrain terrain(startingTiles,width,height);
     
@@ -113,7 +114,8 @@ void runApplication() {
         
         shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadBool(true, "u_IsTexture");
-        text.buffer.draw();
+        text.renderText("The quick brown fox jumps over the lazy dog", 0, 10);
+        text.renderText("JOHNCOOK IS 23002304203403212387", 0, 400);
         
         
         glfwPollEvents();

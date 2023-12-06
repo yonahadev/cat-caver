@@ -20,9 +20,8 @@ private:
     std::ifstream readFile(const std::string &fileName);
     std::unordered_map<int,Character> charMap;
     Character getCharacter(const char character);
-    void generateBuffer();
 public:
-    VertexBuffer buffer;
+    void renderText(const std::string &string, const int x, const int y);
     Text(const std::string &fileName);
 };
 

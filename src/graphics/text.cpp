@@ -17,19 +17,22 @@
 const std::regex expression("id=([0-9]+)\\s+x=([0-9]+)\\s+y=([0-9]+)\\s+width=([0-9]+)\\s+height=([0-9]+)\\s+xoffset=(-?[0-9]+)\\s+yoffset=(-?[0-9]+)\\s+xadvance=([0-9]+)");
 
 
-void Text::generateBuffer() {
+void Text::renderText(const std::string &string, const int x, const int y) {
     std::vector<Vertex> vertices;
-    std::string string = "johncook23";
-    int xOffset = 0;
-    for (char &ch: string) {
+    int xOffset = x;
+    for (const char &ch: string) {
         Character current = getCharacter(ch);
-        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
-        xOffset += current.xOffset;
-        xOffset += current.xAdvance;
-        int yOffset = current.yOffset;
-        generateTextQuad(xOffset, yOffset, current, vertices);
+//        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
+        //for some reason data set y offsets is not properly accounting for text offset? - manual implementation
+        int yOffset = 0;
+        if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g') {
+            yOffset = -6;
+        }
+        generateTextQuad(xOffset, y+yOffset, current, vertices);
+        xOffset += current.width+5;
     }
-    buffer = VertexBuffer(vertices);
+    VertexBuffer textBuffer(vertices);
+    textBuffer.draw();
 }
 
 Character Text::getCharacter(const char character) {
@@ -85,5 +88,4 @@ std::ifstream Text::readFile(const std::string &fileName) {
 Text::Text(const std::string &fileName) {
     std::ifstream stream = readFile(fileName);
     processStream(stream);
-    generateBuffer();
 }

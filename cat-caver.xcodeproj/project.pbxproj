@@ -105,11 +105,11 @@
 		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
 		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		E2364D6D2B20576900E2D395 /* vec2i.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec2i.hpp; sourceTree = "<group>"; };
-		E2364D7A2B209FB300E2D395 /* font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font.png; sourceTree = "<group>"; };
-		E2364D7B2B209FB300E2D395 /* fontInfo.fnt */ = {isa = PBXFileReference; lastKnownFileType = text; path = fontInfo.fnt; sourceTree = "<group>"; };
 		E2364D7C2B20A15C00E2D395 /* text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text.cpp; sourceTree = "<group>"; };
 		E2364D7D2B20A15C00E2D395 /* text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text.hpp; sourceTree = "<group>"; };
 		E2364D822B20C05400E2D395 /* character.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
+		E2364D842B2113E000E2D395 /* font.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = font.fnt; sourceTree = "<group>"; };
+		E2364D862B21194600E2D395 /* fontImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontImg.png; sourceTree = "<group>"; };
 		E259A7E52B1E2D2A007CE0C9 /* mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mouse.cpp; sourceTree = "<group>"; };
 		E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mouse.hpp; sourceTree = "<group>"; };
 		E262AB9F2B1B6331002F988D /* cat-caver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cat-caver"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,8 +346,8 @@
 		E262ABA92B1B6382002F988D /* res */ = {
 			isa = PBXGroup;
 			children = (
-				E2364D7A2B209FB300E2D395 /* font.png */,
-				E2364D7B2B209FB300E2D395 /* fontInfo.fnt */,
+				E2364D862B21194600E2D395 /* fontImg.png */,
+				E2364D842B2113E000E2D395 /* font.fnt */,
 				E262ABAA2B1B638D002F988D /* spritesheet.png */,
 				E2ECA42E2B1F06250065FB52 /* blockData.json */,
 			);

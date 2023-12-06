@@ -55,9 +55,6 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 }
 
 void runApplication() {
-
-    Text("/Users/tom/Documents/cplusplus/cat-caver/res/fontInfo.fnt");
-    
     
     Window window(screenWidth,screenHeight,WINDOW_NAME);
     
@@ -66,9 +63,12 @@ void runApplication() {
     glfwSetFramebufferSizeCallback(window.ptr, resizeWindow);
     
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
-    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",shader.shaderProgram);
+//    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",shader.shaderProgram);
+    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png",shader.shaderProgram);
     
-    Player player(1,-3,7);
+    Player player(0,0,7);
+    
+    Text text("/Users/tom/Documents/cplusplus/cat-caver/res/font.fnt");
     
     Terrain terrain(startingTiles,width,height);
     
@@ -78,6 +78,9 @@ void runApplication() {
                                           (-VERTICAL_TILES/2)+0.5,
                                           (VERTICAL_TILES/2)+0.5
                                           );
+    
+    Mat3 textMatrix = Mat3::Orthographic(0, screenWidth, 0, screenHeight);
+    
     
     Mouse mouse;
     
@@ -101,12 +104,17 @@ void runApplication() {
         
         //order does matter of multiplication...
         shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
-        terrain.buffer.draw();
-        shader.loadBool(false, "u_IsTexture");
-        mouse.buffer.draw();
+//        terrain.buffer.draw();
+//        shader.loadBool(false, "u_IsTexture");
+//        mouse.buffer.draw();
+//        shader.loadBool(true, "u_IsTexture");
+//        shader.loadMatrix(orthoMatrix,"u_Transformation");
+//        player.buffer.draw();
+        
+//        shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadBool(true, "u_IsTexture");
-        shader.loadMatrix(orthoMatrix,"u_Transformation");
-        player.buffer.draw();
+        text.buffer.draw();
+        
         
         glfwPollEvents();
         glfwSwapBuffers(window.ptr);

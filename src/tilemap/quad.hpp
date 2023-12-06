@@ -10,8 +10,10 @@
 
 #include "vertex.hpp"
 #include <vector>
+#include "character.hpp"
 
 void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices);
+void generateTextQuad(const int offsetX,const int offsetY,const Character &currentChar, std::vector<Vertex> &vertices);
 
 #include <stdio.h>
 

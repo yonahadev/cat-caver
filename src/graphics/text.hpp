@@ -12,13 +12,17 @@
 #include <string>
 #include <vector>
 #include "character.hpp"
+#include "vertexBuffer.hpp"
 
 class Text {
 private:
     void processStream(std::ifstream &stream);
     std::ifstream readFile(const std::string &fileName);
     std::vector<Character> characterData;
+    Character getCharacter(const char character);
+    void generateBuffer();
 public:
+    VertexBuffer buffer;
     Text(const std::string &fileName);
 };
 

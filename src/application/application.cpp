@@ -25,8 +25,10 @@
 
 const char *WINDOW_NAME = "Cat Caver";
 
-Vec2i screenSize = {1708,960};
+Vec2i screenSize = {854,480};
 Vec2i aspectRatio = {16,10};
+
+Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
 
 std::vector<int> startingTiles = { 
     1,1,1,1,1,1,1,1,1,1,
@@ -52,6 +54,7 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
     screenSize = {width,height};
+    textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     glViewport(0, 0, width, height);
 }
 
@@ -62,7 +65,7 @@ void runApplication() {
     
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
-    glfwSetFramebufferSizeCallback(window.ptr, resizeWindow);
+    glfwSetWindowSizeCallback(window.ptr, resizeWindow);
     
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture(urls);
@@ -79,8 +82,6 @@ void runApplication() {
                                           (-aspectRatio.y/2)+0.5,
                                           (aspectRatio.y/2)+0.5
                                           );
-    
-    Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     
     
     Mouse mouse;
@@ -99,6 +100,7 @@ void runApplication() {
         }
         
         std::cout << std::string(screenSize) << "\n";
+        
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleMouseHold(window.ptr,terrain,mouse);

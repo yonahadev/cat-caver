@@ -10,6 +10,9 @@
 #include "glad/glad.h"
 #include <iostream>
 #include <stdexcept>
+#include <regex>
+
+const std::regex expression("([a-zA-Z]+).png");
 
 unsigned char * Texture::loadImage(const char *filePath) {
     int width,height,channelNumber;
@@ -17,26 +20,50 @@ unsigned char * Texture::loadImage(const char *filePath) {
     unsigned char * textureData = stbi_load(filePath, &width, &height, &channelNumber, 0);
     imageWidth = width;
     imageHeight = height;
-    std::cout << "Image width: " << width << " Image height: " << height << "\n";
+    stbi_image_free(textureData);
+//    std::cout << "Image width: " << width << " Image height: " << height << "\n";
     return textureData;
 };
 
-Texture::Texture(const char * filePath,int program) {
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char * textureData = loadImage(filePath);
-    if (textureData) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
-    } else {
-        throw std::runtime_error("Failed to load texture data");
+void Texture::setTexture(const std::string &texture) {
+    int textureID = textures[texture];
+//    std::cout << "Switching to texture: " << texture << " id: " << textureID << "\n";
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    
+    if (texture == "spritesheet") {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    } else if (texture == "fontImg") {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-//    int texture2;
-//    glGenTextures(1, &texture2);
-//    glBindTexture(GL_TEXTURE_2D, texture2);
+};
+
+void Texture::parseURLS(const std::vector<std::string> &urls) {
+    for (const std::string &url: urls) {
+        int texture;
+        std::smatch matches;
+        glGenTextures(1,&texture);
+        glBindTexture(GL_TEXTURE_2D,texture);
+        if (std::regex_search(url,matches,expression)) {
+            unsigned char * textureData = loadImage(url.c_str());
+            if (textureData) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
+                glGenerateMipmap(GL_TEXTURE_2D);
+                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
+                textures[matches[1]] = texture;
+            } else {
+                throw std::runtime_error("Failed to load texture data for: "+url);
+            }
+        } else {
+            throw std::runtime_error("Invalid file name: "+url);
+        };
+    }
+}
+
+Texture::Texture(const std::vector<std::string> &urls) {
+    parseURLS(urls);
+    glActiveTexture(GL_TEXTURE0);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(textureData);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

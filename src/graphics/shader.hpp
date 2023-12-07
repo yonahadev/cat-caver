@@ -20,7 +20,7 @@ private:
     void configureShaderProgram(const char *vertexShaderFilePath,const char *fragmentShaderFilePath);
 public:
     void loadMatrix(Mat3 matrix,const std::string &uniformName) const;
-    void loadBool(const bool isTexture,const std::string &uniformName) const;
+    void loadInt(const int integer,const std::string &uniformName) const;
     int shaderProgram;
     void bind() const;
     void unBind() const;

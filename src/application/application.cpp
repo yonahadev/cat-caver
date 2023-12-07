@@ -15,6 +15,7 @@
 #include "player.hpp"
 #include "mat3.hpp"
 #include <vector>
+#include <string>
 #include "input.hpp"
 #include "mouse.hpp"
 #include "vec2i.hpp"
@@ -39,6 +40,11 @@ std::vector<int> startingTiles = {
     1,4,4,4,4,4,4,4,4,1,
 };
 
+std::vector<std::string> urls = {
+    "/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",
+    "/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png"
+};
+
 int width = 10;
 int height = static_cast<int>(startingTiles.size()/width);
 
@@ -54,6 +60,7 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+
 void runApplication() {
     
     Window window(screenWidth,screenHeight,WINDOW_NAME);
@@ -63,12 +70,11 @@ void runApplication() {
     glfwSetFramebufferSizeCallback(window.ptr, resizeWindow);
     
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
-//    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",shader.shaderProgram);
-    Texture texture("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png",shader.shaderProgram);
+    Texture texture(urls);
     
     Text text("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
-    Player player(0,0,7);
+    Player player(1,-3,7);
     
     
     Terrain terrain(startingTiles,width,height);
@@ -104,16 +110,18 @@ void runApplication() {
         
         
         //order does matter of multiplication...
+        texture.setTexture("spritesheet");
         shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
-//        terrain.buffer.draw();
-//        shader.loadBool(false, "u_IsTexture");
-//        mouse.buffer.draw();
-//        shader.loadBool(true, "u_IsTexture");
-//        shader.loadMatrix(orthoMatrix,"u_Transformation");
-//        player.buffer.draw();
+        terrain.buffer.draw();
+        shader.loadInt(false, "u_IsTexture");
+        mouse.buffer.draw();
+        shader.loadInt(true, "u_IsTexture");
+        shader.loadMatrix(orthoMatrix,"u_Transformation");
+        player.buffer.draw();
         
+        texture.setTexture("fontImg");
         shader.loadMatrix(textMatrix, "u_Transformation");
-        shader.loadBool(true, "u_IsTexture");
+        shader.loadInt(true, "u_IsTexture");
         text.renderText("The quick brown fox jumps over the lazy dog", 0, 10);
         text.renderText("JOHNCOOK IS 23002304203403212387", 0, 400);
         

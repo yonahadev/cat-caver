@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iostream>
 
-    
+
 Shader::Shader(const char *vertexShaderFilePath,const char *fragmentShaderFilePath) {
     configureShaderProgram(vertexShaderFilePath,fragmentShaderFilePath);
 }
@@ -18,6 +18,7 @@ Shader::Shader(const char *vertexShaderFilePath,const char *fragmentShaderFilePa
 Shader::~Shader() {
     glDeleteProgram(shaderProgram);
 }
+
 
 void Shader::bind() const {
     glUseProgram(shaderProgram);
@@ -37,6 +38,12 @@ void Shader::loadInt(const int integer,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniform1i(uniformLocation,integer);
+}
+
+void Shader::loadVec4(const float r, const float g, const float b, const float a,const std::string &uniformName) const {
+    bind();
+    int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform4f(uniformLocation,r,g,b,a);
 }
 
 std::string Shader::readShaderFile(const char *filePath) const{

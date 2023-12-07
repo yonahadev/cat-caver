@@ -44,3 +44,8 @@ VertexBuffer::VertexBuffer(std::vector<Vertex> vertices) {
 };
 
 VertexBuffer::VertexBuffer() {};
+
+VertexBuffer::~VertexBuffer() {
+    glDeleteBuffers(1,&VAO);
+    glDeleteBuffers(1,&VBO);
+};

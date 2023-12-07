@@ -23,6 +23,11 @@ private:
 public:
     VertexBuffer(std::vector<Vertex> vertices);
     VertexBuffer();
+    ~VertexBuffer();
+    VertexBuffer(VertexBuffer &other) = delete;
+    VertexBuffer & operator=(VertexBuffer &other) = delete;
+    VertexBuffer(VertexBuffer&& other) = delete;
+    VertexBuffer& operator=(VertexBuffer&& other);
     void draw() const;
 };
 

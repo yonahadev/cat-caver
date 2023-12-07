@@ -39,6 +39,7 @@ void Texture::setTexture(const std::string &texture) {
     }
 };
 
+
 void Texture::parseURLS(const std::vector<std::string> &urls) {
     for (const std::string &url: urls) {
         int texture;
@@ -52,6 +53,7 @@ void Texture::parseURLS(const std::vector<std::string> &urls) {
                 glGenerateMipmap(GL_TEXTURE_2D);
                 std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
                 textures[matches[1]] = texture;
+                textureNames.push_back(matches[1]);
             } else {
                 throw std::runtime_error("Failed to load texture data for: "+url);
             }
@@ -66,4 +68,11 @@ Texture::Texture(const std::vector<std::string> &urls) {
     glActiveTexture(GL_TEXTURE0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+Texture::~Texture() {
+    for (const std::string &name: textureNames) {
+        int textureID = textures[name];
+        glDeleteBuffers(1, &textureID);
+    }
 }

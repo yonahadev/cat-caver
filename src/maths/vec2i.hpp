@@ -9,6 +9,7 @@
 #define vec2i_hpp
 
 #include <stdio.h>
+#include <sstream>
 
 struct Vec2i {
     int x;

@@ -16,7 +16,7 @@
 #include <vector>
 #include "quad.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2 &screenSize,const Vec2 &aspectRatio,const Terrain &terrain, Mouse &mouse) {
+void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     

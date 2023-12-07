@@ -22,15 +22,11 @@
 #include "text.hpp"
 
 
-float screenWidth = 854.0f;
-float screenHeight = 480.0f;
 
 const char *WINDOW_NAME = "Cat Caver";
-constexpr float HORIZONTAL_TILES = 16.0f;
-constexpr float VERTICAL_TILES = 10.0f;
 
-Vec2 screenSize = {screenWidth,screenHeight};
-Vec2 aspectRatio = {HORIZONTAL_TILES,VERTICAL_TILES};
+Vec2i screenSize = {1708,960};
+Vec2i aspectRatio = {16,10};
 
 std::vector<int> startingTiles = { 
     1,1,1,1,1,1,1,1,1,1,
@@ -55,15 +51,14 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
 };
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
-    screenWidth = width;
-    screenHeight = height;
+    screenSize = {width,height};
     glViewport(0, 0, width, height);
 }
 
 
 void runApplication() {
     
-    Window window(screenWidth,screenHeight,WINDOW_NAME);
+    Window window(screenSize,WINDOW_NAME);
     
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
@@ -76,17 +71,16 @@ void runApplication() {
     
     Player player(1,-3,7);
     
-    
     Terrain terrain(startingTiles,width,height);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
-                                          (-HORIZONTAL_TILES/2)+0.5,
-                                          (HORIZONTAL_TILES/2)+0.5,
-                                          (-VERTICAL_TILES/2)+0.5,
-                                          (VERTICAL_TILES/2)+0.5
+                                          (-aspectRatio.x/2)+0.5,
+                                          (aspectRatio.x/2)+0.5,
+                                          (-aspectRatio.y/2)+0.5,
+                                          (aspectRatio.y/2)+0.5
                                           );
     
-    Mat3 textMatrix = Mat3::Orthographic(0, screenWidth, 0, screenHeight);
+    Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     
     
     Mouse mouse;
@@ -98,11 +92,13 @@ void runApplication() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        int depth = abs(floor(player.coordinates.y));
+        int depth = int(abs(floor(player.coordinates.y)));
         
         if (depth > terrain.height-3) {
             terrain.generateLayer();
         }
+        
+        std::cout << std::string(screenSize) << "\n";
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleMouseHold(window.ptr,terrain,mouse);
@@ -122,8 +118,7 @@ void runApplication() {
         texture.setTexture("fontImg");
         shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadInt(true, "u_IsTexture");
-        text.renderText("The quick brown fox jumps over the lazy dog", 0, 10);
-        text.renderText("JOHNCOOK IS 23002304203403212387", 0, 400);
+        text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
         
         
         glfwPollEvents();

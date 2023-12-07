@@ -11,13 +11,14 @@
 #include <stdio.h>
 #include "glad.h"
 #include "glfw3.h"
+#include "vec2i.hpp"
 
 class Window {
 private:
-    void setupWindow(const int width, const int height, const char *name);
+    void setupWindow(const Vec2i &screenSize, const char *name);
 public:
     GLFWwindow* ptr;
-    Window(const int width, const int height, const char *name);
+    Window(const Vec2i &screenSize, const char *name);
 };
 
 #endif /* window_hpp */

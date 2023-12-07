@@ -8,7 +8,7 @@
 #include "window.hpp"
 #include <iostream>
 
-void Window::setupWindow(const int width, const int height, const char *name) {
+void Window::setupWindow(const Vec2i &screenSize, const char *name) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -16,7 +16,7 @@ void Window::setupWindow(const int width, const int height, const char *name) {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    ptr = glfwCreateWindow(width,height,name,NULL, NULL);
+    ptr = glfwCreateWindow(screenSize.x,screenSize.y,name,NULL, NULL);
     if (ptr == NULL) {
         glfwTerminate();
         std::cout << "Failed to create GLFW window" << "\n";
@@ -29,6 +29,6 @@ void Window::setupWindow(const int width, const int height, const char *name) {
     }
 }
 
-Window::Window(const int width, const int height, const char *name) {
-    setupWindow(width,height,name);
+Window::Window(const Vec2i &screenSize, const char *name) {
+    setupWindow(screenSize,name);
 }

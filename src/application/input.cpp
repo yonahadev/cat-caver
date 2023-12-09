@@ -16,9 +16,12 @@
 #include <vector>
 #include "quad.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
+int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
+    
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
+    
+    if (mouseX > screenSize.x || mouseX < 0 || mouseY > screenSize.y || mouseY < 0 ) return 0;
     
     float xMultiplier = screenSize.x/aspectRatio.x;
     float yMultiplier = screenSize.y/aspectRatio.y;
@@ -60,25 +63,38 @@ void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,
     if (mouse.currentTile == 4) {
         std::vector<Vertex> vertices;
         generateQuad(mouse.tileX,mouse.tileY,6,vertices);
-        VertexBuffer highlight(vertices);
-        mouse.buffer = highlight;
+        mouse.hoverBuffer = VertexBuffer(vertices);
 
     } else {
-        mouse.buffer = VertexBuffer();
+        mouse.hoverBuffer = VertexBuffer();
     }
+    return 1;
 };
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+    int tile = terrain.getTile(mouse.tileX, mouse.tileY);
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && terrain.isCollideable(tile)) {
+        
         mouse.holding += 16.6667;
-        int tile = terrain.getTile(mouse.tileX, mouse.tileY);
-        if (mouse.holding > terrain.getBlockHP(tile)) {
-            if (terrain.isCollideable(tile)) {
+        float blockHealth = terrain.getBlockHP(tile);
+        
+        std::vector<Vertex> vertices;
+        float mined = mouse.minedPercentage/100.0f;
+        
+        float reverse = (1-mined)/2;
+        float startX = mouse.tileX+reverse;
+        float startY = mouse.tileY+reverse;
+        
+        generateUIQuad(mined,mined,startX,startY,vertices);
+        
+        mouse.progressBuffer = VertexBuffer(vertices);
+        
+        if (mouse.holding > blockHealth) {
                 terrain.mineBlock(mouse.tileX, mouse.tileY);
                 mouse.holding = 0;
                 terrain.generateBuffer();
-            }
         }
+        mouse.minedPercentage = (mouse.holding/blockHealth)*100;
 //        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
     } else {
         mouse.holding = 0;

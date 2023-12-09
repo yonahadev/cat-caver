@@ -14,7 +14,9 @@
 class Mouse {
 private:
 public:
-    VertexBuffer buffer;
+    VertexBuffer hoverBuffer;
+    VertexBuffer progressBuffer;
+    int minedPercentage;
     int currentTile;
     int tileX;
     int tileY;

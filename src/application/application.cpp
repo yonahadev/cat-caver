@@ -99,7 +99,7 @@ void runApplication() {
             terrain.generateLayer();
         }
         
-        std::cout << std::string(screenSize) << "\n";
+//        std::cout << std::string(screenSize) << "\n";
         
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
@@ -112,7 +112,17 @@ void runApplication() {
         shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
         terrain.buffer.draw();
         shader.loadInt(false, "u_IsTexture");
-        mouse.buffer.draw();
+        
+        
+        if (mouse.holding > 0) {
+            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+//            std::cout << mouse.minedPercentage << "\n";
+            mouse.progressBuffer.draw();
+        } else {
+            shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
+            mouse.hoverBuffer.draw();
+        }
+        
         shader.loadInt(true, "u_IsTexture");
         shader.loadMatrix(orthoMatrix,"u_Transformation");
         player.buffer.draw();

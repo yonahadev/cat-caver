@@ -14,6 +14,7 @@
 
 void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices);
 void generateTextQuad(const int offsetX,const int offsetY,const Character &currentChar, std::vector<Vertex> &vertices);
+void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices);
 
 #include <stdio.h>
 

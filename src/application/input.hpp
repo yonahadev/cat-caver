@@ -19,7 +19,7 @@
 #include "vertex.hpp"
 #include "mouse.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse);
+int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse);
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse);
 

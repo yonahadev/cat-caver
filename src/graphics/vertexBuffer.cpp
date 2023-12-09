@@ -49,3 +49,23 @@ VertexBuffer::~VertexBuffer() {
     glDeleteBuffers(1,&VAO);
     glDeleteBuffers(1,&VBO);
 };
+
+//move constructor
+VertexBuffer::VertexBuffer(VertexBuffer&& other): VBO(other.VBO), VAO(other.VAO), numberOfVertices(other.numberOfVertices) {
+    VAO = 0;
+    VBO = 0;
+};
+
+//move assignment
+VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) {
+    if (this != &other)
+    {
+        glDeleteBuffers(1, &VBO);
+        std::swap(VBO, other.VBO);
+        glDeleteVertexArrays(1, &VAO);
+        std::swap(VAO, other.VAO);
+        numberOfVertices = std::move(other.numberOfVertices);
+    }
+    return *this;
+}
+

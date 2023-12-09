@@ -28,7 +28,7 @@ public:
     Shader(const char *vertexShaderFilePath,const char *fragmentShaderFilePath);
     Shader(Shader &other) = delete;
     Shader & operator=(Shader &other) = delete;
-    Shader(Shader&& other) = delete;
+    Shader(Shader&& other);
     Shader& operator=(Shader&& other);
     ~Shader();
 };

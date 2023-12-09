@@ -76,3 +76,20 @@ Texture::~Texture() {
         glDeleteBuffers(1, &textureID);
     }
 }
+
+Texture::Texture(Texture&& other): textures(other.textures) {
+    textures = {};
+};
+
+//move assignment
+Texture& Texture::operator=(Texture&& other) {
+    if (this != &other)
+    {
+        for (const std::string &name: textureNames) {
+            int textureID = textures[name];
+            glDeleteBuffers(1, &textureID);
+        }
+        std::swap(textures,other.textures);
+    }
+    return *this;
+}

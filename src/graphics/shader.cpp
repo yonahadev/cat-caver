@@ -19,6 +19,19 @@ Shader::~Shader() {
     glDeleteProgram(shaderProgram);
 }
 
+Shader::Shader(Shader&& other): shaderProgram(other.shaderProgram) {
+    shaderProgram = 0;
+};
+
+//move assignment
+Shader& Shader::operator=(Shader&& other) {
+    if (this != &other)
+    {
+        glDeleteProgram;
+        std::swap(shaderProgram, other.shaderProgram);
+    }
+    return *this;
+}
 
 void Shader::bind() const {
     glUseProgram(shaderProgram);

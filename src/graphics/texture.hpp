@@ -26,7 +26,7 @@ public:
     Texture(const std::vector<std::string> &urls);
     Texture(Texture &other) = delete;
     Texture & operator=(Texture &other) = delete;
-    Texture(Texture&& other) = delete;
+    Texture(Texture&& other);
     Texture& operator=(Texture&& other);
     ~Texture();
 };

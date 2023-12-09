@@ -24,9 +24,11 @@ public:
     VertexBuffer(std::vector<Vertex> vertices);
     VertexBuffer();
     ~VertexBuffer();
+    VertexBuffer& operator=(VertexBuffer &other) = delete;
     VertexBuffer(VertexBuffer &other) = delete;
-    VertexBuffer & operator=(VertexBuffer &other) = delete;
-    VertexBuffer(VertexBuffer&& other) = delete;
+    //move construction
+    VertexBuffer(VertexBuffer&& other);
+    //mope assignment
     VertexBuffer& operator=(VertexBuffer&& other);
     void draw() const;
 };

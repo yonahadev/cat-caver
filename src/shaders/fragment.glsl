@@ -15,7 +15,7 @@ void main() {
         FragColor = v_QuadColour;
     } else {
         vec4 textureColour = texture(u_Sample,v_TexCoords);
-        if (textureColour.a < 0.5) {
+        if (textureColour.a < 0.2) {
             discard;
         }
         FragColor = textureColour;

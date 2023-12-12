@@ -23,9 +23,9 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <unordered_map>
+#include "dungeonConfig.hpp"
+
 using json = nlohmann::json;
-
-
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -34,21 +34,10 @@ Vec2i aspectRatio = {16,10};
 
 Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
 
-std::vector<int> startingTiles = { 
-    1,1,1,1,1,1,1,1,1,1,
-    1,3,3,3,3,3,3,3,3,1,
-    1,3,3,3,3,3,3,3,3,1,
-    1,3,3,3,3,3,3,3,3,1,
-    1,4,4,4,4,4,4,4,4,1,
-};
-
 std::vector<std::string> urls = {
     "/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",
     "/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png"
 };
-
-int width = 10;
-int height = static_cast<int>(startingTiles.size()/width);
 
 void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
@@ -67,6 +56,13 @@ void runApplication() {
     
     Window window(screenSize,WINDOW_NAME);
     
+    DungeonConfig dungeonConfig;
+    dungeonConfig.width = 10;
+    dungeonConfig.startingAliveChance = 45;
+    dungeonConfig.overpopulationCount = 9;
+    dungeonConfig.underpopulationCount = 3;
+    dungeonConfig.cellsForBirth = 4;
+    dungeonConfig.turnCount = 3;
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetWindowSizeCallback(window.ptr, resizeWindow);
@@ -88,7 +84,7 @@ void runApplication() {
     
     Player player(1,-3,7,map);
     
-    Terrain terrain(startingTiles,width,height,blockData);
+    Terrain terrain(dungeonConfig,blockData);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-aspectRatio.x/2)+0.5,
@@ -103,8 +99,6 @@ void runApplication() {
     
     float time = glfwGetTime();
     
-    std::string block = terrain.getBlockName(4);
-    
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -115,27 +109,27 @@ void runApplication() {
             terrain.generateLayer();
         }
         
-        
-        
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
-        
         
         //order does matter of multiplication...
         texture.setTexture("spritesheet");
         shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
         terrain.buffer.draw();
+        
+        
+        
         shader.loadInt(false, "u_IsTexture");
-        
-        
         if (mouse.holding > 0) {
             shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
             mouse.progressBuffer.draw();
         } else {
+            std::cout << "Drawing hover buffer" << "\n";
             shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
             mouse.hoverBuffer.draw();
         }
+        
         
         shader.loadInt(true, "u_IsTexture");
         shader.loadMatrix(orthoMatrix,"u_Transformation");

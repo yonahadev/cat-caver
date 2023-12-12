@@ -9,6 +9,90 @@
 #include "quad.hpp"
 #include <iostream>
 #include <fstream>
+#include "math.hpp"
+
+std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, const int layerDepth) {
+    std::vector<int> newTiles = {};
+    for (int y = 0; y < layerDepth; y++) {
+        for (int x = 0; x < config.width; x++) {
+            int currentCell = currentTiles[x+(y*config.width)];
+            std::vector<Vec2i> currentNeighbours = getNeighbours(x, y);
+            int newCell = calculateCellState(currentNeighbours, currentCell);
+            newTiles.push_back(newCell);
+        }
+    }
+    return newTiles;
+}
+
+unsigned int Terrain::getAliveNeighbourCount(const std::vector <Vec2i> &neighbours) const {
+    unsigned int aliveCount = 0;
+    
+    for (auto &neighbour: neighbours) {
+        if (getTile(neighbour.x,neighbour.y) == 1) {
+            aliveCount++;
+        }
+    }
+    
+    return aliveCount;
+}
+
+int Terrain::calculateCellState(const std::vector <Vec2i> &neighbours,const unsigned int cell) const {
+    
+    unsigned int aliveCount = getAliveNeighbourCount(neighbours);
+    
+    if (cell == 1) {
+        if (aliveCount <= config.underpopulationCount || aliveCount >= config.overpopulationCount) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    
+    if (aliveCount >= config.cellsForBirth) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+std::vector<Vec2i> Terrain::getNeighbours(const int x, const int y) const {
+    std::vector <Vec2i> neighbours = {};
+    if (x != 0) {
+        Vec2i left = {x-1,y};
+        neighbours.push_back(left);
+        if (y != height-1) {
+            Vec2i topLeft = {x-1, y+1};
+            neighbours.push_back(topLeft);
+        }
+        if (y != 0) {
+            Vec2i bottomLeft = {x-1, y-1};
+            neighbours.push_back(bottomLeft);
+        }
+    }
+    if (x != config.width-1) {
+        Vec2i right = {x+1,y};
+        neighbours.push_back(right);
+        if (y != height-1) {
+            Vec2i topRight = {x+1, y+1};
+            neighbours.push_back(topRight);
+        }
+        if (y != 0) {
+            Vec2i bottomRight = {x+1, y-1};
+            neighbours.push_back(bottomRight);
+        }
+    }
+    if (y != 0) {
+        Vec2i top = {x,y+1};
+        neighbours.push_back(top);
+    }
+    if (y != height-1) {
+        Vec2i bottom = {x,y-1};
+        neighbours.push_back(bottom);
+    }
+    
+    return neighbours;
+}
+
 
 int Terrain::getTile(const int x,const int y) const{
     int index = getTileIndex(x,y);
@@ -33,7 +117,7 @@ bool Terrain::isCollideable(const int tile) const {
 }
 
 int Terrain::getTileIndex(const int x, const int y) const{
-    return x+(-y*width);
+    return x+(-y*config.width);
 }
 
 void Terrain::mineBlock(const int x, const int y) {
@@ -43,34 +127,51 @@ void Terrain::mineBlock(const int x, const int y) {
 
 void Terrain::generateLayer() {
     int layerDepth = 5;
-    
-    for (int y = 0; y<layerDepth; y++) {
-        for (int x = 0; x<width; x++) {
-            if (x == 0 || x == width-1) {
-                tiles.push_back(1);
+    std::vector<int> layerTiles {};
+    for (int i = 0; i < layerDepth; i++) {
+        for (int j = 0; j < config.width; j++) {
+            if (j == 0 || j == config.width-1) {
+                layerTiles.push_back(1);
             } else {
-                tiles.push_back(4);
+                int cell = 0;
+                if (getRandomInt(1, 100) <= config.startingAliveChance) {
+                    cell = 1;
+                }
+                layerTiles.push_back(cell);
+
             }
         }
     }
     
+//    for (int i = 0; i < config.turnCount; i++) {
+//        layerTiles = simulateTurn(layerTiles,layerDepth);
+//    }
+    
+    tiles.insert(tiles.end(), layerTiles.begin(),layerTiles.end());
+    
     height += layerDepth;
     
     generateBuffer();
-    
-//    std::cout << "Generated layer at" << height << "\n";
 }
 
 void Terrain::generateBuffer() {
     std::vector<Vertex> vertices;
     for (int y = 0; y<height; y++) {
-        for (int x = 0; x<width; x++) {
-            generateQuad(x, -y, tiles[x+y*width], vertices);
+        for (int x = 0; x<config.width; x++) {
+            generateQuad(x, -y, tiles[x+y*config.width], vertices);
         }
     }
     buffer = VertexBuffer(vertices);
 }
 
-Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height, const json &blockData): tiles(tiles), width(width),height(height),blockData(blockData) {
+Terrain::Terrain(const DungeonConfig &config, const json &blockData): blockData(blockData),config(config) {
+    tiles = {
+        1,1,1,1,1,1,1,1,1,1,
+        1,3,3,3,3,3,3,3,3,1,
+        1,3,3,3,3,3,3,3,3,1,
+        1,3,3,3,3,3,3,3,3,1,
+        1,0,0,0,0,0,0,0,0,1,
+    };
+    height = 5;
     generateBuffer();
 };

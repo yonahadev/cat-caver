@@ -66,6 +66,7 @@ void Texture::parseURLS(const std::vector<std::string> &urls) {
 Texture::Texture(const std::vector<std::string> &urls) {
     parseURLS(urls);
     glActiveTexture(GL_TEXTURE0);
+    GL_CLAMP_TO_EDGE;
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

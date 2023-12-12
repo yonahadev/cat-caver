@@ -143,6 +143,7 @@
 		E262ABF22B1BBE9C002F988D /* terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = terrain.hpp; sourceTree = "<group>"; };
 		E262ABF72B1BC059002F988D /* quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quad.cpp; sourceTree = "<group>"; };
 		E262ABF82B1BC059002F988D /* quad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quad.hpp; sourceTree = "<group>"; };
+		E26B16562B28AAD900B2105B /* dungeonConfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dungeonConfig.hpp; sourceTree = "<group>"; };
 		E2ECA42E2B1F06250065FB52 /* blockData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blockData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -450,6 +451,7 @@
 		E262ABF02B1BBE81002F988D /* tilemap */ = {
 			isa = PBXGroup;
 			children = (
+				E26B16562B28AAD900B2105B /* dungeonConfig.hpp */,
 				E262ABF12B1BBE9B002F988D /* terrain.cpp */,
 				E262ABF22B1BBE9C002F988D /* terrain.hpp */,
 				E262ABF72B1BC059002F988D /* quad.cpp */,

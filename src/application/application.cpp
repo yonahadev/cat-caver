@@ -20,6 +20,10 @@
 #include "mouse.hpp"
 #include "vec2i.hpp"
 #include "text.hpp"
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <unordered_map>
+using json = nlohmann::json;
 
 
 
@@ -72,9 +76,19 @@ void runApplication() {
     
     Text text("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
-    Player player(1,-3,7);
+    std::ifstream file("/Users/tom/Documents/cplusplus/cat-caver/res/blockData.json");
+    json blockData = json::parse(file);
+    std::unordered_map<std::string, int> map;
+    for (auto &iterator:  blockData["blocks"].items()) {
+        std::string blockName = iterator.value()["name"];
+        if (iterator.value()["canMine"] == true) {
+            map[blockName] = 0;
+        }
+    }
     
-    Terrain terrain(startingTiles,width,height);
+    Player player(1,-3,7,map);
+    
+    Terrain terrain(startingTiles,width,height,blockData);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-aspectRatio.x/2)+0.5,
@@ -89,8 +103,10 @@ void runApplication() {
     
     float time = glfwGetTime();
     
+    std::string block = terrain.getBlockName(4);
+    
     while (!glfwWindowShouldClose(window.ptr)) {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         int depth = int(abs(floor(player.coordinates.y)));
@@ -99,11 +115,10 @@ void runApplication() {
             terrain.generateLayer();
         }
         
-//        std::cout << std::string(screenSize) << "\n";
         
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
-        handleMouseHold(window.ptr,terrain,mouse);
+        handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
         
@@ -116,7 +131,6 @@ void runApplication() {
         
         if (mouse.holding > 0) {
             shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
-//            std::cout << mouse.minedPercentage << "\n";
             mouse.progressBuffer.draw();
         } else {
             shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
@@ -131,6 +145,12 @@ void runApplication() {
         shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadInt(true, "u_IsTexture");
         text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
+        int count = 0;
+        for (auto &block: player.blockCounts) {
+            int offset = count*50;
+            text.renderText(block.first+ ": " + std::to_string(block.second), 50, screenSize.y-100-offset);
+            count++;
+        }
         
         
         glfwPollEvents();

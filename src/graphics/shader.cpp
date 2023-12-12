@@ -20,7 +20,7 @@ Shader::~Shader() {
 }
 
 Shader::Shader(Shader&& other): shaderProgram(other.shaderProgram) {
-    shaderProgram = 0;
+    other.shaderProgram = 0;
 };
 
 //move assignment

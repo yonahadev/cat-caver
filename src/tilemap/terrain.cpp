@@ -20,6 +20,10 @@ int Terrain::getBlockHP(const int tile) const {
     return hp;
 }
 
+std::string Terrain::getBlockName(const int tile) const {
+    return blockData["blocks"][tile]["name"];
+}
+
 bool Terrain::isCollideable(const int tile) const {
     bool collideable = blockData["blocks"][tile]["canMine"];
     if (collideable) {
@@ -67,8 +71,6 @@ void Terrain::generateBuffer() {
     buffer = VertexBuffer(vertices);
 }
 
-Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height): tiles(tiles), width(width),height(height) {
-    std::ifstream file("/Users/tom/Documents/cplusplus/cat-caver/res/blockData.json");
-    blockData = json::parse(file);
+Terrain::Terrain(const std::vector<int> &tiles, const int width, const int height, const json &blockData): tiles(tiles), width(width),height(height),blockData(blockData) {
     generateBuffer();
 };

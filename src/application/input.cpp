@@ -21,7 +21,7 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     
-    if (mouseX > screenSize.x || mouseX < 0 || mouseY > screenSize.y || mouseY < 0 ) return 0;
+//    if (mouseX > screenSize.x || mouseX < 0 || mouseY > screenSize.y || mouseY < 0 ) return 0;
     
     float xMultiplier = screenSize.x/aspectRatio.x;
     float yMultiplier = screenSize.y/aspectRatio.y;
@@ -71,7 +71,8 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
     return 1;
 };
 
-void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
+void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
+    if (!mouse.tileX || !mouse.tileY) return;
     int tile = terrain.getTile(mouse.tileX, mouse.tileY);
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && terrain.isCollideable(tile)) {
         
@@ -90,9 +91,11 @@ void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse) {
         mouse.progressBuffer = VertexBuffer(vertices);
         
         if (mouse.holding > blockHealth) {
-                terrain.mineBlock(mouse.tileX, mouse.tileY);
-                mouse.holding = 0;
-                terrain.generateBuffer();
+            terrain.mineBlock(mouse.tileX, mouse.tileY);
+            std::string block = terrain.getBlockName(tile);
+            player.blockCounts[block] += 1;
+            mouse.holding = 0;
+            terrain.generateBuffer();
         }
         mouse.minedPercentage = (mouse.holding/blockHealth)*100;
 //        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";

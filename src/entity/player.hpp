@@ -15,6 +15,7 @@
 #include "terrain.hpp"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class Player {
 private:
@@ -24,6 +25,7 @@ private:
     float hitboxBottom;
     void adjustHitbox();
 public:
+    std::unordered_map<std::string, int> blockCounts;
     Mat3 matrix;
     Vec2 coordinates;
     VertexBuffer buffer;
@@ -41,7 +43,7 @@ public:
     void accelerate(const Terrain &terrain);
     void move(const float x,const float y);
     void moveCamera(const float x,const float y, const Terrain &dungeon);
-    Player(float offsetX,float offsetY, const int textureIndex);
+    Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<std::string, int> &map);
 };
 
 #endif /* player_hpp */

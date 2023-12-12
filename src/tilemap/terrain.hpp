@@ -27,9 +27,10 @@ public:
     int getBlockHP(const int tile) const;
     int getTile(const int x,const int y) const;
     int getTileIndex(const int x,const int y) const;
+    std::string getBlockName(const int tile) const;
     void mineBlock(const int x,const int y);
     void generateBuffer();
     void generateLayer();
-    Terrain(const std::vector<int> &tiles, const int width, const int height);
+    Terrain(const std::vector<int> &tiles, const int width, const int height, const json &blockData);
 };
 #endif /* terrainClass_hpp */

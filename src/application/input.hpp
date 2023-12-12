@@ -21,7 +21,7 @@
 
 int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse);
 
-void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse);
+void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player);
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon, float &time);
 

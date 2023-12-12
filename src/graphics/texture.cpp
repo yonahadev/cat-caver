@@ -51,7 +51,7 @@ void Texture::parseURLS(const std::vector<std::string> &urls) {
             if (textureData) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
                 glGenerateMipmap(GL_TEXTURE_2D);
-                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
+//                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
                 textures[matches[1]] = texture;
                 textureNames.push_back(matches[1]);
             } else {
@@ -78,7 +78,7 @@ Texture::~Texture() {
 }
 
 Texture::Texture(Texture&& other): textures(other.textures) {
-    textures = {};
+    other.textures = {};
 };
 
 //move assignment

@@ -135,7 +135,7 @@ void Player::update(const Terrain &terrain,float xPos,float yPos) {
     checkCollisions(terrain);
 };
     
-Player::Player(float offsetX,float offsetY, const int textureIndex): coordinates(offsetX,offsetY), hitboxLeft(), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1) {
+Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<std::string, int> &map): coordinates(offsetX,offsetY), hitboxLeft(), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1),blockCounts(map) {
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
     buffer = VertexBuffer(vertices);

@@ -13,10 +13,10 @@
 
 void Player::getCoordinates() const{
     std::cout << "Current coordinates: " << "x: " << coordinates.x << " y: " << coordinates.y << "\n";
-};
+}
 void Player::getHitbox() const{
     std::cout << "Current hitbox: " << "left: " <<hitboxLeft << " right: " << hitboxRight << " bottom: " <<hitboxBottom << " top: " << hitboxTop << "\n";
-};
+}
 
 void Player::getMatrix() const {
     std::cout << "Current matrix:\n" << std::string(matrix) << "\n";
@@ -66,37 +66,20 @@ void Player::move(const float x,const float y) {
 }
 
 void Player::jump(const Terrain &terrain) {
-    if (airborne == 0) {
-        airborne += 16;
-        direction = "up";
+    if (airborne == 0.0f) {
+        airborne += 80;
+        std::cout << "jumping" << "\n";
     }
 }
 
 void Player::accelerate(const Terrain &terrain) {
-    float frameTime = 16; //ms
-    float speed = 0.016;
 
-    if (getCollision("bottom") == false && direction != "up") {
-        airborne += 50;
-        direction = "down";
+    
+    if (getCollision("bottom") == false) {
+        airborne -= 2.5;
     }
     
-    if (airborne > 0) {
-        airborne += frameTime;
-        
-        speed += airborne/3000;
-        
-        if (airborne > 300) {
-            airborne = 200;
-            direction = "down";
-        }
-        
-        if (direction == "up") {
-            moveCamera(0, speed, terrain);
-        } else if (direction == "down"){
-            moveCamera(0, -speed/4, terrain);
-        }
-    }
+    moveCamera(0, airborne/1000, terrain);
 
 }
 
@@ -111,11 +94,7 @@ void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
     update(terrain, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
     if (collisions.size() > 0) {
         if (getCollision("bottom") == true) {
-//            std::cout << "removing airborne" << "\n";
             airborne = 0;
-        } else if (getCollision("top") == true) {
-            direction = "down";
-            airborne += 50;
         }
         move(0,y);
     }
@@ -123,21 +102,28 @@ void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
 }
 
 void Player::adjustHitbox() {
-    hitboxLeft = coordinates.x+0.2;
-    hitboxRight = coordinates.x+0.8;
-    hitboxTop = coordinates.y+0.8;
-    hitboxBottom = coordinates.y+0.2;
-};
+    hitboxLeft = coordinates.x+0.2f;
+    hitboxRight = coordinates.x+0.8f;
+    hitboxTop = coordinates.y+0.8f;
+    hitboxBottom = coordinates.y;
+}
 
 void Player::update(const Terrain &terrain,float xPos,float yPos) {
     coordinates = {xPos,yPos};
     adjustHitbox();
     checkCollisions(terrain);
-};
+}
     
-Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<std::string, int> &map): coordinates(offsetX,offsetY), hitboxLeft(), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1),blockCounts(map) {
+Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<std::string, int> &map): hitboxLeft(), blockCounts(map), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1),coordinates(offsetX,offsetY) {
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
-    buffer = VertexBuffer(vertices);
-};
+    
+    vbo = VBO();
+    vao = VAO();
+    vao.bindArray();
+    vbo.bindBuffer();
+    vbo.bindData(vertices);
+    vao.enableAttributes();
+    vao.unbindArray();
+}
 

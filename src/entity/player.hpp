@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "mat3.hpp"
 #include "vertexBuffer.hpp"
+#include "vertexArray.hpp"
 #include "vec2.hpp"
 #include "terrain.hpp"
 #include <vector>
@@ -23,12 +24,14 @@ private:
     float hitboxRight;
     float hitboxTop;
     float hitboxBottom;
+    float airborne = 0;
     void adjustHitbox();
 public:
     std::unordered_map<std::string, int> blockCounts;
     Mat3 matrix;
     Vec2 coordinates;
-    VertexBuffer buffer;
+    VBO vbo;
+    VAO vao;
     std::vector<std::string> collisions;
     void update(const Terrain &terrain,float xPos,float yPos);
     bool getCollision(const std::string &search) const;
@@ -36,9 +39,6 @@ public:
     void getCoordinates() const;
     void getHitbox() const;
     void getMatrix() const;
-    float moveSpeed = 0.03;
-    float airborne = 0;
-    std::string direction;
     void jump (const Terrain &terrain);
     void accelerate(const Terrain &terrain);
     void move(const float x,const float y);

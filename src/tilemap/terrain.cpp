@@ -16,6 +16,7 @@ std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, con
     for (int y = 0; y < layerDepth; y++) {
         for (int x = 0; x < config.width; x++) {
             int currentCell = currentTiles[x+(y*config.width)];
+            std::cout << "Current cell is:  " << currentCell << "\n";
             std::vector<Vec2i> currentNeighbours = getNeighbours(x, y);
             int newCell = calculateCellState(currentNeighbours, currentCell);
             newTiles.push_back(newCell);
@@ -38,7 +39,9 @@ unsigned int Terrain::getAliveNeighbourCount(const std::vector <Vec2i> &neighbou
 
 int Terrain::calculateCellState(const std::vector <Vec2i> &neighbours,const unsigned int cell) const {
     
-    unsigned int aliveCount = getAliveNeighbourCount(neighbours);
+    int aliveCount = getAliveNeighbourCount(neighbours);
+    
+    std::cout << "Current cell Alive count:  " << aliveCount << "\n";
     
     if (cell == 1) {
         if (aliveCount <= config.underpopulationCount || aliveCount >= config.overpopulationCount) {
@@ -57,36 +60,36 @@ int Terrain::calculateCellState(const std::vector <Vec2i> &neighbours,const unsi
 
 std::vector<Vec2i> Terrain::getNeighbours(const int x, const int y) const {
     std::vector <Vec2i> neighbours = {};
-    if (x != 0) {
+    if (x > 1) {
         Vec2i left = {x-1,y};
         neighbours.push_back(left);
         if (y != height-1) {
-            Vec2i topLeft = {x-1, y+1};
+            Vec2i topLeft = {x-1, y-1};
             neighbours.push_back(topLeft);
         }
         if (y != 0) {
-            Vec2i bottomLeft = {x-1, y-1};
+            Vec2i bottomLeft = {x-1, y+1};
             neighbours.push_back(bottomLeft);
         }
     }
-    if (x != config.width-1) {
+    if (x < config.width-2) {
         Vec2i right = {x+1,y};
         neighbours.push_back(right);
         if (y != height-1) {
-            Vec2i topRight = {x+1, y+1};
+            Vec2i topRight = {x+1, y-1};
             neighbours.push_back(topRight);
         }
         if (y != 0) {
-            Vec2i bottomRight = {x+1, y-1};
+            Vec2i bottomRight = {x+1, y+1};
             neighbours.push_back(bottomRight);
         }
     }
     if (y != 0) {
-        Vec2i top = {x,y+1};
+        Vec2i top = {x,y-1};
         neighbours.push_back(top);
     }
     if (y != height-1) {
-        Vec2i bottom = {x,y-1};
+        Vec2i bottom = {x,y+1};
         neighbours.push_back(bottom);
     }
     
@@ -99,22 +102,22 @@ int Terrain::getTile(const int x,const int y) const{
     return tiles[index];
 }
 
-int Terrain::getBlockHP(const int tile) const {
-    int hp = blockData["blocks"][tile]["time"];
-    return hp;
-}
-
-std::string Terrain::getBlockName(const int tile) const {
-    return blockData["blocks"][tile]["name"];
-}
-
-bool Terrain::isCollideable(const int tile) const {
-    bool collideable = blockData["blocks"][tile]["canMine"];
-    if (collideable) {
-        return true;
-    }
-    return false;
-}
+//int Terrain::getBlockHP(const int tile) const {
+//    int hp = block
+//    return hp;
+//}
+//
+//std::string Terrain::getBlockName(const int tile) const {
+//    return blockData["blocks"][tile]["name"];
+//}
+//
+//bool Terrain::isCollideable(const int tile) const {
+//    bool collideable = blockData["blocks"][tile]["canMine"];
+//    if (collideable) {
+//        return true;
+//    }
+//    return false;
+//}
 
 int Terrain::getTileIndex(const int x, const int y) const{
     return x+(-y*config.width);
@@ -126,7 +129,7 @@ void Terrain::mineBlock(const int x, const int y) {
 }
 
 void Terrain::generateLayer() {
-    int layerDepth = 5;
+    int layerDepth = 50;
     std::vector<int> layerTiles {};
     for (int i = 0; i < layerDepth; i++) {
         for (int j = 0; j < config.width; j++) {
@@ -143,9 +146,9 @@ void Terrain::generateLayer() {
         }
     }
     
-//    for (int i = 0; i < config.turnCount; i++) {
-//        layerTiles = simulateTurn(layerTiles,layerDepth);
-//    }
+    for (int i = 0; i < config.turnCount; i++) {
+        layerTiles = simulateTurn(layerTiles,layerDepth);
+    }
     
     tiles.insert(tiles.end(), layerTiles.begin(),layerTiles.end());
     
@@ -161,17 +164,26 @@ void Terrain::generateBuffer() {
             generateQuad(x, -y, tiles[x+y*config.width], vertices);
         }
     }
-    buffer = VertexBuffer(vertices);
+    vbo = VBO();
+    vao = VAO();
+    vao.bindArray();
+    vbo.bindBuffer();
+    vbo.bindData(vertices);
+    vao.enableAttributes();
+    vao.unbindArray();
 }
 
-Terrain::Terrain(const DungeonConfig &config, const json &blockData): blockData(blockData),config(config) {
-    tiles = {
-        1,1,1,1,1,1,1,1,1,1,
-        1,3,3,3,3,3,3,3,3,1,
-        1,3,3,3,3,3,3,3,3,1,
-        1,3,3,3,3,3,3,3,3,1,
-        1,0,0,0,0,0,0,0,0,1,
-    };
-    height = 5;
+Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),blockData(blockData) {
+    int startingHeight = 5;
+    for (int i = 0; i < startingHeight; i++) {
+        for (int j = 0; j < config.width; j++) {
+            if (j == 0 || j == config.width-1 || i == 0) {
+                tiles.push_back(1);
+            } else {
+                tiles.push_back(3);
+            }
+        }
+    }
+    height = startingHeight;
     generateBuffer();
-};
+}

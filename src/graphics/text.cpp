@@ -31,8 +31,13 @@ void Text::renderText(const std::string &string, const int x, const int y) {
         generateTextQuad(xOffset, y+yOffset, current, vertices);
         xOffset += current.width+5;
     }
-    VertexBuffer textBuffer(vertices);
-    textBuffer.draw();
+    vbo = VBO();
+    vao = VAO();
+    vao.bindArray();
+    vbo.bindBuffer();
+    vbo.bindData(vertices);
+    vao.enableAttributes();
+    vbo.draw();
 }
 
 Character Text::getCharacter(const char character) {

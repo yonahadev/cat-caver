@@ -20,12 +20,10 @@
 #include "mouse.hpp"
 #include "vec2i.hpp"
 #include "text.hpp"
-#include <nlohmann/json.hpp>
 #include <fstream>
 #include <unordered_map>
 #include "dungeonConfig.hpp"
-
-using json = nlohmann::json;
+#include "block.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -43,7 +41,7 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
-};
+}
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
     screenSize = {width,height};
@@ -54,15 +52,27 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 
 void runApplication() {
     
+    //level -1 means you can't mine it / it isn't collideable
+    std::vector<Block> blockData = {
+        {"stone",1,1000},
+        {"copper",2,1500},
+        {"iron",2,1500},
+        {"dirt",-1,1000},
+        {"coal",2,1250},
+        {"gold",3,2000},
+        {"diamond",3,3000},
+    };
+    
+    
     Window window(screenSize,WINDOW_NAME);
     
     DungeonConfig dungeonConfig;
-    dungeonConfig.width = 10;
+    dungeonConfig.width = 16;
     dungeonConfig.startingAliveChance = 45;
     dungeonConfig.overpopulationCount = 9;
     dungeonConfig.underpopulationCount = 3;
     dungeonConfig.cellsForBirth = 4;
-    dungeonConfig.turnCount = 3;
+    dungeonConfig.turnCount = 0;
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetWindowSizeCallback(window.ptr, resizeWindow);
@@ -72,12 +82,10 @@ void runApplication() {
     
     Text text("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
-    std::ifstream file("/Users/tom/Documents/cplusplus/cat-caver/res/blockData.json");
-    json blockData = json::parse(file);
     std::unordered_map<std::string, int> map;
-    for (auto &iterator:  blockData["blocks"].items()) {
-        std::string blockName = iterator.value()["name"];
-        if (iterator.value()["canMine"] == true) {
+    for (Block &block: blockData) {
+        std::string blockName = block.name;
+        if (block.level != -1) {
             map[blockName] = 0;
         }
     }
@@ -94,47 +102,48 @@ void runApplication() {
                                           );
     
     
-    Mouse mouse;
+//    Mouse mouse;
     
     
     float time = glfwGetTime();
     
     while (!glfwWindowShouldClose(window.ptr)) {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         int depth = int(abs(floor(player.coordinates.y)));
-        
+//        
         if (depth > terrain.height-3) {
             terrain.generateLayer();
         }
-        
-        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
-        handleMouseHold(window.ptr,terrain,mouse,player);
+//        
+//        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
+//        handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
-        //order does matter of multiplication...
+        shader.loadInt(true, "u_IsTexture");
         texture.setTexture("spritesheet");
         shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
-        terrain.buffer.draw();
+        terrain.vao.bindArray();
+        terrain.vbo.draw();
         
+//
+//        shader.loadMatrix(orthoMatrix,"u_Transformation");
         
-        
-        shader.loadInt(false, "u_IsTexture");
-        if (mouse.holding > 0) {
-            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
-            mouse.progressBuffer.draw();
-        } else {
-            std::cout << "Drawing hover buffer" << "\n";
-            shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
-            mouse.hoverBuffer.draw();
-        }
-        
-        
+//        shader.loadInt(false, "u_IsTexture");
+//        if (mouse.holding > 0) {
+//            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+//            mouse.progressBuffer.draw();
+//        } else {
+//            shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
+//            mouse.hoverBuffer.draw();
+//        }
+         
         shader.loadInt(true, "u_IsTexture");
         shader.loadMatrix(orthoMatrix,"u_Transformation");
-        player.buffer.draw();
-        
+        player.vao.bindArray();
+        player.vbo.draw();
+
         texture.setTexture("fontImg");
         shader.loadMatrix(textMatrix, "u_Transformation");
         shader.loadInt(true, "u_IsTexture");

@@ -11,10 +11,10 @@
 #include <vector>
 #include "vertex.hpp"
 #include "vertexBuffer.hpp"
+#include "vertexArray.hpp"
 #include "vec2i.hpp"
 #include "dungeonConfig.hpp"
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
+#include "block.hpp"
 
 
 class Terrain {
@@ -27,18 +27,19 @@ private:
     std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth);
     unsigned int getAliveNeighbourCount(const std::vector <Vec2i> &neighbours) const;
 public:
+    VAO vao;
+    VBO vbo;
     int height;
     std::vector<int> tiles;
-    VertexBuffer buffer;
-    json blockData;
+    std::vector<Block> blockData;
     bool isCollideable(const int tile) const;
     int getBlockHP(const int tile) const;
+    std::string getBlockName(const int tile) const;
     int getTile(const int x,const int y) const;
     int getTileIndex(const int x,const int y) const;
-    std::string getBlockName(const int tile) const;
     void mineBlock(const int x,const int y);
     void generateBuffer();
     void generateLayer();
-    Terrain(const DungeonConfig &config,const json &blockData);
+    Terrain(const DungeonConfig &config,const std::vector<Block> &blockData);
 };
 #endif /* terrainClass_hpp */

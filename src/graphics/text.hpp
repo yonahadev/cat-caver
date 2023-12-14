@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include "character.hpp"
 #include "vertexBuffer.hpp"
+#include "vertexArray.hpp"
 
 class Text {
 private:
@@ -20,6 +21,8 @@ private:
     std::ifstream readFile(const std::string &fileName);
     std::unordered_map<int,Character> charMap;
     Character getCharacter(const char character);
+    VAO vao;
+    VBO vbo;
 public:
     void renderText(const std::string &string, const int x, const int y);
     Text(const std::string &fileName);

@@ -16,7 +16,7 @@ struct Vertex {
     float texX;
     float texY;
     
-    Vertex(float x,float y, float texX, float texY): x(x), y(y), texX(texX), texY(texY) {};
+    Vertex(float x,float y, float texX, float texY): x(x), y(y), texX(texX), texY(texY) {}
 };
 
 #endif /* vertexStruct_hpp */

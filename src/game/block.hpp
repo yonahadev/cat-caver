@@ -9,5 +9,12 @@
 #define block_hpp
 
 #include <stdio.h>
+#include <string>
+
+struct Block {
+    std::string name;
+    int level;
+    int hp;
+};
 
 #endif /* block_hpp */

@@ -20,8 +20,8 @@ struct Character {
     int yOffset;
     int xAdvance;
     
-    Character(int id, int x, int y, int width, int height, int xOffset, int yOffset, int xAdvance): id(id), x(x),y(y),width(width),height(height),xOffset(xOffset),yOffset(yOffset),xAdvance(xAdvance) {};
+    Character(int id, int x, int y, int width, int height, int xOffset, int yOffset, int xAdvance): id(id), x(x),y(y),width(width),height(height),xOffset(xOffset),yOffset(yOffset),xAdvance(xAdvance) {}
     
-    Character() {};
+    Character() {}
 };
 #endif /* character_hpp */

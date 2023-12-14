@@ -60,58 +60,63 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
 //
 //    std::cout << "Current tile is: " << mouse.currentTile << "\n";
     
-    if (mouse.currentTile == 4) {
-        std::vector<Vertex> vertices;
-        generateQuad(mouse.tileX,mouse.tileY,6,vertices);
-        mouse.hoverBuffer = VertexBuffer(vertices);
-
-    } else {
-        mouse.hoverBuffer = VertexBuffer();
-    }
+//    if (terrain.isCollideable(mouse.currentTile)) {
+//        std::vector<Vertex> vertices;
+//        generateQuad(mouse.tileX,mouse.tileY,4,vertices);
+//        mouse.hoverBuffer = VertexBuffer(vertices);
+//
+//    } else {
+//        mouse.hoverBuffer = VertexBuffer();
+//    }
     return 1;
-};
+}
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
-    if (!mouse.tileX || !mouse.tileY) return;
-    int tile = terrain.getTile(mouse.tileX, mouse.tileY);
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && terrain.isCollideable(tile)) {
-        
-        mouse.holding += 16.6667;
-        float blockHealth = terrain.getBlockHP(tile);
-        
-        std::vector<Vertex> vertices;
-        float mined = mouse.minedPercentage/100.0f;
-        
-        float reverse = (1-mined)/2;
-        float startX = mouse.tileX+reverse;
-        float startY = mouse.tileY+reverse;
-        
-        generateUIQuad(mined,mined,startX,startY,vertices);
-        
-        mouse.progressBuffer = VertexBuffer(vertices);
-        
-        if (mouse.holding > blockHealth) {
-            terrain.mineBlock(mouse.tileX, mouse.tileY);
-            std::string block = terrain.getBlockName(tile);
-            player.blockCounts[block] += 1;
-            mouse.holding = 0;
-            terrain.generateBuffer();
-        }
-        mouse.minedPercentage = (mouse.holding/blockHealth)*100;
-//        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
-    } else {
-        mouse.holding = 0;
-    }
+//    if (!mouse.tileX || !mouse.tileY) return;
+//    int tile = terrain.getTile(mouse.tileX, mouse.tileY);
+//    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && terrain.isCollideable(tile)) {
+//        
+//        mouse.holding += 16.6667;
+//        float blockHealth = terrain.getBlockHP(tile);
+//        
+//        float mined = mouse.minedPercentage/100.0f;
+//        
+//        float reverse = (1-mined)/2;
+//        float startX = mouse.tileX+reverse;
+//        float startY = mouse.tileY+reverse;
+//        
+//        std::vector<Vertex> vertices;
+//        generateUIQuad(mined,mined,startX,startY,vertices);
+//        
+//        if (mouse.holding > 100) {
+//            mouse.progressBuffer = VertexBuffer(vertices);
+//        } else {
+//            mouse.progressBuffer = VertexBuffer();
+//        }
+//        
+//        
+//        if (mouse.holding > blockHealth) {
+//            terrain.mineBlock(mouse.tileX, mouse.tileY);
+//            std::string block = terrain.getBlockName(tile);
+//            player.blockCounts[block] += 1;
+//            mouse.holding = 0;
+//            terrain.generateBuffer();
+//        }
+//        mouse.minedPercentage = (mouse.holding/blockHealth)*100;
+////        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
+//    } else {
+//        mouse.holding = 0;
+//    }
 }
 
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, float &time) {
     
-    float jumpDelay = 0.1f;
-    
+    float jumpDelay = 0.25f;
+    float moveSpeed = 0.03f;
     
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-       player.moveCamera(-player.moveSpeed,0,terrain);
+       player.moveCamera(-moveSpeed,0,terrain);
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             float currentTime = glfwGetTime();
             if (currentTime - time > jumpDelay ) {
@@ -120,7 +125,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
             }
         }
    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-       player.moveCamera(player.moveSpeed,0,terrain);
+       player.moveCamera(moveSpeed,0,terrain);
        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
            float currentTime = glfwGetTime();
            if (currentTime - time > jumpDelay ) {
@@ -135,11 +140,11 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
            time = currentTime;
        }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-           player.moveCamera(-player.moveSpeed,0,terrain);
+           player.moveCamera(-moveSpeed,0,terrain);
             
             
        } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-           player.moveCamera(player.moveSpeed,0,terrain);
+           player.moveCamera(moveSpeed,0,terrain);
        }
     }
     

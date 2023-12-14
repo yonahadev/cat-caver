@@ -10,12 +10,13 @@
 
 #include <stdio.h>
 #include "vertexBuffer.hpp"
+#include "vertexArray.hpp"
 
 class Mouse {
 private:
 public:
-    VertexBuffer hoverBuffer;
-    VertexBuffer progressBuffer;
+    VBO vbo;
+    VAO vao;
     int minedPercentage;
     int currentTile;
     int tileX;

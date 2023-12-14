@@ -37,7 +37,7 @@ struct Vec2i {
         return stream.str();
     }
     
-    Vec2i(int x,int y): x(x), y(y) {};
+    Vec2i(int x,int y): x(x), y(y) {}
     
     Vec2i(float x, float y) {
         x = floor(x);

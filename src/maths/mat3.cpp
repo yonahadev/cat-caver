@@ -13,7 +13,7 @@
 
 const float * Mat3::getFloatArray() const {
     return &matrix_Array[0];
-};
+}
 
 Mat3 Mat3::Orthographic(float left, float right, float bottom, float top) {
     
@@ -22,18 +22,18 @@ Mat3 Mat3::Orthographic(float left, float right, float bottom, float top) {
         0.0f, 2.0f/(top-bottom), 1.0f*-((top+bottom)/(top-bottom)),
         0.0f, 0.0f, 1.0f
     );
-};
+}
 
 Mat3::Mat3() { //initialises zero matrix
     matrix_Array = {0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};
-};
+}
 Mat3::Mat3(float v) { //creates multiplication by v of identity matrix
     matrix_Array = {
         v,0.0f,0.0f,
         0.0f,v,0.0f,
         0.0f,0.0f,v
     };
-};
+}
 // Construct 3x3 matrix with per element inputs
 Mat3::Mat3(
     float v0, float v1, float v2,
@@ -120,7 +120,7 @@ Mat3 Mat3::operator*(const Mat3 &other) const {
         matrix_Array[6] * other.matrix_Array[1] + matrix_Array[7] * other.matrix_Array[4] + matrix_Array[8] * other.matrix_Array[7],
         matrix_Array[6] * other.matrix_Array[2] + matrix_Array[7] * other.matrix_Array[5] + matrix_Array[8] * other.matrix_Array[8]
         );
-};
+}
 //multiplies current matrix by another
 void Mat3::operator*=(const Mat3 &other) {
     matrix_Array[0] = matrix_Array[0] * other.matrix_Array[0] + matrix_Array[1] * other.matrix_Array[3] + matrix_Array[2] * other.matrix_Array[6];
@@ -132,7 +132,7 @@ void Mat3::operator*=(const Mat3 &other) {
     matrix_Array[6] = matrix_Array[6] * other.matrix_Array[0] + matrix_Array[7] * other.matrix_Array[3] + matrix_Array[8] * other.matrix_Array[6];
     matrix_Array[7] = matrix_Array[6] * other.matrix_Array[1] + matrix_Array[7] * other.matrix_Array[4] + matrix_Array[8] * other.matrix_Array[7];
     matrix_Array[8] = matrix_Array[6] * other.matrix_Array[2] + matrix_Array[7] * other.matrix_Array[5] + matrix_Array[8] * other.matrix_Array[8];
-};
+}
 
 
 // divides from current matrix

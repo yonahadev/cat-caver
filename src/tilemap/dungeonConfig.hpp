@@ -12,14 +12,14 @@
 #include <vector>
 
 struct DungeonConfig {
-    unsigned int width;
-    unsigned int startingAliveChance;
-    unsigned int turnCount;
-    unsigned int cellsForBirth;
-    unsigned int underpopulationCount;
-    unsigned int overpopulationCount;
+    int width;
+    int startingAliveChance;
+    int turnCount;
+    int cellsForBirth;
+    int underpopulationCount;
+    int overpopulationCount;
     
-    DungeonConfig() {};
+    DungeonConfig() {}
 };
 
 

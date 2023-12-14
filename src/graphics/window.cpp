@@ -16,8 +16,8 @@ void Window::setupWindow(const Vec2i &screenSize, const char *name) {
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    ptr = glfwCreateWindow(screenSize.x,screenSize.y,name,NULL, NULL);
-    if (ptr == NULL) {
+    ptr = glfwCreateWindow(screenSize.x,screenSize.y,name,nullptr, nullptr);
+    if (ptr == nullptr) {
         glfwTerminate();
         std::cout << "Failed to create GLFW window" << "\n";
     }

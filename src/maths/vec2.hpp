@@ -42,7 +42,7 @@ struct Vec2 {
         return stream.str();
     }
     
-    Vec2(float x,float y): x(x), y(y) {};
+    Vec2(float x,float y): x(x), y(y) {}
     
 //    Vec2(int x, int y) {
 //        x = static_cast<float>(x);

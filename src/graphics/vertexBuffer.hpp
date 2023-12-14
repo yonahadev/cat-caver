@@ -12,25 +12,21 @@
 #include <vector>
 #include "vertex.hpp"
 
-class VertexBuffer {
+class VBO {
 private:
-    int VAO;
-    int VBO;
-    int numberOfVertices;
-    void bindBuffer(std::vector<Vertex> vertices) const;
-    void bindArray() const;
-    void unbindArray() const;
+    int ID;
+    int verticesCount;
 public:
-    VertexBuffer(std::vector<Vertex> vertices);
-    VertexBuffer();
-    ~VertexBuffer();
-    VertexBuffer& operator=(VertexBuffer &other) = delete;
-    VertexBuffer(VertexBuffer &other) = delete;
-    //move construction
-    VertexBuffer(VertexBuffer&& other);
-    //mope assignment
-    VertexBuffer& operator=(VertexBuffer&& other);
+    void bindBuffer() const;
+    void unbindBuffer() const ;
+    void bindData(const std::vector<Vertex> &vertices);
     void draw() const;
+    VBO();
+    ~VBO();
+    VBO& operator=(VBO &other) = delete;
+    VBO(VBO &other) = delete;
+    VBO(VBO&& other) noexcept;
+    VBO& operator=(VBO&& other) noexcept;
 };
 
 #endif /* vertexBufferClass_hpp */

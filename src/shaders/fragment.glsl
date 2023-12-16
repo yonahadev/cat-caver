@@ -7,6 +7,8 @@ in vec4 v_QuadColour;
 
 flat in int v_IsTexture;
 
+flat in int v_lightRadius;
+
 uniform sampler2D u_Sample; //texture sample bound in main
 
 void main() {

@@ -4,6 +4,8 @@ layout (location = 1) in vec2 a_TexCoords;
 
 uniform int u_IsTexture;
 
+uniform int u_lightRadius;
+
 uniform mat3 u_Transformation;
 
 uniform vec4 u_QuadColour;
@@ -11,6 +13,8 @@ uniform vec4 u_QuadColour;
 out vec2 v_TexCoords;
 
 flat out int v_IsTexture;
+
+flat out int v_lightRadius;
 
 out vec4 v_QuadColour;
 
@@ -21,5 +25,6 @@ void main() {
     gl_Position = vec4(prePosition.x,prePosition.y,0.0,1.0);
     v_TexCoords = a_TexCoords;
     v_IsTexture = u_IsTexture;
+    v_lightRadius = u_lightRadius;
     v_QuadColour = u_QuadColour;
 }

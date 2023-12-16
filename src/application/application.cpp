@@ -24,6 +24,7 @@
 #include <unordered_map>
 #include "dungeonConfig.hpp"
 #include "block.hpp"
+#include "quad.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -37,9 +38,14 @@ std::vector<std::string> urls = {
     "/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png"
 };
 
+bool lightingOn = false;
+
 void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
+    }
+    if(key == GLFW_KEY_1 && action == GLFW_PRESS){
+        lightingOn = !lightingOn;
     }
 }
 
@@ -51,6 +57,8 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 
 
 void runApplication() {
+    
+    GLFWcursor* handCursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
     
     //level -1 means you can't mine it / it isn't collideable
     std::vector<Block> blockData = {
@@ -104,6 +112,16 @@ void runApplication() {
     
     Mouse mouse;
 
+    std::vector<Vertex> vertices;
+    generateUIQuad(16, 10, (-aspectRatio.x/2)+0.5, (-aspectRatio.y/2)+0.5, vertices);
+    VBO lightVBO = VBO();
+    VAO lightVAO = VAO();
+    lightVAO.bindArray();
+    lightVBO.bindBuffer();
+    lightVBO.bindData(vertices);
+    lightVAO.enableAttributes();
+    lightVAO.unbindArray();
+    
     float time = glfwGetTime();
     
     while (!glfwWindowShouldClose(window.ptr)) {
@@ -116,7 +134,7 @@ void runApplication() {
             terrain.generateLayer();
         }
 //        
-        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
+        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
@@ -126,27 +144,29 @@ void runApplication() {
         terrain.vao.bindArray();
         terrain.vbo.draw();
         
-//
-//        shader.loadMatrix(orthoMatrix,"u_Transformation");
-        
-        shader.loadInt(false, "u_IsTexture");
-        shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
-        mouse.generateBuffer(blockData);
-        if (mouse.vbo.verticesCount > 0) {
-            mouse.vao.bindArray();
-            mouse.vbo.draw();
-        }
-        
-//        if (mouse.holding > 0) {
-//        } else {
-//            shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
-//            mouse.hoverBuffer.draw();
-//        }
-         
         shader.loadInt(true, "u_IsTexture");
         shader.loadMatrix(orthoMatrix,"u_Transformation");
         player.vao.bindArray();
         player.vbo.draw();
+        
+        mouse.generateBuffer(blockData);
+        if (mouse.vbo.verticesCount > 0) {
+            shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
+            shader.loadInt(false, "u_IsTexture");
+            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+            mouse.vao.bindArray();
+            mouse.vbo.draw();
+        }
+        
+        if (lightingOn) {
+            shader.loadInt(false, "u_IsTexture");
+            shader.loadMatrix(orthoMatrix, "u_Transformation");
+            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+            lightVAO.bindArray();
+            lightVBO.draw();
+        }
+        
+         
 
         texture.setTexture("fontImg");
         shader.loadMatrix(textMatrix, "u_Transformation");
@@ -164,5 +184,6 @@ void runApplication() {
         glfwSwapBuffers(window.ptr);
     }
     
+
     glfwTerminate();
 }

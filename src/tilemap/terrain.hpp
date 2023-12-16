@@ -21,11 +21,11 @@ class Terrain {
 private:
     void generateTerrain();
     int calculateCellState(const std::vector <Vec2i> &neighbours, const unsigned int cell) const;
-    std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     int getPositionInTiles(const unsigned int x, const unsigned int y) const;
     std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth);
     unsigned int getAliveNeighbourCount(const std::vector <Vec2i> &neighbours) const;
 public:
+    std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     const DungeonConfig config;
     VAO vao;
     VBO vbo;

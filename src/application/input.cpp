@@ -16,7 +16,7 @@
 #include <vector>
 #include "quad.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
+void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse, const Player &player) {
     
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -54,12 +54,22 @@ void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,
     mouse.tileY = newY;
     
     //    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
+//    bool mouseInXBoundary = mouse.tileX > 0 && mouse.tileX < terrain.config.width-1;
+//    bool mouseInYBoundary = -mouse.tileY < terrain.height && -mouse.tileY > 0;
     
-    //boundary means diggable blocks
-    bool mouseInXBoundary = mouse.tileX > 0 && mouse.tileX < terrain.config.width-1;
-    bool mouseInYBoundary = -mouse.tileY < terrain.height && -mouse.tileY > 0;
+    int playerX = round(player.coordinates.x);
+    int playerY = round(player.coordinates.y);
     
-    if (mouseInXBoundary && mouseInYBoundary) {
+    std::vector<Vec2i> neighbours = terrain.getNeighbours(playerX, playerY);
+    
+    bool isMineable = false;
+    for (Vec2i &block: neighbours) {
+        if (mouse.tileX == block.x && mouse.tileY == block.y) {
+            isMineable = true;
+        }
+    }
+    
+    if (isMineable) {
         mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
     } else {
         mouse.currentTile = -1;

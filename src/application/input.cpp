@@ -18,6 +18,8 @@
 
 int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
     
+    
+    
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
     
@@ -50,24 +52,41 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
         mouse.holding = 0;
     }
     
+    
+    
     mouse.tileX = newX;
     mouse.tileY = newY;
     
+    //    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
     
-//    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
+    //boundary means diggable blocks
+    bool mouseInXBoundary = mouse.tileX > 0 && mouse.tileX < terrain.config.width-1;
+    bool mouseInYBoundary = -mouse.tileY < terrain.height && -mouse.tileY > 0;
     
-    mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
+    if (mouseInXBoundary && mouseInYBoundary) {
+        mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
+    } else {
+        mouse.currentTile = -1;
+    }
+    
 //
-//    std::cout << "Current tile is: " << mouse.currentTile << "\n";
-    
-//    if (terrain.isCollideable(mouse.currentTile)) {
-//        std::vector<Vertex> vertices;
-//        generateQuad(mouse.tileX,mouse.tileY,4,vertices);
-//        mouse.hoverBuffer = VertexBuffer(vertices);
-//
-//    } else {
-//        mouse.hoverBuffer = VertexBuffer();
-//    }
+    bool isMineable = terrain.blockData[mouse.currentTile].level != -1;
+
+    if (mouse.currentTile != -1 && isMineable ) {
+//        std::cout << mouse.currentTile << "\n";
+        std::vector<Vertex> vertices;
+        generateQuad(mouse.tileX,mouse.tileY,4,vertices);
+        mouse.vbo = VBO();
+        mouse.vao = VAO();
+        mouse.vao.bindArray();
+        mouse.vbo.bindBuffer();
+        mouse.vbo.bindData(vertices);
+        mouse.vao.enableAttributes();
+        mouse.vao.unbindArray();
+    } else {
+//        std::cout << "invalid mouse position" << "\n";
+        mouse.vbo.verticesCount = 0;
+    }
     return 1;
 }
 

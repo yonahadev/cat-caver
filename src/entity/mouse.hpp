@@ -12,7 +12,7 @@
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
 
-class Mouse {
+struct Mouse {
 private:
 public:
     VBO vbo;

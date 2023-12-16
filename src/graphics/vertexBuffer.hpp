@@ -15,8 +15,8 @@
 class VBO {
 private:
     int ID;
-    int verticesCount;
 public:
+    int verticesCount;
     void bindBuffer() const;
     void unbindBuffer() const ;
     void bindData(const std::vector<Vertex> &vertices);

@@ -102,9 +102,8 @@ void runApplication() {
                                           );
     
     
-//    Mouse mouse;
-    
-    
+    Mouse mouse;
+
     float time = glfwGetTime();
     
     while (!glfwWindowShouldClose(window.ptr)) {
@@ -117,8 +116,8 @@ void runApplication() {
             terrain.generateLayer();
         }
 //        
-//        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
 //        handleMouseHold(window.ptr,terrain,mouse,player);
+        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
         handleKeyPress(window.ptr, player,terrain,time);
         
         shader.loadInt(true, "u_IsTexture");
@@ -130,10 +129,14 @@ void runApplication() {
 //
 //        shader.loadMatrix(orthoMatrix,"u_Transformation");
         
-//        shader.loadInt(false, "u_IsTexture");
+        shader.loadInt(false, "u_IsTexture");
+        shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+        if (mouse.vbo.verticesCount > 0) {
+            mouse.vao.bindArray();
+            mouse.vbo.draw();
+        }
+        
 //        if (mouse.holding > 0) {
-//            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
-//            mouse.progressBuffer.draw();
 //        } else {
 //            shader.loadVec4(0.2, 0.3, 0.1, 0.3, "u_QuadColour");
 //            mouse.hoverBuffer.draw();

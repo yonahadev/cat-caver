@@ -116,8 +116,8 @@ void runApplication() {
             terrain.generateLayer();
         }
 //        
-//        handleMouseHold(window.ptr,terrain,mouse,player);
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse);
+        handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
         shader.loadInt(true, "u_IsTexture");
@@ -131,6 +131,7 @@ void runApplication() {
         
         shader.loadInt(false, "u_IsTexture");
         shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+        mouse.generateBuffer(blockData);
         if (mouse.vbo.verticesCount > 0) {
             mouse.vao.bindArray();
             mouse.vbo.draw();

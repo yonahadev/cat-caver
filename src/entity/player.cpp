@@ -68,7 +68,7 @@ void Player::move(const float x,const float y) {
 void Player::jump(const Terrain &terrain) {
     if (airborne == 0.0f) {
         airborne += 80;
-        std::cout << "jumping" << "\n";
+//        std::cout << "jumping" << "\n";
     }
 }
 

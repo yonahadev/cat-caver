@@ -11,8 +11,9 @@
 #include <stdio.h>
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
+#include "block.hpp"
 
-struct Mouse {
+class Mouse {
 private:
 public:
     VBO vbo;
@@ -22,6 +23,7 @@ public:
     int tileX;
     int tileY;
     float holding;
+    void generateBuffer(const std::vector<Block> &blockData);
 };
 
 #endif /* mouse_hpp */

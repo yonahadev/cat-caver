@@ -16,9 +16,7 @@
 #include <vector>
 #include "quad.hpp"
 
-int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
-    
-    
+void handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse) {
     
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -52,8 +50,6 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
         mouse.holding = 0;
     }
     
-    
-    
     mouse.tileX = newX;
     mouse.tileY = newY;
     
@@ -69,63 +65,33 @@ int handleMouseMove(GLFWwindow* window,const Vec2 &pos,const Vec2i &screenSize,c
         mouse.currentTile = -1;
     }
     
-//
-    bool isMineable = terrain.blockData[mouse.currentTile].level != -1;
-
-    if (mouse.currentTile != -1 && isMineable ) {
-//        std::cout << mouse.currentTile << "\n";
-        std::vector<Vertex> vertices;
-        generateQuad(mouse.tileX,mouse.tileY,4,vertices);
-        mouse.vbo = VBO();
-        mouse.vao = VAO();
-        mouse.vao.bindArray();
-        mouse.vbo.bindBuffer();
-        mouse.vbo.bindData(vertices);
-        mouse.vao.enableAttributes();
-        mouse.vao.unbindArray();
-    } else {
-//        std::cout << "invalid mouse position" << "\n";
-        mouse.vbo.verticesCount = 0;
-    }
-    return 1;
 }
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
-//    if (!mouse.tileX || !mouse.tileY) return;
-//    int tile = terrain.getTile(mouse.tileX, mouse.tileY);
-//    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && terrain.isCollideable(tile)) {
-//        
-//        mouse.holding += 16.6667;
-//        float blockHealth = terrain.getBlockHP(tile);
-//        
-//        float mined = mouse.minedPercentage/100.0f;
-//        
-//        float reverse = (1-mined)/2;
-//        float startX = mouse.tileX+reverse;
-//        float startY = mouse.tileY+reverse;
-//        
-//        std::vector<Vertex> vertices;
-//        generateUIQuad(mined,mined,startX,startY,vertices);
-//        
-//        if (mouse.holding > 100) {
-//            mouse.progressBuffer = VertexBuffer(vertices);
-//        } else {
-//            mouse.progressBuffer = VertexBuffer();
-//        }
-//        
-//        
-//        if (mouse.holding > blockHealth) {
-//            terrain.mineBlock(mouse.tileX, mouse.tileY);
-//            std::string block = terrain.getBlockName(tile);
-//            player.blockCounts[block] += 1;
-//            mouse.holding = 0;
-//            terrain.generateBuffer();
-//        }
-//        mouse.minedPercentage = (mouse.holding/blockHealth)*100;
-////        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
-//    } else {
-//        mouse.holding = 0;
-//    }
+    if (mouse.currentTile == -1) return;
+    
+    Block block = terrain.blockData[mouse.currentTile];
+    
+    bool isMineable = block.level != -1;
+    
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && isMineable) {
+        
+        mouse.holding += 16.6667;
+        
+        int blockHealth = block.hp;
+        
+        if (mouse.holding > blockHealth) {
+            terrain.mineBlock(mouse.tileX, mouse.tileY);
+            std::string blockName = block.name;
+            player.blockCounts[blockName] += 1;
+            mouse.holding = 0;
+            terrain.generateBuffer();
+        }
+        mouse.minedPercentage = (mouse.holding/blockHealth)*100;
+//        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
+    } else {
+        mouse.holding = 0;
+    }
 }
 
 

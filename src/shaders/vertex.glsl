@@ -4,17 +4,21 @@ layout (location = 1) in vec2 a_TexCoords;
 
 uniform int u_IsTexture;
 
-uniform int u_lightRadius;
+uniform int u_LightRadius;
 
 uniform mat3 u_Transformation;
+
+uniform vec2 u_ScreenSize;
 
 uniform vec4 u_QuadColour;
 
 out vec2 v_TexCoords;
 
+out vec2 v_ScreenSize;
+
 flat out int v_IsTexture;
 
-flat out int v_lightRadius;
+flat out int v_LightRadius;
 
 out vec4 v_QuadColour;
 
@@ -25,6 +29,7 @@ void main() {
     gl_Position = vec4(prePosition.x,prePosition.y,0.0,1.0);
     v_TexCoords = a_TexCoords;
     v_IsTexture = u_IsTexture;
-    v_lightRadius = u_lightRadius;
+    v_LightRadius = u_LightRadius;
     v_QuadColour = u_QuadColour;
+    v_ScreenSize = u_ScreenSize;
 }

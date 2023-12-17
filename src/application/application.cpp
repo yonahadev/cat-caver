@@ -31,6 +31,8 @@ const char *WINDOW_NAME = "Cat Caver";
 
 Vec2i screenSize = {854,480};
 Vec2i aspectRatio = {16,10};
+Vec2f windowScale = {1,1};
+
 
 Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
 
@@ -39,7 +41,7 @@ std::vector<std::string> urls = {
     "/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.png"
 };
 
-bool lightingOn = false;
+bool lightingOn = true;
 
 void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
@@ -51,6 +53,7 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
 }
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
+    glfwGetWindowContentScale(window, &windowScale.x, &windowScale.y);
     screenSize = {width,height};
     textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     glViewport(0, 0, width, height);
@@ -58,6 +61,8 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 
 
 void runApplication() {
+    
+
     
     GLFWcursor* handCursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
     
@@ -74,6 +79,8 @@ void runApplication() {
     
     
     Window window(screenSize,WINDOW_NAME);
+    
+    glfwGetWindowContentScale(window.ptr, &windowScale.x, &windowScale.y);
     
     DungeonConfig dungeonConfig;
     dungeonConfig.width = 16;
@@ -137,7 +144,8 @@ void runApplication() {
         if (depth > terrain.height-3) {
             terrain.generateLayer();
         }
-//        
+//
+        
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
@@ -163,12 +171,19 @@ void runApplication() {
         }
         
         if (lightingOn) {
-            shader.loadUniform<int>(5, "u_lightRadius");
+            Vec2f size = {static_cast<float>(screenSize.x*windowScale.x),static_cast<float>(screenSize.y*windowScale.y)};
+            int lightRadius = screenSize.x/3;
+            if (depth < 5) {
+                lightRadius = screenSize.x/1.5;
+            }
+            shader.loadUniform<Vec2f>(size, "u_ScreenSize");
+            shader.loadUniform<int>(lightRadius, "u_LightRadius");
             shader.loadUniform<int>(false, "u_IsTexture");
             shader.loadUniform<Mat3>(orthoMatrix, "u_Transformation");
             shader.loadUniform<Vec4f>(lightQuad, "u_QuadColour");
             lightVAO.bindArray();
             lightVBO.draw();
+            shader.loadUniform<int>(0, "u_LightRadius");
         }
         
          

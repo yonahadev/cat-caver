@@ -8,16 +8,16 @@
 #include "quad.hpp"
 
 void Mouse::generateBuffer(const std::vector<Block> &blockData) {
-    if (holding > 0) {
-    float mined = minedPercentage/100.0f;
-    
-    float reverse = (1-mined)/2;
-    float startX = tileX+reverse;
-    float startY = tileY+reverse;
-    
-    std::vector<Vertex> vertices;
-    generateUIQuad(mined,mined,startX,startY,vertices);
-    
+    if (holding > 0 && backpackFull == false) {
+        float mined = minedPercentage/100.0f;
+
+        float reverse = (1-mined)/2;
+        float startX = tileX+reverse;
+        float startY = tileY+reverse;
+
+        std::vector<Vertex> vertices;
+        generateUIQuad(mined,mined,startX,startY,vertices);
+
         vbo = VBO();
         vao = VAO();
         vao.bindArray();

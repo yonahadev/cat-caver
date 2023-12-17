@@ -30,6 +30,6 @@ void main() {
         if (textureColour.a < 0.2) {
             discard;
         }
-        FragColor = textureColour;
+        FragColor = textureColour*v_QuadColour;
     }
 }

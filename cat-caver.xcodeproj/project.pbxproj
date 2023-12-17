@@ -11,6 +11,7 @@
 		E225B0852B1C9E24003A5B17 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = E225B0812B1C9E24003A5B17 /* glad.c */; settings = {COMPILER_FLAGS = "-Wno-everything"; }; };
 		E225B0882B1CA2EE003A5B17 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E262ABAD2B1B63D1002F988D /* OpenGL.framework */; };
 		E225B08A2B1CA2FF003A5B17 /* libglfw.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E229AFB72B2F83D600BFBF60 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E229AFB52B2F822B00BFBF60 /* gui.cpp */; };
 		E2364D7E2B20A3B700E2D395 /* text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2364D7C2B20A15C00E2D395 /* text.cpp */; };
 		E239661E2B2DAF180080B1A6 /* mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E239661D2B2DAD830080B1A6 /* mouse.cpp */; };
 		E262ABA32B1B6331002F988D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABA22B1B6331002F988D /* main.cpp */; };
@@ -60,6 +61,8 @@
 		E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
 		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
 		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		E229AFB52B2F822B00BFBF60 /* gui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
+		E229AFB62B2F822B00BFBF60 /* gui.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = gui.hpp; sourceTree = "<group>"; };
 		E2364D7C2B20A15C00E2D395 /* text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text.cpp; sourceTree = "<group>"; };
 		E2364D7D2B20A15C00E2D395 /* text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text.hpp; sourceTree = "<group>"; };
 		E2364D822B20C05400E2D395 /* character.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
@@ -143,6 +146,18 @@
 			path = GLFW;
 			sourceTree = "<group>";
 		};
+		E229AFB42B2F81C600BFBF60 /* gui */ = {
+			isa = PBXGroup;
+			children = (
+				E2364D7C2B20A15C00E2D395 /* text.cpp */,
+				E2364D7D2B20A15C00E2D395 /* text.hpp */,
+				E2364D822B20C05400E2D395 /* character.hpp */,
+				E229AFB52B2F822B00BFBF60 /* gui.cpp */,
+				E229AFB62B2F822B00BFBF60 /* gui.hpp */,
+			);
+			path = gui;
+			sourceTree = "<group>";
+		};
 		E262AB962B1B6331002F988D = {
 			isa = PBXGroup;
 			children = (
@@ -167,13 +182,14 @@
 		E262ABA12B1B6331002F988D /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E262ABA22B1B6331002F988D /* main.cpp */,
+				E229AFB42B2F81C600BFBF60 /* gui */,
 				E275DADF2B2B8E5E00E2969D /* game */,
 				E262ABF02B1BBE81002F988D /* tilemap */,
 				E262ABEC2B1BB9D5002F988D /* entity */,
 				E262ABDE2B1B79A3002F988D /* application */,
 				E262ABD42B1B6C06002F988D /* maths */,
-				E262ABC02B1B658E002F988D /* graphics */,
-				E262ABA22B1B6331002F988D /* main.cpp */,
+				E262ABC02B1B658E002F988D /* opengl */,
 				E262ABE32B1B7E92002F988D /* shaders */,
 			);
 			path = src;
@@ -218,7 +234,7 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		E262ABC02B1B658E002F988D /* graphics */ = {
+		E262ABC02B1B658E002F988D /* opengl */ = {
 			isa = PBXGroup;
 			children = (
 				E262ABC22B1B658E002F988D /* vertex.hpp */,
@@ -232,11 +248,8 @@
 				E262ABC52B1B658E002F988D /* texture.hpp */,
 				E262ABDB2B1B7399002F988D /* window.cpp */,
 				E262ABDC2B1B7399002F988D /* window.hpp */,
-				E2364D7C2B20A15C00E2D395 /* text.cpp */,
-				E2364D7D2B20A15C00E2D395 /* text.hpp */,
-				E2364D822B20C05400E2D395 /* character.hpp */,
 			);
-			path = graphics;
+			path = opengl;
 			sourceTree = "<group>";
 		};
 		E262ABD42B1B6C06002F988D /* maths */ = {
@@ -361,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E229AFB72B2F83D600BFBF60 /* gui.cpp in Sources */,
 				E239661E2B2DAF180080B1A6 /* mouse.cpp in Sources */,
 				E2364D7E2B20A3B700E2D395 /* text.cpp in Sources */,
 				E262ABCE2B1B673A002F988D /* vertexBuffer.cpp in Sources */,

@@ -26,6 +26,7 @@
 #include "dungeonConfig.hpp"
 #include "block.hpp"
 #include "quad.hpp"
+#include "gui.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -58,6 +59,8 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     glViewport(0, 0, width, height);
 }
+
+
 
 
 void runApplication() {
@@ -96,7 +99,7 @@ void runApplication() {
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture(urls);
     
-    Text text("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
+    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
     std::unordered_map<std::string, int> map;
     for (Block &block: blockData) {
@@ -118,8 +121,10 @@ void runApplication() {
                                           );
     
     
+    Vec4f whiteQuad = {1.0f,1.0f,1.0f,1.0f};
     Vec4f lightQuad = {0.0f,0.0f,0.0f,1.0f};
-    Vec4f mouseQuad = {1.0, 0.3, 1.0, 0.7};
+    Vec4f mouseQuad = {0.0, 0.0, 0.0, 0.7};
+    Vec4f mouseInvalid = {1.0,0.0,0.0,0.7};
     
     Mouse mouse;
 
@@ -150,6 +155,7 @@ void runApplication() {
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
+        shader.loadUniform<Vec4f>(whiteQuad, "u_QuadColour");
         shader.loadUniform<int>(true, "u_IsTexture");
         texture.setTexture("spritesheet");
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
@@ -165,7 +171,11 @@ void runApplication() {
         if (mouse.vbo.verticesCount > 0) {
             shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
             shader.loadUniform<int>(false, "u_IsTexture");
-            shader.loadUniform<Vec4f>(mouseQuad, "u_QuadColour");
+            if (mouse.backpackFull && mouse.holding > 0) {
+                shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
+            } else {
+                shader.loadUniform<Vec4f>(mouseQuad, "u_QuadColour");
+            }
             mouse.vao.bindArray();
             mouse.vbo.draw();
         }
@@ -174,7 +184,7 @@ void runApplication() {
             Vec2f size = {static_cast<float>(screenSize.x*windowScale.x),static_cast<float>(screenSize.y*windowScale.y)};
             int lightRadius = screenSize.x/3;
             if (depth < 5) {
-                lightRadius = screenSize.x/1.5;
+                lightRadius = screenSize.x;
             }
             shader.loadUniform<Vec2f>(size, "u_ScreenSize");
             shader.loadUniform<int>(lightRadius, "u_LightRadius");
@@ -186,18 +196,28 @@ void runApplication() {
             shader.loadUniform<int>(0, "u_LightRadius");
         }
         
-         
+//        std::cout << player.backpackCount << "\n";
 
-        texture.setTexture("fontImg");
+        shader.loadUniform<Vec4f>(whiteQuad, "u_QuadColour");
         shader.loadUniform<Mat3>(textMatrix, "u_Transformation");
-        shader.loadUniform<int>(true, "u_IsTexture");
-        text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
-        int count = 0;
-        for (auto &block: player.blockCounts) {
-            int offset = count*50;
-            text.renderText(block.first+ ": " + std::to_string(block.second), 50, screenSize.y-100-offset);
-            count++;
-        }
+        texture.setTexture("fontImg");
+        
+        gui.renderButton("surface", 50, screenSize.y-100, 45, texture, shader);
+        
+//        shader.loadUniform<int>(true, "u_IsTexture");
+//        text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
+//        text.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100);
+//        shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
+//        if (mouse.backpackFull && mouse.holding > 0) {
+//            
+//            text.renderText("Backpack is full", 50, screenSize.y-150);
+//        }
+//        int count = 0;
+//        for (auto &block: player.blockCounts) {
+//            int offset = count*50;
+//            text.renderText(block.first+ ": " + std::to_string(block.second), 50, screenSize.y-150-offset);
+//            count++;
+//        }
         
         
         glfwPollEvents();

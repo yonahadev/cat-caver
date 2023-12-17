@@ -23,6 +23,7 @@ public:
     int tileX;
     int tileY;
     float holding;
+    bool backpackFull;
     void generateBuffer(const std::vector<Block> &blockData);
 };
 

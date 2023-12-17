@@ -78,22 +78,36 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
 }
 
 void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        double mouseX, mouseY;
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+        if (mouseX < 100) {
+            player.teleport(1, -3, terrain);
+        }
+    }
+    
+    
     if (mouse.currentTile == -1) return;
     
     Block block = terrain.blockData[mouse.currentTile];
+    
+    mouse.backpackFull = player.backpackCount == player.backpackCapacity;
     
     bool isMineable = block.level != -1;
     
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && isMineable) {
         
+        
         mouse.holding += 16.6667;
         
         int blockHealth = block.hp;
         
-        if (mouse.holding > blockHealth) {
+        
+        if (mouse.holding > blockHealth && mouse.backpackFull == false) {
             terrain.mineBlock(mouse.tileX, mouse.tileY);
             std::string blockName = block.name;
             player.blockCounts[blockName] += 1;
+            player.backpackCount += 1;
             mouse.holding = 0;
             terrain.generateBuffer();
         }

@@ -16,11 +16,16 @@
 
 const std::regex expression("id=([0-9]+)\\s+x=([0-9]+)\\s+y=([0-9]+)\\s+width=([0-9]+)\\s+height=([0-9]+)\\s+xoffset=(-?[0-9]+)\\s+yoffset=(-?[0-9]+)\\s+xadvance=([0-9]+)");
 
+void Text::draw() const {
+    vao.bindArray();
+    vbo.draw();
+}
 
-void Text::renderText(const std::string &string, const int x, const int y) {
+int Text::renderText(const std::string &string, const int x, const int y) {
     std::vector<Vertex> vertices;
     int xOffset = x;
-    for (const char &ch: string) {
+    for (int i = 0; i < string.size(); i++) {
+        const char ch = string[i];
         Character current = getCharacter(ch);
 //        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
         //for some reason data set y offsets is not properly accounting for text offset? - manual implementation
@@ -29,7 +34,9 @@ void Text::renderText(const std::string &string, const int x, const int y) {
             yOffset = -6;
         }
         generateTextQuad(xOffset, y+yOffset, current, vertices);
-        xOffset += current.width+5;
+        if (i != string.size() -1) {
+            xOffset += current.width+5;
+        }
     }
     vbo = VBO();
     vao = VAO();
@@ -37,7 +44,9 @@ void Text::renderText(const std::string &string, const int x, const int y) {
     vbo.bindBuffer();
     vbo.bindData(vertices);
     vao.enableAttributes();
-    vbo.draw();
+    vao.unbindArray();
+    
+    return xOffset;
 }
 
 Character Text::getCharacter(const char character) {

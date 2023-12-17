@@ -24,7 +24,8 @@ private:
     VAO vao;
     VBO vbo;
 public:
-    void renderText(const std::string &string, const int x, const int y);
+    void draw() const;
+    int renderText(const std::string &string, const int x, const int y);
     Text(const std::string &fileName);
 };
 

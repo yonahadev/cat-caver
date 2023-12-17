@@ -28,11 +28,15 @@ private:
     void adjustHitbox();
 public:
     std::unordered_map<std::string, int> blockCounts;
+    int backpackCapacity;
+    int backpackCount;
+    int money;
     Mat3 matrix;
     Vec2f coordinates;
     VBO vbo;
     VAO vao;
     std::vector<std::string> collisions;
+    void teleport(const float x, const float y,const Terrain &terrain);
     void update(const Terrain &terrain,float xPos,float yPos);
     bool getCollision(const std::string &search) const;
     void checkCollisions(const Terrain &terrain);

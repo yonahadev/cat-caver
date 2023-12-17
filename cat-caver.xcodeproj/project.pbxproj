@@ -60,7 +60,6 @@
 		E225B07F2B1C9E24003A5B17 /* libglfw.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libglfw.3.dylib; sourceTree = "<group>"; };
 		E225B0802B1C9E24003A5B17 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
 		E225B0812B1C9E24003A5B17 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
-		E2364D6D2B20576900E2D395 /* vec2i.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec2i.hpp; sourceTree = "<group>"; };
 		E2364D7C2B20A15C00E2D395 /* text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text.cpp; sourceTree = "<group>"; };
 		E2364D7D2B20A15C00E2D395 /* text.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text.hpp; sourceTree = "<group>"; };
 		E2364D822B20C05400E2D395 /* character.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
@@ -103,6 +102,7 @@
 		E26B16572B2A094F00B2105B /* vertexArray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertexArray.cpp; sourceTree = "<group>"; };
 		E26B16582B2A094F00B2105B /* vertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertexArray.hpp; sourceTree = "<group>"; };
 		E275DAE12B2B8E8300E2969D /* block.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = block.hpp; sourceTree = "<group>"; };
+		E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,8 +228,8 @@
 				E26B16582B2A094F00B2105B /* vertexArray.hpp */,
 				E262ABC32B1B658E002F988D /* texture.cpp */,
 				E262ABC42B1B658E002F988D /* shader.cpp */,
-				E262ABC52B1B658E002F988D /* texture.hpp */,
 				E262ABC62B1B658E002F988D /* shader.hpp */,
+				E262ABC52B1B658E002F988D /* texture.hpp */,
 				E262ABDB2B1B7399002F988D /* window.cpp */,
 				E262ABDC2B1B7399002F988D /* window.hpp */,
 				E2364D7C2B20A15C00E2D395 /* text.cpp */,
@@ -247,7 +247,7 @@
 				E262ABD72B1B6C06002F988D /* math.hpp */,
 				E262ABD82B1B6C06002F988D /* mat3.cpp */,
 				E262ABE72B1BB6BD002F988D /* vec2.hpp */,
-				E2364D6D2B20576900E2D395 /* vec2i.hpp */,
+				E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */,
 			);
 			path = maths;
 			sourceTree = "<group>";

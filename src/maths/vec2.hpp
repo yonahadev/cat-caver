@@ -12,27 +12,28 @@
 #include <string>
 #include <sstream>
 
+template <typename T>
 struct Vec2 {
-    float x;
-    float y;
+    T x;
+    T y;
 
-    bool operator == (const Vec2 &other) const {
+    bool operator == (const Vec2<T> &other) const {
         return x == other.x && y == other.y;
     }
     
-    bool operator != (const Vec2 &other) const {
+    bool operator != (const Vec2<T> &other) const {
         return x != other.x || y != other.y;
     }
     
-    Vec2 operator - (const Vec2 &other) {
+    Vec2<T> operator - (const Vec2<T> &other) {
         return {x-other.x,y-other.y};
     }
     
-    Vec2 operator + (const Vec2 &other) {
+    Vec2<T> operator + (const Vec2<T> &other) {
         return {x+other.x,y+other.y};
     }
     
-    Vec2 floor() const {
+    Vec2<T> floor() const {
         return {float(std::floor(x)),float(std::floor(y))};
     }
     
@@ -42,14 +43,16 @@ struct Vec2 {
         return stream.str();
     }
     
-    Vec2(float x,float y): x(x), y(y) {}
+    Vec2(T x,T y): x(x), y(y) {}
     
 //    Vec2(int x, int y) {
 //        x = static_cast<float>(x);
 //        y = static_cast<float>(y);
 //    }
     
-    
 };
+
+using Vec2f = Vec2<float>;
+using Vec2i = Vec2<int>;
 
 #endif /* vec2_hpp */

@@ -12,7 +12,7 @@
 #include "vertex.hpp"
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
-#include "vec2i.hpp"
+#include "vec2.hpp"
 #include "dungeonConfig.hpp"
 #include "block.hpp"
 

@@ -19,9 +19,8 @@ private:
     int configureFragmentShader(const char *filePath) const;
     void configureShaderProgram(const char *vertexShaderFilePath,const char *fragmentShaderFilePath);
 public:
-    void loadMatrix(Mat3 matrix,const std::string &uniformName) const;
-    void loadInt(const int integer,const std::string &uniformName) const;
-    void loadVec4(const float r, const float g, const float b, const float a,const std::string &uniformName) const;
+    template <typename T>
+    void loadUniform(T value, const  std::string &uniformName) const;
     int shaderProgram;
     void bind() const;
     void unBind() const;

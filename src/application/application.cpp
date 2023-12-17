@@ -18,7 +18,8 @@
 #include <string>
 #include "input.hpp"
 #include "mouse.hpp"
-#include "vec2i.hpp"
+#include "vec2.hpp"
+#include "vec4.hpp"
 #include "text.hpp"
 #include <fstream>
 #include <unordered_map>
@@ -110,6 +111,9 @@ void runApplication() {
                                           );
     
     
+    Vec4f lightQuad = {0.0f,0.0f,0.0f,1.0f};
+    Vec4f mouseQuad = {1.0, 0.3, 1.0, 0.7};
+    
     Mouse mouse;
 
     std::vector<Vertex> vertices;
@@ -138,30 +142,31 @@ void runApplication() {
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
-        shader.loadInt(true, "u_IsTexture");
+        shader.loadUniform<int>(true, "u_IsTexture");
         texture.setTexture("spritesheet");
-        shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
+        shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
         terrain.vao.bindArray();
         terrain.vbo.draw();
         
-        shader.loadInt(true, "u_IsTexture");
-        shader.loadMatrix(orthoMatrix,"u_Transformation");
+        shader.loadUniform<int>(true, "u_IsTexture");
+        shader.loadUniform<Mat3>(orthoMatrix,"u_Transformation");
         player.vao.bindArray();
         player.vbo.draw();
         
         mouse.generateBuffer(blockData);
         if (mouse.vbo.verticesCount > 0) {
-            shader.loadMatrix(orthoMatrix*player.matrix,"u_Transformation");
-            shader.loadInt(false, "u_IsTexture");
-            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+            shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
+            shader.loadUniform<int>(false, "u_IsTexture");
+            shader.loadUniform<Vec4f>(mouseQuad, "u_QuadColour");
             mouse.vao.bindArray();
             mouse.vbo.draw();
         }
         
         if (lightingOn) {
-            shader.loadInt(false, "u_IsTexture");
-            shader.loadMatrix(orthoMatrix, "u_Transformation");
-            shader.loadVec4(1.0, 0.3, 1.0, 0.7, "u_QuadColour");
+            shader.loadUniform<int>(5, "u_lightRadius");
+            shader.loadUniform<int>(false, "u_IsTexture");
+            shader.loadUniform<Mat3>(orthoMatrix, "u_Transformation");
+            shader.loadUniform<Vec4f>(lightQuad, "u_QuadColour");
             lightVAO.bindArray();
             lightVBO.draw();
         }
@@ -169,8 +174,8 @@ void runApplication() {
          
 
         texture.setTexture("fontImg");
-        shader.loadMatrix(textMatrix, "u_Transformation");
-        shader.loadInt(true, "u_IsTexture");
+        shader.loadUniform<Mat3>(textMatrix, "u_Transformation");
+        shader.loadUniform<int>(true, "u_IsTexture");
         text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
         int count = 0;
         for (auto &block: player.blockCounts) {

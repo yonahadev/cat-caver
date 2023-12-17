@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include "glad.h"
 #include "glfw3.h"
-#include "vec2i.hpp"
+#include "vec2.hpp"
 
 class Window {
 private:

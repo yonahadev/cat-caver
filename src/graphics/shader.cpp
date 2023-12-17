@@ -9,6 +9,8 @@
 #include "shader.hpp"
 #include <fstream>
 #include <iostream>
+#include "vec2.hpp"
+#include "vec4.hpp"
 
 
 Shader::Shader(const char *vertexShaderFilePath,const char *fragmentShaderFilePath) {
@@ -41,22 +43,39 @@ void Shader::unBind() const {
     glUseProgram(0);
 }
 
-void Shader::loadMatrix(Mat3 matrix,const std::string &uniformName) const {
+template <>
+void Shader::loadUniform<Mat3>(Mat3 matrix,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniformMatrix3fv(uniformLocation,1,GL_TRUE,matrix.getFloatArray());
 }
 
-void Shader::loadInt(const int integer,const std::string &uniformName) const {
+template <>
+void Shader::loadUniform<int>(const int integer,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniform1i(uniformLocation,integer);
 }
-
-void Shader::loadVec4(const float r, const float g, const float b, const float a,const std::string &uniformName) const {
+    
+template <>
+void Shader::loadUniform<Vec2f>(const Vec2f vector,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
-    glUniform4f(uniformLocation,r,g,b,a);
+    glUniform2f(uniformLocation,vector.x,vector.y);
+}
+
+template <>
+void Shader::loadUniform<Vec2i>(const Vec2i vector,const std::string &uniformName) const {
+    bind();
+    int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform2i(uniformLocation,vector.x,vector.y);
+}
+
+template <>
+void Shader::loadUniform<Vec4f>(const Vec4f vector,const std::string &uniformName) const {
+    bind();
+    int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    glUniform4f(uniformLocation,vector.x,vector.y,vector.z,vector.w);
 }
 
 std::string Shader::readShaderFile(const char *filePath) const{

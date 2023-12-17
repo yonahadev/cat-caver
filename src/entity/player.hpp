@@ -29,7 +29,7 @@ private:
 public:
     std::unordered_map<std::string, int> blockCounts;
     Mat3 matrix;
-    Vec2 coordinates;
+    Vec2f coordinates;
     VBO vbo;
     VAO vao;
     std::vector<std::string> collisions;

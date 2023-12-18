@@ -18,6 +18,8 @@ private:
 public:
     VBO vbo;
     VAO vao;
+    double screenX;
+    double screenY;
     int minedPercentage;
     int currentTile;
     int tileX;

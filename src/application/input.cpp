@@ -18,8 +18,9 @@
 
 void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse, const Player &player) {
     
-    double mouseX, mouseY;
-    glfwGetCursorPos(window, &mouseX, &mouseY);
+    glfwGetCursorPos(window, &mouse.screenX, &mouse.screenY);
+    double mouseX = mouse.screenX;
+    double mouseY = mouse.screenY;
     
 //    if (mouseX > screenSize.x || mouseX < 0 || mouseY > screenSize.y || mouseY < 0 ) return 0;
     
@@ -77,16 +78,8 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     
 }
 
-void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-        double mouseX, mouseY;
-        glfwGetCursorPos(window, &mouseX, &mouseY);
-        if (mouseX < 100) {
-            player.teleport(1, -3, terrain);
-        }
-    }
-    
-    
+void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
+
     if (mouse.currentTile == -1) return;
     
     Block block = terrain.blockData[mouse.currentTile];
@@ -118,6 +111,21 @@ void handleMouseHold(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &
     }
 }
 
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize) {
+    if (glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        
+        Button button = buttons[0];
+        float mouseY = screenSize.y-mouse.screenY;
+//        std::cout << "MouseX: " <<  mouse.screenX << ", MouseY: " << mouseY << "\n";
+//        std::cout << "ButtonX: " << button.x << ", ButtonY: " << button.y << "\n";
+        bool validX = mouse.screenX > button.x && mouse.screenX < button.x+button.width;
+        bool validY = mouseY > button.y && mouseY < button.y+button.height;
+        if (validX && validY) {
+            player.teleport(1, -3, terrain);
+        }
+        
+    }
+}
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, float &time) {
     

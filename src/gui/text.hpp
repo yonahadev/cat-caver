@@ -25,7 +25,7 @@ private:
     VBO vbo;
 public:
     void draw() const;
-    int renderText(const std::string &string, const int x, const int y);
+    int generate(const std::string &string, const int x, const int y);
     Text(const std::string &fileName);
 };
 

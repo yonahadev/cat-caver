@@ -156,12 +156,17 @@ void runApplication() {
     
     float time = glfwGetTime();
     
+    std::vector<Button> buttons;
+    
     Button surface;
     surface.text = "surface";
     surface.width = gui.getWidth("surface");
     surface.height = 50;
     surface.x = 50;
-    surface.y = screenSize.y - 50;
+    surface.y = screenSize.y - 100;
+    
+    buttons.push_back(surface);
+    
     
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
@@ -175,8 +180,9 @@ void runApplication() {
 //
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
-        handleMouseHold(window.ptr,terrain,mouse,player);
+        handleMining(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
+        handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize);
         
         shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
         shader.loadUniform<int>(true, "u_IsTexture");
@@ -222,8 +228,8 @@ void runApplication() {
 //        std::cout << player.backpackCount << "\n";
         shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
-        gui.renderButton("surface", 50, screenSize.y-100, 45, texture, shader,red,white);
-        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
+        gui.renderButton(surface.text, surface.x, surface.y, surface.height, texture, shader,red,white);
+//        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-100, texture,shader,white);
         
 //        shader.loadUniform<int>(true, "u_IsTexture");
 //        text.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100);

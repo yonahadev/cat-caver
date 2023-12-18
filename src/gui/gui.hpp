@@ -16,6 +16,7 @@
 #include "shader.hpp"
 #include "texture.hpp"
 #include "vec4.hpp"
+#include <vector>
 
 
 class Gui {
@@ -23,9 +24,13 @@ private:
     Text text;
     VAO vao;
     VBO vbo;
+    std::vector<Vec4f> colours;
 public:
-    void renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader);
-    Gui(const std::string &fontFile): text(fontFile) {}
+    int getWidth(const std::string &string);
+    void renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader, const int bgColour, const int textColour);
+    void renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour);
+    Gui(const std::string &fontFile,const std::vector<Vec4f> &colours): text(fontFile),colours(colours) {}
 };
 
 #endif /* gui_hpp */
+

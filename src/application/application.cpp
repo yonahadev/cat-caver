@@ -27,6 +27,7 @@
 #include "block.hpp"
 #include "quad.hpp"
 #include "gui.hpp"
+#include "button.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -35,7 +36,7 @@ Vec2i aspectRatio = {16,10};
 Vec2f windowScale = {1,1};
 
 
-Mat3 textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
+Mat3 guiMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
 
 std::vector<std::string> urls = {
     "/Users/tom/Documents/cplusplus/cat-caver/res/spritesheet.png",
@@ -56,7 +57,7 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
 void resizeWindow(GLFWwindow* window, int width, int height) {
     glfwGetWindowContentScale(window, &windowScale.x, &windowScale.y);
     screenSize = {width,height};
-    textMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
+    guiMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
     glViewport(0, 0, width, height);
 }
 
@@ -65,7 +66,7 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 
 void runApplication() {
     
-
+    
     
     GLFWcursor* handCursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
     
@@ -99,7 +100,6 @@ void runApplication() {
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture(urls);
     
-    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
     std::unordered_map<std::string, int> map;
     for (Block &block: blockData) {
@@ -120,11 +120,27 @@ void runApplication() {
                                           (aspectRatio.y/2)+0.5
                                           );
     
+    //enum maps directly to the colour vector
     
-    Vec4f whiteQuad = {1.0f,1.0f,1.0f,1.0f};
-    Vec4f lightQuad = {0.0f,0.0f,0.0f,1.0f};
-    Vec4f mouseQuad = {0.0, 0.0, 0.0, 0.7};
-    Vec4f mouseInvalid = {1.0,0.0,0.0,0.7};
+    enum colours {
+        white,
+        black,
+        grey,
+        red,
+        green,
+        blue
+    };
+    
+    std::vector<Vec4f> colourVector = {
+        {1.0f,1.0f,1.0f,1.0f},
+        {0.0f,0.0f,0.0f,1.0f},
+        {0.0f,0.0f,0.0f,0.7f},
+        {1.0f,0.0f,0.0f,0.7f},
+        {0.0f,1.0f,0.0f,0.7f},
+        {0.0f,0.0f,1.0f,0.7},
+    };
+    
+    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt",colourVector);
     
     Mouse mouse;
 
@@ -139,6 +155,13 @@ void runApplication() {
     lightVAO.unbindArray();
     
     float time = glfwGetTime();
+    
+    Button surface;
+    surface.text = "surface";
+    surface.width = gui.getWidth("surface");
+    surface.height = 50;
+    surface.x = 50;
+    surface.y = screenSize.y - 50;
     
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
@@ -155,7 +178,7 @@ void runApplication() {
         handleMouseHold(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,time);
         
-        shader.loadUniform<Vec4f>(whiteQuad, "u_QuadColour");
+        shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
         shader.loadUniform<int>(true, "u_IsTexture");
         texture.setTexture("spritesheet");
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
@@ -172,9 +195,9 @@ void runApplication() {
             shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
             shader.loadUniform<int>(false, "u_IsTexture");
             if (mouse.backpackFull && mouse.holding > 0) {
-                shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
+                shader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
             } else {
-                shader.loadUniform<Vec4f>(mouseQuad, "u_QuadColour");
+                shader.loadUniform<Vec4f>(colourVector[grey], "u_QuadColour");
             }
             mouse.vao.bindArray();
             mouse.vbo.draw();
@@ -190,22 +213,19 @@ void runApplication() {
             shader.loadUniform<int>(lightRadius, "u_LightRadius");
             shader.loadUniform<int>(false, "u_IsTexture");
             shader.loadUniform<Mat3>(orthoMatrix, "u_Transformation");
-            shader.loadUniform<Vec4f>(lightQuad, "u_QuadColour");
+            shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
             lightVAO.bindArray();
             lightVBO.draw();
             shader.loadUniform<int>(0, "u_LightRadius");
         }
         
 //        std::cout << player.backpackCount << "\n";
-
-        shader.loadUniform<Vec4f>(whiteQuad, "u_QuadColour");
-        shader.loadUniform<Mat3>(textMatrix, "u_Transformation");
-        texture.setTexture("fontImg");
+        shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
-        gui.renderButton("surface", 50, screenSize.y-100, 45, texture, shader);
+        gui.renderButton("surface", 50, screenSize.y-100, 45, texture, shader,red,white);
+        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
         
 //        shader.loadUniform<int>(true, "u_IsTexture");
-//        text.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50);
 //        text.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100);
 //        shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
 //        if (mouse.backpackFull && mouse.holding > 0) {

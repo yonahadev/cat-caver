@@ -66,10 +66,6 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 
 void runApplication() {
     
-    
-    
-    GLFWcursor* handCursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-    
     //level -1 means you can't mine it / it isn't collideable
     std::vector<Block> blockData = {
         {"stone",1,1000},
@@ -161,7 +157,7 @@ void runApplication() {
     Button surface;
     surface.text = "surface";
     surface.width = gui.getWidth("surface");
-    surface.height = 50;
+    surface.height = 40;
     surface.x = 50;
     surface.y = screenSize.y - 100;
     

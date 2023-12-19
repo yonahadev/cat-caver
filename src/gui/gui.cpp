@@ -10,7 +10,7 @@
 #include "vertex.hpp"
 
 void Gui::renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader, const int bgColour, const int textColour) {
-    int width = text.generate(string,x+25,y+10);
+    int width = text.generate(string,x,y);
     std::vector<Vertex> vertices;
     generateUIQuad(width, height, x, y, vertices);
     vbo = VBO();
@@ -30,7 +30,7 @@ void Gui::renderButton(const std::string &string, const int x, const int y, cons
 
 int Gui::getWidth(const std::string &string) {
     //generates the text to get the width preemptively without drawing it
-    return text.generate(string, 0, 0)+100;
+    return text.generate(string, 0, 0);
 }
 
 void Gui::renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour) {

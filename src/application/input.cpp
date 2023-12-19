@@ -118,8 +118,8 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
         float mouseY = screenSize.y-mouse.screenY;
 //        std::cout << "MouseX: " <<  mouse.screenX << ", MouseY: " << mouseY << "\n";
 //        std::cout << "ButtonX: " << button.x << ", ButtonY: " << button.y << "\n";
-        bool validX = mouse.screenX > button.x && mouse.screenX < button.x+button.width;
-        bool validY = mouseY > button.y && mouseY < button.y+button.height;
+        bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
+        bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
         if (validX && validY) {
             player.teleport(1, -3, terrain);
         }

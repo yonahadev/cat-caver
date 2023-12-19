@@ -23,7 +23,7 @@ void Text::draw() const {
 
 int Text::generate(const std::string &string, const int x, const int y) {
     std::vector<Vertex> vertices;
-    int xOffset = x;
+    int xOffset = 0;
     for (int i = 0; i < string.size(); i++) {
         const char ch = string[i];
         Character current = getCharacter(ch);
@@ -33,9 +33,11 @@ int Text::generate(const std::string &string, const int x, const int y) {
         if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g') {
             yOffset = -6;
         }
-        generateTextQuad(xOffset, y+yOffset, current, vertices);
-        if (i != string.size() -1) {
+        generateTextQuad(xOffset+x, y+yOffset, current, vertices);
+        if (i < string.size()-1) {
             xOffset += current.width+5;
+        } else {
+            xOffset += current.width;
         }
     }
     vbo = VBO();
@@ -46,7 +48,7 @@ int Text::generate(const std::string &string, const int x, const int y) {
     vao.enableAttributes();
     vao.unbindArray();
     
-    return xOffset;
+    return xOffset; // accounts for initial offset as well as removing the final padding
 }
 
 Character Text::getCharacter(const char character) {

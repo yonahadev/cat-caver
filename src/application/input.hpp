@@ -24,7 +24,7 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
 
 void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player);
 
-void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player,const std::vector<Button> &buttons, const Vec2i &screenSize);
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player,const std::vector<Button> &buttons, const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab,bool mousePressed);
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon, float &time);
 

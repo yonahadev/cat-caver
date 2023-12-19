@@ -107,6 +107,7 @@
 		E26B16582B2A094F00B2105B /* vertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertexArray.hpp; sourceTree = "<group>"; };
 		E275DAE12B2B8E8300E2969D /* block.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = block.hpp; sourceTree = "<group>"; };
 		E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
+		E2ACBFCB2B323197001E2F7C /* pickaxe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pickaxe.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				E275DAE12B2B8E8300E2969D /* block.hpp */,
+				E2ACBFCB2B323197001E2F7C /* pickaxe.hpp */,
 			);
 			path = game;
 			sourceTree = "<group>";

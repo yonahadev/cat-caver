@@ -29,6 +29,7 @@ public:
     int getWidth(const std::string &string);
     void renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader, const int bgColour, const int textColour);
     void renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour);
+    void renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour);
     Gui(const std::string &fontFile,const std::vector<Vec4f> &colours): text(fontFile),colours(colours) {}
 };
 

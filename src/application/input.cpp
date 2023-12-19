@@ -111,9 +111,10 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
     }
 }
 
-void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize) {
-    if (glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-        
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab, bool mousePressed) {
+
+    if (mousePressed == false) return;
+    
         float mouseY = screenSize.y-mouse.screenY;
         for (const Button &button: buttons) {
             bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
@@ -132,11 +133,20 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             player.blockCounts[block] = 0;
                         }
                         break;
+                    case 2:
+                        if (openMenu == "") {
+                            openMenu = button.text;
+                        } else {
+                            openMenu = "";
+                        }
+                        break;
+                    case 3:
+                        selectedTab = button.text;
+                        break;
                 }
 
             }
         }
-    }
 }
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, float &time) {

@@ -28,12 +28,15 @@
 #include "quad.hpp"
 #include "gui.hpp"
 #include "button.hpp"
+#include "pickaxe.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
-Vec2i screenSize = {854,480};
+Vec2i screenSize = {900,563};
 Vec2i aspectRatio = {16,10};
 Vec2f windowScale = {1,1};
+
+bool mousePressed = false;
 
 
 Mat3 guiMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
@@ -52,6 +55,15 @@ void handleKeypress(GLFWwindow* window, int key, int scancode, int action, int m
     if(key == GLFW_KEY_1 && action == GLFW_PRESS){
         lightingOn = !lightingOn;
     }
+}
+
+void handleMouseButton(GLFWwindow* window, int button, int action, int mods ) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        mousePressed = true;
+    } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        mousePressed = false;
+    }
+        
 }
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
@@ -74,6 +86,11 @@ void runApplication() {
         {"diamond",3,3000,50},
     };
     
+    std::vector<Pickaxe> pickaxeData = {
+        {"Ol' trusty",1,1,0},
+        {"Rookie's favourite shovel",1,3,100},
+        {"Fork",2,6,500}
+    };
     
     Window window(screenSize,WINDOW_NAME);
     
@@ -89,6 +106,7 @@ void runApplication() {
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetWindowSizeCallback(window.ptr, resizeWindow);
+    glfwSetMouseButtonCallback(window.ptr, handleMouseButton);
     
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture(urls);
@@ -105,6 +123,8 @@ void runApplication() {
     }
     
     Player player(1,-3,7,map);
+    
+    player.pickaxes.push_back(pickaxeData[0]);
     
     Terrain terrain(dungeonConfig,blockData);
     
@@ -149,7 +169,6 @@ void runApplication() {
     lightVAO.enableAttributes();
     lightVAO.unbindArray();
     
-    float time = glfwGetTime();
     
     std::vector<Button> buttons;
     
@@ -169,9 +188,49 @@ void runApplication() {
     sellButton.x = 50;
     sellButton.y = screenSize.y-250;
     
+    Button backpackButton;
+    backpackButton.id = 2;
+    backpackButton.text = "Backpack";
+    backpackButton.width = gui.getWidth("Backpack");
+    backpackButton.height = 40;
+    backpackButton.x = 50;
+    backpackButton.y = screenSize.y-300;
+    
+    Button shopButton;
+    shopButton.id = 2;
+    shopButton.text = "Shop";
+    shopButton.width = gui.getWidth("Shop");
+    shopButton.height = 40;
+    shopButton.x = 50;
+    shopButton.y = screenSize.y-350;
+    
+    Button OresButton;
+    OresButton.id = 3;
+    OresButton.text = "Ores";
+    OresButton.width = gui.getWidth("Ores");
+    OresButton.height = 30;
+    OresButton.x = screenSize.x/2-(300/2);
+    OresButton.y = screenSize.y-400;
+    
+    Button PickaxesButton;
+    PickaxesButton.id = 3;
+    PickaxesButton.text = "Pickaxes";
+    PickaxesButton.width = gui.getWidth("Pickaxes");
+    PickaxesButton.height = 30;
+    PickaxesButton.x = screenSize.x/2-(300/2)+100;
+    PickaxesButton.y = screenSize.y-400;
+    
     buttons.push_back(sellButton);
     buttons.push_back(surfaceButton);
+    buttons.push_back(backpackButton);
+    buttons.push_back(OresButton);
+    buttons.push_back(PickaxesButton);
+    buttons.push_back(shopButton);
     
+    std::string openMenu = "";
+    std::string selectedTab = "";
+    
+    float keyTime = glfwGetTime();
     
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
@@ -186,8 +245,8 @@ void runApplication() {
         
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
         handleMining(window.ptr,terrain,mouse,player);
-        handleKeyPress(window.ptr, player,terrain,time);
-        handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize);
+        handleKeyPress(window.ptr, player,terrain,keyTime);
+        handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize, openMenu,selectedTab, mousePressed);
         
         shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
         shader.loadUniform<int>(true, "u_IsTexture");
@@ -235,10 +294,43 @@ void runApplication() {
         
         gui.renderButton(surfaceButton.text, surfaceButton.x, surfaceButton.y, surfaceButton.height, texture, shader,red,white);
         gui.renderButton(sellButton.text, sellButton.x, sellButton.y, sellButton.height, texture, shader, blue,white);
+        gui.renderButton(backpackButton.text, backpackButton.x, backpackButton.y, backpackButton.height, texture, shader, green,white);
+        gui.renderButton(shopButton.text, shopButton.x, shopButton.y, shopButton.height, texture, shader, red,white);
         gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
         gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100, texture, shader, blue);
         gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
         
+        if (openMenu == "Backpack") {
+            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue);
+            if (selectedTab == "Ores") {
+                int count = 0;
+                for (auto &[block,value]: player.blockCounts) {
+                    int offset = count*50;
+                    gui.renderText(block.name+ ": " + std::to_string(value), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                    count++;
+                }
+            } else if (selectedTab == "Pickaxes") {
+                int count = 0;
+                for (Pickaxe &pickaxe: player.pickaxes) {
+                    int offset = count*50;
+                    gui.renderText(pickaxe.name+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                    count++;
+                }
+            }
+            gui.renderButton(OresButton.text, OresButton.x, OresButton.y, OresButton.height, texture, shader, red,white);
+            gui.renderButton(PickaxesButton.text, PickaxesButton.x, PickaxesButton.y, PickaxesButton.height, texture, shader, red,white);
+        } else if (openMenu == "Shop") {
+            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, green);
+            if (selectedTab == "Pickaxes") {
+                int count = 0;
+                for (Pickaxe &pickaxe: pickaxeData) {
+                    int offset = count*50;
+                    gui.renderText(pickaxe.name+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                    count++;
+                }
+            }
+            gui.renderButton(PickaxesButton.text, PickaxesButton.x, PickaxesButton.y, PickaxesButton.height, texture, shader, red,white);
+        }
 //        shader.loadUniform<int>(true, "u_IsTexture");
 //        shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
 //        if (mouse.backpackFull && mouse.holding > 0) {
@@ -246,13 +338,9 @@ void runApplication() {
 //            text.renderText("Backpack is full", 50, screenSize.y-150);
 //        }
 //        int count = 0;
-//        for (auto &block: player.blockCounts) {
-//            int offset = count*50;
-//            text.renderText(block.first+ ": " + std::to_string(block.second), 50, screenSize.y-150-offset);
-//            count++;
-//        }
+
         
-        
+        mousePressed = false;
         glfwPollEvents();
         glfwSwapBuffers(window.ptr);
     }

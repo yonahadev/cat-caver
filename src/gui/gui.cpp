@@ -11,6 +11,14 @@
 
 void Gui::renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader, const int bgColour, const int textColour) {
     int width = text.generate(string,x,y);
+    renderQuad(x, y, width, height, texture, shader, bgColour);
+    shader.loadUniform<int>(true, "u_IsTexture");
+    texture.setTexture("fontImg");
+    shader.loadUniform<Vec4f>(colours[textColour], "u_QuadColour");
+    text.draw();
+}
+
+void Gui::renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour) {
     std::vector<Vertex> vertices;
     generateUIQuad(width, height, x, y, vertices);
     vbo = VBO();
@@ -22,10 +30,6 @@ void Gui::renderButton(const std::string &string, const int x, const int y, cons
     shader.loadUniform<int>(false, "u_IsTexture");
     shader.loadUniform<Vec4f>(colours[bgColour], "u_QuadColour");
     vbo.draw();
-    shader.loadUniform<int>(true, "u_IsTexture");
-    texture.setTexture("fontImg");
-    shader.loadUniform<Vec4f>(colours[textColour], "u_QuadColour");
-    text.draw();
 }
 
 int Gui::getWidth(const std::string &string) {

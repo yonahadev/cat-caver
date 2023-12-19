@@ -32,6 +32,8 @@ int Text::generate(const std::string &string, const int x, const int y) {
         int yOffset = 0;
         if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g') {
             yOffset = -6;
+        } else if (ch == '\'' || ch == '-') {
+            yOffset += 18;
         }
         generateTextQuad(xOffset+x, y+yOffset, current, vertices);
         if (i < string.size()-1) {

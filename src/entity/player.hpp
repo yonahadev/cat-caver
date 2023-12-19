@@ -17,6 +17,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include "Block.hpp"
 
 class Player {
 private:
@@ -27,7 +28,7 @@ private:
     float airborne = 0;
     void adjustHitbox();
 public:
-    std::unordered_map<std::string, int> blockCounts;
+    std::unordered_map<Block, int> blockCounts;
     int backpackCapacity;
     int backpackCount;
     int money;
@@ -47,7 +48,7 @@ public:
     void accelerate(const Terrain &terrain);
     void move(const float x,const float y);
     void moveCamera(const float x,const float y, const Terrain &dungeon);
-    Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<std::string, int> &map);
+    Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map);
 };
 
 #endif /* player_hpp */

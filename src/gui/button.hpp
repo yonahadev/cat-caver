@@ -13,6 +13,7 @@
 
 struct Button {
     std::string text;
+    int id;
     int width;
     int height;
     int x;

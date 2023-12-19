@@ -61,20 +61,17 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-
-
-
 void runApplication() {
     
     //level -1 means you can't mine it / it isn't collideable
     std::vector<Block> blockData = {
-        {"stone",1,1000},
-        {"copper",2,1500},
-        {"iron",2,1500},
-        {"dirt",-1,1000},
-        {"coal",2,1250},
-        {"gold",3,2000},
-        {"diamond",3,3000},
+        {"stone",1,1000,1},
+        {"copper",2,1500,5},
+        {"iron",2,1500,5},
+        {"dirt",-1,1000,0},
+        {"coal",2,1250,3},
+        {"gold",3,2000,10},
+        {"diamond",3,3000,50},
     };
     
     
@@ -96,12 +93,14 @@ void runApplication() {
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
     Texture texture(urls);
     
+
+
     
-    std::unordered_map<std::string, int> map;
+    std::unordered_map<Block, int> map;
     for (Block &block: blockData) {
         std::string blockName = block.name;
         if (block.level != -1) {
-            map[blockName] = 0;
+            map[block] = 0;
         }
     }
     
@@ -133,7 +132,7 @@ void runApplication() {
         {0.0f,0.0f,0.0f,0.7f},
         {1.0f,0.0f,0.0f,0.7f},
         {0.0f,1.0f,0.0f,0.7f},
-        {0.0f,0.0f,1.0f,0.7},
+        {0.0f,0.0f,1.0f,0.7f},
     };
     
     Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt",colourVector);
@@ -154,14 +153,24 @@ void runApplication() {
     
     std::vector<Button> buttons;
     
-    Button surface;
-    surface.text = "surface";
-    surface.width = gui.getWidth("surface");
-    surface.height = 40;
-    surface.x = 50;
-    surface.y = screenSize.y - 100;
+    Button surfaceButton;
+    surfaceButton.id = 0;
+    surfaceButton.text = "surface";
+    surfaceButton.width = gui.getWidth("surface");
+    surfaceButton.height = 40;
+    surfaceButton.x = 50;
+    surfaceButton.y = screenSize.y-200;
     
-    buttons.push_back(surface);
+    Button sellButton;
+    sellButton.id = 1;
+    sellButton.text = "sell";
+    sellButton.width = gui.getWidth("sell");
+    sellButton.height = 40;
+    sellButton.x = 50;
+    sellButton.y = screenSize.y-250;
+    
+    buttons.push_back(sellButton);
+    buttons.push_back(surfaceButton);
     
     
     while (!glfwWindowShouldClose(window.ptr)) {
@@ -224,11 +233,13 @@ void runApplication() {
 //        std::cout << player.backpackCount << "\n";
         shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
-        gui.renderButton(surface.text, surface.x, surface.y, surface.height, texture, shader,red,white);
-//        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-100, texture,shader,white);
+        gui.renderButton(surfaceButton.text, surfaceButton.x, surfaceButton.y, surfaceButton.height, texture, shader,red,white);
+        gui.renderButton(sellButton.text, sellButton.x, sellButton.y, sellButton.height, texture, shader, blue,white);
+        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
+        gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100, texture, shader, blue);
+        gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
         
 //        shader.loadUniform<int>(true, "u_IsTexture");
-//        text.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.backpackCapacity), 50, screenSize.y-100);
 //        shader.loadUniform<Vec4f>(mouseInvalid, "u_QuadColour");
 //        if (mouse.backpackFull && mouse.holding > 0) {
 //            

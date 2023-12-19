@@ -37,7 +37,7 @@ void Player::checkCollisions(const Terrain &terrain) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
             int currentTile = terrain.getTile(x, y);
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
-            if (terrain.blockData[currentTile].level != -1) {
+            if (terrain.blockData[currentTile].level != -1 && collisionsOn == true) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }
@@ -85,7 +85,9 @@ void Player::accelerate(const Terrain &terrain) {
 
 void Player::teleport(const float x, const float y,const Terrain &terrain) {
     Vec2f changeInPosition = {x-coordinates.x,y-coordinates.y};
+    collisionsOn = false;
     moveCamera(changeInPosition.x, changeInPosition.y, terrain);
+    collisionsOn = true;
 }
 
 void Player::moveCamera(const float x,const float y, const Terrain &terrain) {
@@ -122,7 +124,7 @@ void Player::update(const Terrain &terrain,float xPos,float yPos) {
 Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map): hitboxLeft(), blockCounts(map), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1),coordinates(offsetX,offsetY) {
     backpackCapacity = 5;
     backpackCount = 0;
-    
+    collisionsOn = true;
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
     

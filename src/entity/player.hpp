@@ -18,6 +18,7 @@
 #include <string>
 #include <unordered_map>
 #include "Block.hpp"
+#include "pickaxe.hpp"
 
 class Player {
 private:
@@ -28,7 +29,9 @@ private:
     float airborne = 0;
     void adjustHitbox();
 public:
+    bool collisionsOn;
     std::unordered_map<Block, int> blockCounts;
+    std::vector<Pickaxe> pickaxes;
     int backpackCapacity;
     int backpackCount;
     int money;

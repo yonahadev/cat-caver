@@ -16,6 +16,17 @@ struct Pickaxe {
     int level;
     int power;
     int cost;
+    
+    bool operator==(const Pickaxe &other) const = default; //c++20 equality operator for structs
 };
 
+template<>
+struct std::hash<Pickaxe>
+{
+    std::size_t operator()(const Pickaxe& pickaxe) const noexcept
+    {
+        std::size_t h1 = std::hash<std::string>{}(pickaxe.name);
+        return h1;
+    }
+};
 #endif

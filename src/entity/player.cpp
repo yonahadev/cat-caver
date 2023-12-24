@@ -127,7 +127,7 @@ Player::Player(float offsetX,float offsetY, const int textureIndex, const std::u
     collisionsOn = true;
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
-    
+    money = 0;
     vbo = VBO();
     vao = VAO();
     vao.bindArray();

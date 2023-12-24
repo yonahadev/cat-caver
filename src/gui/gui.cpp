@@ -9,12 +9,12 @@
 #include "quad.hpp"
 #include "vertex.hpp"
 
-void Gui::renderButton(const std::string &string, const int x, const int y, const int height, Texture &texture, Shader &shader, const int bgColour, const int textColour) {
-    int width = text.generate(string,x,y);
-    renderQuad(x, y, width, height, texture, shader, bgColour);
+void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
+    int width = text.generate(button.text,button.x,button.y);
+    renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour);
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");
-    shader.loadUniform<Vec4f>(colours[textColour], "u_QuadColour");
+    shader.loadUniform<Vec4f>(colours[button.textColour], "u_QuadColour");
     text.draw();
 }
 

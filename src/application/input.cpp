@@ -111,43 +111,54 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
     }
 }
 
-void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab, bool mousePressed) {
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab, bool mousePressed,const std::vector<Pickaxe> &pickaxeData) {
 
     if (mousePressed == false) return;
     
         float mouseY = screenSize.y-mouse.screenY;
-        for (const Button &button: buttons) {
-            bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
-            bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
-            if (validX && validY) {
-                std::cout << button.text << " id:" << button.id << "\n";
-                switch(button.id) {
-                    case 0:
-                        player.teleport(1, -3, terrain);
-                        break;
-                    case 1:
-                        player.backpackCount = 0;
-                        for (auto &[block,count]: player.blockCounts) {
-                            int totalValue = count*block.sellValue;
-                            player.money += totalValue;
-                            player.blockCounts[block] = 0;
-                        }
-                        break;
-                    case 2:
-                        if (openMenu == "") {
-                            openMenu = button.text;
-                        } else {
-                            openMenu = "";
-                        }
-                        break;
-                    case 3:
-                        selectedTab = button.text;
-                        break;
-                }
-
+        for (const auto &button: buttons) {
+            
+                bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
+                bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
+                if (validX && validY) {
+                    std::cout << button.text << " id:" << button.id << "\n";
+                    switch(button.id) {
+                        case 0:
+                            player.teleport(1, -3, terrain);
+                            break;
+                        case 1:
+                            player.backpackCount = 0;
+                            for (auto &[block,count]: player.blockCounts) {
+                                int totalValue = count*block.sellValue;
+                                player.money += totalValue;
+                                player.blockCounts[block] = 0;
+                            }
+                            break;
+                        case 2:
+                            if (openMenu == button.text) {
+                                openMenu = "";
+                            } else {
+                                openMenu = button.text;
+                            }
+                            break;
+                        case 3:
+                            selectedTab = button.text;
+                            break;
+                        case 4:
+                            int itemIndex = std::stoi(button.metaInfo);
+                                Pickaxe pickaxe = pickaxeData[itemIndex];
+                            if (button.text == "equip") {
+                                player.equippedPickaxe = pickaxe;
+                                std::cout << "Equipped" << pickaxe.name << "\n";
+                            } else if (player.money >= pickaxe.cost) {
+                                    player.equippedPickaxe = pickaxe;
+                                    player.ownedPickaxes[pickaxe] = true;
+                                    player.money -= pickaxe.cost;
+                                }
+                            }
+                    }
             }
         }
-}
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, float &time) {
     

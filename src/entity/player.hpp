@@ -29,12 +29,13 @@ private:
     float airborne = 0;
     void adjustHitbox();
 public:
+    Pickaxe equippedPickaxe;
     bool collisionsOn;
     std::unordered_map<Block, int> blockCounts;
-    std::vector<Pickaxe> pickaxes;
+    std::unordered_map<Pickaxe, bool> ownedPickaxes;
+    int money;
     int backpackCapacity;
     int backpackCount;
-    int money;
     Mat3 matrix;
     Vec2f coordinates;
     VBO vbo;

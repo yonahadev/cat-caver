@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include "Block.hpp"
 #include "pickaxe.hpp"
+#include "backpack.hpp"
 
 class Player {
 private:
@@ -30,11 +31,12 @@ private:
     void adjustHitbox();
 public:
     Pickaxe equippedPickaxe;
+    Backpack equippedBackpack;
     bool collisionsOn;
     std::unordered_map<Block, int> blockCounts;
     std::unordered_map<Pickaxe, bool> ownedPickaxes;
+    std::unordered_map<Backpack, bool> ownedBackpacks;
     int money;
-    int backpackCapacity;
     int backpackCount;
     Mat3 matrix;
     Vec2f coordinates;

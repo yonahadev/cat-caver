@@ -122,7 +122,6 @@ void Player::update(const Terrain &terrain,float xPos,float yPos) {
 }
     
 Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map): hitboxLeft(), blockCounts(map), matrix(1,0,-offsetX,0,1,-offsetY,0,0,1),coordinates(offsetX,offsetY) {
-    backpackCapacity = 5;
     backpackCount = 0;
     collisionsOn = true;
     std::vector<Vertex> vertices;

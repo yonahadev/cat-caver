@@ -10,7 +10,7 @@
 #include "vertex.hpp"
 
 void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
-    int width = text.generate(button.text,button.x,button.y);
+    text.generate(button.text,button.x,button.y);
     renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour);
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");

@@ -69,6 +69,7 @@
 		E2364D862B21194600E2D395 /* fontImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontImg.png; sourceTree = "<group>"; };
 		E2364D872B2123CC00E2D395 /* fontImg.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fontImg.fnt; sourceTree = "<group>"; };
 		E239661D2B2DAD830080B1A6 /* mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mouse.cpp; sourceTree = "<group>"; };
+		E250DCF12B3DCAE700BF30DD /* backpack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = backpack.hpp; sourceTree = "<group>"; };
 		E257C3AC2B3061F90002A53F /* button.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = button.hpp; sourceTree = "<group>"; };
 		E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mouse.hpp; sourceTree = "<group>"; };
 		E262AB9F2B1B6331002F988D /* cat-caver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cat-caver"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,6 +317,7 @@
 			children = (
 				E275DAE12B2B8E8300E2969D /* block.hpp */,
 				E2ACBFCB2B323197001E2F7C /* pickaxe.hpp */,
+				E250DCF12B3DCAE700BF30DD /* backpack.hpp */,
 			);
 			path = game;
 			sourceTree = "<group>";

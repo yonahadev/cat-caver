@@ -11,49 +11,51 @@
 #include <fstream>
 #include "math.hpp"
 
-std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, const int layerDepth) {
+std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, const int layerDepth, const std::unordered_map<int,int> &layerOres) {
     std::vector<int> newTiles = {};
     for (int y = 0; y < layerDepth; y++) {
-        for (int x = 0; x < config.width; x++) {
+        for (int x = 1; x < config.width-1; x++) {
             int currentCell = currentTiles[x+(y*config.width)];
             std::cout << "Current cell is:  " << currentCell << "\n";
             std::vector<Vec2i> currentNeighbours = getNeighbours(x, y);
-            int newCell = calculateCellState(currentNeighbours, currentCell);
+            int newCell = calculateCellState(currentNeighbours, currentCell, currentTiles,layerOres);
             newTiles.push_back(newCell);
         }
     }
     return newTiles;
 }
 
-unsigned int Terrain::getAliveNeighbourCount(const std::vector <Vec2i> &neighbours) const {
-    unsigned int aliveCount = 0;
+std::unordered_map<int, int> Terrain::getAliveNeighbourCount(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::unordered_map<int,int> &layerOres) const {
+    
+    std::unordered_map<int, int> neighbouringOres;
     
     for (auto &neighbour: neighbours) {
-        if (getTile(neighbour.x,neighbour.y) == 1) {
-            aliveCount++;
+        int currentTile = currentTiles[neighbour.x+(neighbour.y*config.width)];
+        if (currentTile == 1) {
+//            aliveCount++;
         }
     }
     
-    return aliveCount;
+    return neighbouringOres;
 }
 
-int Terrain::calculateCellState(const std::vector <Vec2i> &neighbours,const unsigned int cell) const {
+int Terrain::calculateCellState(const std::vector <Vec2i> &neighbours,const unsigned int cell, const std::vector<int> &currentTiles, const std::unordered_map<int,int> &layerOres) const {
     
-    int aliveCount = getAliveNeighbourCount(neighbours);
+    std::unordered_map<int, int> aliveCount = getAliveNeighbourCount(neighbours, currentTiles,layerOres);
     
-    std::cout << "Current cell Alive count:  " << aliveCount << "\n";
-    
-    if (cell == 1) {
-        if (aliveCount <= config.underpopulationCount || aliveCount >= config.overpopulationCount) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-    
-    if (aliveCount >= config.cellsForBirth) {
-        return 1;
-    }
+//    std::cout << "Current cell Alive count:  " << aliveCount << "\n";
+//    
+//    if (cell == 1) {
+//        if (aliveCount <= config.underpopulationCount || aliveCount >= config.overpopulationCount) {
+//            return 0;
+//        } else {
+//            return 1;
+//        }
+//    }
+//    
+//    if (aliveCount >= config.cellsForBirth) {
+//        return 1;
+//    }
     
     return 0;
 }
@@ -102,23 +104,6 @@ int Terrain::getTile(const int x,const int y) const{
     return tiles[index];
 }
 
-//int Terrain::getBlockHP(const int tile) const {
-//    int hp = block
-//    return hp;
-//}
-//
-//std::string Terrain::getBlockName(const int tile) const {
-//    return blockData["blocks"][tile]["name"];
-//}
-//
-//bool Terrain::isCollideable(const int tile) const {
-//    bool collideable = blockData["blocks"][tile]["canMine"];
-//    if (collideable) {
-//        return true;
-//    }
-//    return false;
-//}
-
 int Terrain::getTileIndex(const int x, const int y) const{
     return x+(-y*config.width);
 }
@@ -126,6 +111,20 @@ int Terrain::getTileIndex(const int x, const int y) const{
 void Terrain::mineBlock(const int x, const int y) {
     int index = getTileIndex(x,y);
     tiles[index] = 3;
+}
+
+
+int Terrain::getRandomOre(const std::unordered_map<int,int> &layerOres) { //only works for sets with a total of 100
+    int randomInt = getRandomInt(1, 100);
+    int total = 0;
+    for (auto &[ore,percentageChance]:layerOres) {
+        total += percentageChance;
+        if (randomInt <= total) {
+            return ore;
+        }
+    }
+    std::cout << "FAILED TO SELECT AN ORE" << "\n";
+    return 0;
 }
 
 void Terrain::generateLayer() {
@@ -136,18 +135,15 @@ void Terrain::generateLayer() {
             if (j == 0 || j == config.width-1) {
                 layerTiles.push_back(1);
             } else {
-                int cell = 0;
-                if (getRandomInt(1, 100) <= config.startingAliveChance) {
-                    cell = 1;
-                }
+                int cell = getRandomOre(config.layerInfo[0]);
                 layerTiles.push_back(cell);
-
+        
             }
         }
     }
     
     for (int i = 0; i < config.turnCount; i++) {
-        layerTiles = simulateTurn(layerTiles,layerDepth);
+        layerTiles = simulateTurn(layerTiles,layerDepth,config.layerInfo[0]);
     }
     
     tiles.insert(tiles.end(), layerTiles.begin(),layerTiles.end());

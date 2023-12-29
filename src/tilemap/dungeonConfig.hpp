@@ -10,14 +10,16 @@
 
 #include <stdio.h>
 #include <vector>
+#include <unordered_map>
 
 struct DungeonConfig {
     int width;
-    int startingAliveChance;
+    int powerupChance;
     int turnCount;
     int cellsForBirth;
     int underpopulationCount;
     int overpopulationCount;
+    std::vector<std::unordered_map<int, int>> layerInfo;
     
     DungeonConfig() {}
 };

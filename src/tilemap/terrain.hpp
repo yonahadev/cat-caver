@@ -15,15 +15,17 @@
 #include "vec2.hpp"
 #include "dungeonConfig.hpp"
 #include "block.hpp"
+#include <unordered_map>
 
 
 class Terrain {
 private:
     void generateTerrain();
-    int calculateCellState(const std::vector <Vec2i> &neighbours, const unsigned int cell) const;
+    int calculateCellState(const std::vector <Vec2i> &neighbours, const unsigned int cell,const std::vector<int> &currentTiles,const std::unordered_map<int,int> &layerOres) const;
     int getPositionInTiles(const unsigned int x, const unsigned int y) const;
-    std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth);
-    unsigned int getAliveNeighbourCount(const std::vector <Vec2i> &neighbours) const;
+    std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth, const std::unordered_map<int,int> &layerOres);
+    std::unordered_map<int, int> getAliveNeighbourCount(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::unordered_map<int,int> &layerOres) const;
+    int getRandomOre(const std::unordered_map<int,int> &layerOres);
 public:
     std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     const DungeonConfig config;

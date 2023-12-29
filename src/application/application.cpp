@@ -105,11 +105,19 @@ void runApplication() {
     
     DungeonConfig dungeonConfig;
     dungeonConfig.width = 16;
-    dungeonConfig.startingAliveChance = 45;
-    dungeonConfig.overpopulationCount = 9;
-    dungeonConfig.underpopulationCount = 3;
+    dungeonConfig.powerupChance = 1; //applied post layer generation
+    dungeonConfig.overpopulationCount = 7;
+    dungeonConfig.underpopulationCount = 2;
     dungeonConfig.cellsForBirth = 4;
     dungeonConfig.turnCount = 0;
+    dungeonConfig.layerInfo = {
+        { //layer one info right side is % chance of spawning
+            {0,60},
+            {1,20},
+            {2,10},
+            {4,10}
+        }
+    };
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetWindowSizeCallback(window.ptr, resizeWindow);
@@ -197,7 +205,7 @@ void runApplication() {
     };
     
     while (!glfwWindowShouldClose(window.ptr)) {
-        glClearColor(0.3f, 0.2f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         int depth = int(abs(floor(player.coordinates.y)));

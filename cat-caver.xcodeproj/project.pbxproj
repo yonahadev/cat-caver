@@ -69,6 +69,12 @@
 		E2364D862B21194600E2D395 /* fontImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fontImg.png; sourceTree = "<group>"; };
 		E2364D872B2123CC00E2D395 /* fontImg.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fontImg.fnt; sourceTree = "<group>"; };
 		E239661D2B2DAD830080B1A6 /* mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mouse.cpp; sourceTree = "<group>"; };
+		E24BD9732B45927B00DD8FC0 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		E24BD9752B45927B00DD8FC0 /* khrplatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
+		E24BD9772B45927B00DD8FC0 /* glfw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
+		E24BD9782B45927B00DD8FC0 /* glfw3native.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
+		E24BD97A2B45927B00DD8FC0 /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
+		E24BD97B2B45927B00DD8FC0 /* PerlinNoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PerlinNoise.hpp; sourceTree = "<group>"; };
 		E250DCF12B3DCAE700BF30DD /* backpack.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = backpack.hpp; sourceTree = "<group>"; };
 		E257C3AC2B3061F90002A53F /* button.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = button.hpp; sourceTree = "<group>"; };
 		E259A7E62B1E2D2A007CE0C9 /* mouse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mouse.hpp; sourceTree = "<group>"; };
@@ -162,6 +168,31 @@
 			path = gui;
 			sourceTree = "<group>";
 		};
+		E24BD9742B45927B00DD8FC0 /* KHR */ = {
+			isa = PBXGroup;
+			children = (
+				E24BD9752B45927B00DD8FC0 /* khrplatform.h */,
+			);
+			path = KHR;
+			sourceTree = "<group>";
+		};
+		E24BD9762B45927B00DD8FC0 /* GLFW */ = {
+			isa = PBXGroup;
+			children = (
+				E24BD9772B45927B00DD8FC0 /* glfw3.h */,
+				E24BD9782B45927B00DD8FC0 /* glfw3native.h */,
+			);
+			path = GLFW;
+			sourceTree = "<group>";
+		};
+		E24BD9792B45927B00DD8FC0 /* glad */ = {
+			isa = PBXGroup;
+			children = (
+				E24BD97A2B45927B00DD8FC0 /* glad.h */,
+			);
+			path = glad;
+			sourceTree = "<group>";
+		};
 		E262AB962B1B6331002F988D = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +251,11 @@
 		E262ABAF2B1B6413002F988D /* includes */ = {
 			isa = PBXGroup;
 			children = (
+				E24BD9792B45927B00DD8FC0 /* glad */,
+				E24BD9762B45927B00DD8FC0 /* GLFW */,
+				E24BD9742B45927B00DD8FC0 /* KHR */,
+				E24BD97B2B45927B00DD8FC0 /* PerlinNoise.hpp */,
+				E24BD9732B45927B00DD8FC0 /* stb_image.h */,
 				E225B07A2B1C9DFC003A5B17 /* glad */,
 				E225B07C2B1C9DFC003A5B17 /* GLFW */,
 				E225B0752B1C9DFC003A5B17 /* KHR */,

@@ -19,7 +19,7 @@ struct DungeonConfig {
     int cellsForBirth;
     int underpopulationCount;
     int overpopulationCount;
-    std::vector<std::unordered_map<int, int>> layerInfo;
+    std::vector<std::unordered_map<int, double>> layerInfo;
     
     DungeonConfig() {}
 };

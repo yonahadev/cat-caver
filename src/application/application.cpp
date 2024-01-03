@@ -30,6 +30,7 @@
 #include "button.hpp"
 #include "pickaxe.hpp"
 #include "backpack.hpp"
+#include "PerlinNoise.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -106,16 +107,16 @@ void runApplication() {
     DungeonConfig dungeonConfig;
     dungeonConfig.width = 16;
     dungeonConfig.powerupChance = 1; //applied post layer generation
-    dungeonConfig.overpopulationCount = 7;
-    dungeonConfig.underpopulationCount = 2;
-    dungeonConfig.cellsForBirth = 4;
+    dungeonConfig.overpopulationCount = 5;
+    dungeonConfig.underpopulationCount = 0;
+    dungeonConfig.cellsForBirth = 1;
     dungeonConfig.turnCount = 0;
     dungeonConfig.layerInfo = {
         { //layer one info right side is % chance of spawning
-            {0,60},
-            {1,20},
-            {2,10},
-            {4,10}
+            {0,0.6},
+            {1,0.2},
+            {2,0.1},
+            {4,0.1}
         }
     };
     
@@ -137,7 +138,7 @@ void runApplication() {
         }
     }
     
-    Player player(1,-3,7,map);
+    Player player(1,-3,8,map);
     
     player.ownedPickaxes[pickaxeData[0]] = true;
     player.equippedPickaxe = pickaxeData[0];
@@ -204,6 +205,7 @@ void runApplication() {
         {5,false}
     };
     
+    
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -215,6 +217,13 @@ void runApplication() {
         }
         
         bool atSurface = depth <= 4;
+        if (atSurface == false) {
+            openMenu = "";
+            visibleButtons[3] = false;
+            visibleButtons[4] = false;
+            visibleButtons[5] = false;
+            
+        }
         
         std::vector<Button> buttons = {};
         buttons.emplace_back(0,"surface",gui.getWidth("surface"),40,50,screenSize.y-200,red,white,"");
@@ -248,8 +257,9 @@ void runApplication() {
                     buttons.emplace_back(4,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
                 }
             } else {
-                int width = gui.getWidth("buy");
-                buttons.emplace_back(4,"buy",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
+                std::string text = "$"+std::to_string(pickaxe.cost);
+                int width = gui.getWidth(text);
+                buttons.emplace_back(4,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
                     
             }
 
@@ -268,8 +278,9 @@ void runApplication() {
                     buttons.emplace_back(5,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
                 }
             } else {
-                int width = gui.getWidth("buy");
-                buttons.emplace_back(5,"buy",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
+                std::string text = "$"+std::to_string(backpack.cost);
+                int width = gui.getWidth(text);
+                buttons.emplace_back(5,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
                     
             }
 
@@ -340,7 +351,7 @@ void runApplication() {
                 count++;
             }
         } else if (openMenu == "shop") {
-            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, green);
+            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue);
             if (selectedTab == "pickaxes") {
                 int count = 0;
                 for (Pickaxe &pickaxe: pickaxeData) {
@@ -372,7 +383,7 @@ void runApplication() {
         glfwPollEvents();
         glfwSwapBuffers(window.ptr);
     }
-    
 
+    
     glfwTerminate();
 }

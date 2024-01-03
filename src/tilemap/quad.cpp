@@ -10,8 +10,8 @@
 
 void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices) {
     
-    float textureEnd = (textureIndex+1) * 0.125f;
-    float textureStart = textureIndex * 0.125f;
+    float textureEnd = (textureIndex+1) * 0.1f;
+    float textureStart = textureIndex * 0.1f;
     
     if (textureIndex == 0) {
         vertices.emplace_back(0.0f+offsetX,0.0f+offsetY,          textureStart,0.1f);
@@ -56,8 +56,8 @@ void generateTextQuad(const int offsetX,const int offsetY,const Character &ch, s
 void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices) {
     
     int textureIndex = 1;
-    float textureEnd = (textureIndex+1) * 0.125f;
-    float textureStart = textureIndex * 0.125f;
+    float textureEnd = (textureIndex+1) * 0.1f;
+    float textureStart = textureIndex * 0.1f;
     
     float posX = 0.0f + offsetX;
     float endPosX = posX + width;

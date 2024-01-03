@@ -37,7 +37,7 @@ void Player::checkCollisions(const Terrain &terrain) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
             int currentTile = terrain.getTile(x, y);
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
-            if (terrain.blockData[currentTile].level != -1 && collisionsOn == true) {
+             if (terrain.blockData[currentTile].level != -1 && collisionsOn == true) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }

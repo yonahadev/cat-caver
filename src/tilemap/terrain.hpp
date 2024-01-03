@@ -21,11 +21,11 @@
 class Terrain {
 private:
     void generateTerrain();
-    int calculateCellState(const std::vector <Vec2i> &neighbours, const unsigned int cell,const std::vector<int> &currentTiles,const std::unordered_map<int,int> &layerOres) const;
+    int calculateCellState(const std::vector <Vec2i> &neighbours, const unsigned int cell,const std::vector<int> &currentTiles,const std::unordered_map<int,double> &layerOres) const;
     int getPositionInTiles(const unsigned int x, const unsigned int y) const;
-    std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth, const std::unordered_map<int,int> &layerOres);
-    std::unordered_map<int, int> getAliveNeighbourCount(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::unordered_map<int,int> &layerOres) const;
-    int getRandomOre(const std::unordered_map<int,int> &layerOres);
+    std::vector<int> simulateTurn(const std::vector<int> &tiles, const int layerDepth, const std::unordered_map<int,double> &layerOres);
+    std::unordered_map<int, int> getNeighbourOres(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::unordered_map<int,double> &layerOres) const;
+    int getRandomOre(const std::unordered_map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth);
 public:
     std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     const DungeonConfig config;

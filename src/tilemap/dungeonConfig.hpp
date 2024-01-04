@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 struct DungeonConfig {
     int width;
@@ -19,7 +19,8 @@ struct DungeonConfig {
     int cellsForBirth;
     int underpopulationCount;
     int overpopulationCount;
-    std::vector<std::unordered_map<int, double>> layerInfo;
+    int layerDepth;
+    std::vector<std::map<int, double>> layerInfo;
     
     DungeonConfig() {}
 };

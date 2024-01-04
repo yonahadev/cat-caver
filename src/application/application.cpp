@@ -111,13 +111,21 @@ void runApplication() {
     dungeonConfig.underpopulationCount = 0;
     dungeonConfig.cellsForBirth = 1;
     dungeonConfig.turnCount = 0;
+    dungeonConfig.layerDepth = 10;
     dungeonConfig.layerInfo = {
-        { //layer one info right side is % chance of spawning
-            {0,0.6},
-            {1,0.2},
+        { //map of ore index to magnitude from center on height map to be generated
+            {0,0.05},
+            {1,0.075},
             {2,0.1},
-            {4,0.1}
+            {4,0.125}
+        },
+        {
+            {0,0.05},
+            {4,0.08},
+            {5,0.11},
+            {6,0.13}
         }
+            
     };
     
     glfwSetKeyCallback(window.ptr, handleKeypress);

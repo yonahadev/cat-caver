@@ -12,7 +12,7 @@
 #include "math.hpp"
 #include "PerlinNoise.hpp"
 
-std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, const int layerDepth, const std::unordered_map<int,double> &layerOres) {
+std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, const int layerDepth, const std::map<int,double> &layerOres) {
     std::vector<int> newTiles = {};
     for (int y = 0; y < layerDepth; y++) {
         for (int x = 1; x < config.width-1; x++) {
@@ -26,7 +26,7 @@ std::vector<int> Terrain::simulateTurn(const std::vector<int> &currentTiles, con
     return newTiles;
 }
 
-std::unordered_map<int, int> Terrain::getNeighbourOres(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::unordered_map<int,double> &layerOres) const {
+std::unordered_map<int, int> Terrain::getNeighbourOres(const std::vector <Vec2i> &neighbours,const std::vector<int> &currentTiles, const std::map<int,double> &layerOres) const {
     
     std::unordered_map<int, int> neighbouringOres;
     
@@ -38,7 +38,7 @@ std::unordered_map<int, int> Terrain::getNeighbourOres(const std::vector <Vec2i>
     return neighbouringOres;
 }
 
-int Terrain::calculateCellState(const std::vector<Vec2i> &neighbours, const unsigned int cell, const std::vector<int> &currentTiles, const std::unordered_map<int,double> &layerOres) const {
+int Terrain::calculateCellState(const std::vector<Vec2i> &neighbours, const unsigned int cell, const std::vector<int> &currentTiles, const std::map<int,double> &layerOres) const {
     std::unordered_map<int, int> oreCounts = getNeighbourOres(neighbours, currentTiles, layerOres);
 
     int aliveCount = 0;
@@ -116,20 +116,24 @@ void Terrain::mineBlock(const int x, const int y) {
 }
 
 
-int Terrain::getRandomOre(const std::unordered_map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth) { //only works for sets with a total of 100
+int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth) { //only works for sets with a total of 100
     const siv::PerlinNoise::seed_type seed = 123456u;
     const siv::PerlinNoise perlin{seed};
-    const double xPos = double(x)/double(layerWidth);
-    const double yPos = double(y)/double(layerDepth);
-    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-    const double noise = perlin.normalizedOctave2D_01(xPos*10000, yPos*10000,3);
+    const double noiseFactor = 0.2;
+    const double xPos = double(x)*noiseFactor;
+    const double yPos = double(y)*noiseFactor;
+    const double noise = perlin.normalizedOctave2D_01(xPos, yPos,3);
     
-    std::cout << std::to_string(noise)  << "\n";
-//    int randomInt = getRandomInt(1, 100);
+    const double distanceFromCenter = abs(0.5-noise);
+    
+    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
+    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
+        
     double total = 0;
-    for (auto &[ore,percentageChance]:layerOres) {
-        total += percentageChance;
-        if (noise <= total) {
+    for (auto &[ore,magnitude]:layerOres) {
+        total += magnitude;
+        std::cout << "total: " << magnitude << "\n";
+        if (distanceFromCenter <= total) {
             return ore;
         }
     }
@@ -138,27 +142,30 @@ int Terrain::getRandomOre(const std::unordered_map<int,double> &layerOres,const 
 }
 
 void Terrain::generateLayer() {
-    int layerDepth = 50;
     std::vector<int> layerTiles {};
-    for (int i = 0; i < layerDepth; i++) {
+    for (int i = 0; i < config.layerDepth; i++) {
         for (int j = 0; j < config.width; j++) {
             if (j == 0 || j == config.width-1) {
                 layerTiles.push_back(7);
             } else {
-                int cell = getRandomOre(config.layerInfo[0],j,i,layerDepth,config.width);
+                int layer = layerCount;
+                int lastLayer = static_cast<int>(config.layerInfo.size())-1;
+                if (layerCount > lastLayer) {
+                    layer = lastLayer;
+                }
+                int cell = getRandomOre(config.layerInfo[layer],j,i,config.layerDepth,config.width);
                 layerTiles.push_back(cell);
         
             }
         }
     }
     
-    for (int i = 0; i < config.turnCount; i++) {
-        layerTiles = simulateTurn(layerTiles,layerDepth,config.layerInfo[0]);
-    }
-    
     tiles.insert(tiles.end(), layerTiles.begin(),layerTiles.end());
     
-    height += layerDepth;
+    height += config.layerDepth;
+    
+    layerCount += 1;
+
     
     generateBuffer();
 }
@@ -179,11 +186,11 @@ void Terrain::generateBuffer() {
     vao.unbindArray();
 }
 
-Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),blockData(blockData) {
+Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),blockData(blockData),layerCount(0) {
     int startingHeight = 5;
     for (int i = 0; i < startingHeight; i++) {
         for (int j = 0; j < config.width; j++) {
-            if ( j == config.width-1 || i == 0) {
+            if ( j == config.width-1 || i == 0 || j == 0) {
                 tiles.push_back(7);
             } else {
                 tiles.push_back(3);

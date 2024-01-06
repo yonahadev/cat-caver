@@ -11,12 +11,13 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 template <typename T>
 struct Vec2 {
     T x;
     T y;
-
+    
     bool operator == (const Vec2<T> &other) const {
         return x == other.x && y == other.y;
     }
@@ -45,10 +46,15 @@ struct Vec2 {
     
     Vec2(T x,T y): x(x), y(y) {}
     
-//    Vec2(int x, int y) {
-//        x = static_cast<float>(x);
-//        y = static_cast<float>(y);
-//    }
+    void print() const {
+        std::cout << std::string(*this) << "\n";
+    }
+    
+    template <typename V>
+    Vec2(Vec2<V> &other) {
+        x = static_cast<T>(other.x);
+        y = static_cast<T>(other.y);
+    }
     
 };
 

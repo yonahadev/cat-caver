@@ -9,6 +9,7 @@
 #define player_hpp
 
 #include <stdio.h>
+#include "sprite.hpp"
 #include "mat3.hpp"
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
@@ -21,39 +22,17 @@
 #include "pickaxe.hpp"
 #include "backpack.hpp"
 
-class Player {
-private:
-    float hitboxLeft;
-    float hitboxRight;
-    float hitboxTop;
-    float hitboxBottom;
-    float airborne = 0;
-    void adjustHitbox();
+class Player: public Sprite {
 public:
     Pickaxe equippedPickaxe;
     Backpack equippedBackpack;
-    bool collisionsOn;
     std::unordered_map<Block, int> blockCounts;
     std::unordered_map<Pickaxe, bool> ownedPickaxes;
     std::unordered_map<Backpack, bool> ownedBackpacks;
     int money;
     int backpackCount;
-    Mat3 matrix;
-    Vec2f coordinates;
-    VBO vbo;
-    VAO vao;
-    std::vector<std::string> collisions;
-    void teleport(const float x, const float y,const Terrain &terrain);
-    void update(const Terrain &terrain,float xPos,float yPos);
-    bool getCollision(const std::string &search) const;
-    void checkCollisions(const Terrain &terrain);
-    void getCoordinates() const;
-    void getHitbox() const;
-    void getMatrix() const;
-    void jump (const Terrain &terrain);
-    void accelerate(const Terrain &terrain);
-    void move(const float x,const float y);
-    void moveCamera(const float x,const float y, const Terrain &dungeon);
+    std::vector<Vec2i> neighbours;
+    void moveSprite(const float x,const float y, const Terrain &terrain);
     Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map);
 };
 

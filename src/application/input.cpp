@@ -130,6 +130,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case 1: {
+                            if (atSurface == false) break;
                             player.backpackCount = 0;
                             for (auto &[block,count]: player.blockCounts) {
                                 int totalValue = count*block.sellValue;
@@ -139,6 +140,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case 2: {
+                            if (atSurface == false) break;
                             if (openMenu == button.text) {
                                 openMenu = "";
                                 selectedTab = "pickaxes";
@@ -181,8 +183,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             } else if (player.money >= pickaxe.cost) {
                                 player.equippedPickaxe = pickaxe;
                                 player.ownedPickaxes[pickaxe] = true;
+                                std::cout << "Equipped" << pickaxe.name << "\n";
                                 player.money -= pickaxe.cost;
                             }
+                            break;
                         }
                         case 5: {
                             int itemIndex = std::stoi(button.metaInfo);
@@ -191,6 +195,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 player.equippedBackpack = backpack;
                                 std::cout << "Equipped" << backpack.name << "\n";
                             } else if (player.money >= backpack.cost) {
+                                std::cout << "Equipped" << backpack.name << "\n";
                                 player.equippedBackpack = backpack;
                                 player.ownedBackpacks[backpack] = true;
                                 player.money -= backpack.cost;
@@ -209,7 +214,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
     float moveSpeed = 0.03f;
     
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-       player.moveCamera(-moveSpeed,0,terrain);
+       player.moveSprite(-moveSpeed,0,terrain);
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             float currentTime = glfwGetTime();
             if (currentTime - time > jumpDelay ) {
@@ -218,7 +223,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
             }
         }
    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-       player.moveCamera(moveSpeed,0,terrain);
+       player.moveSprite(moveSpeed,0,terrain);
        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
            float currentTime = glfwGetTime();
            if (currentTime - time > jumpDelay ) {
@@ -233,11 +238,11 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
            time = currentTime;
        }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-           player.moveCamera(-moveSpeed,0,terrain);
+           player.moveSprite(-moveSpeed,0,terrain);
             
             
        } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-           player.moveCamera(moveSpeed,0,terrain);
+           player.moveSprite(moveSpeed,0,terrain);
        }
     }
     

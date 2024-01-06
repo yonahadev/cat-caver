@@ -6,3 +6,5 @@
 //
 
 #include "npc.hpp"
+
+NPC::NPC(float offsetX,float offsetY, const int textureIndex):Sprite(offsetX, offsetY,textureIndex) {}

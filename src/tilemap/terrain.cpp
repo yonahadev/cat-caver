@@ -126,13 +126,13 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
     
     const double distanceFromCenter = abs(0.5-noise);
     
-    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
+//    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
+//    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
         
     double total = 0;
     for (auto &[ore,magnitude]:layerOres) {
         total += magnitude;
-        std::cout << "total: " << magnitude << "\n";
+//        std::cout << "total: " << magnitude << "\n";
         if (distanceFromCenter <= total) {
             return ore;
         }

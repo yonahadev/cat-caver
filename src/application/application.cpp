@@ -31,6 +31,7 @@
 #include "pickaxe.hpp"
 #include "backpack.hpp"
 #include "PerlinNoise.hpp"
+#include "NPC.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -89,15 +90,17 @@ void runApplication() {
     };
     
     std::vector<Pickaxe> pickaxeData = {
-        {"Ol' trusty",1,1,0},
-        {"Shovel",1,3,10},
-        {"Fork",2,6,500}
+        {"wooden",1,1,0},
+        {"Shovel",1,3,1},
+        {"bare hands",1,5,275},
+        {"Fork",2,8,500}
     };
     
     std::vector<Backpack> backpackData = {
         {"pockets",5,0},
-        {"sack",15,15},
-        {"fat sack", 50, 500}
+        {"sack",15,0},
+        {"crate",35,250},
+        {"fat sack", 75, 500}
     };
     
     Window window(screenSize,WINDOW_NAME);
@@ -146,8 +149,10 @@ void runApplication() {
         }
     }
     
-    Player player(1,-3,8,map);
+    Player player(1,-4,8,map);
     
+    NPC shopkeeper(1,-4,9);
+
     player.ownedPickaxes[pickaxeData[0]] = true;
     player.equippedPickaxe = pickaxeData[0];
     player.ownedBackpacks[backpackData[0]] = true;
@@ -217,6 +222,7 @@ void runApplication() {
     while (!glfwWindowShouldClose(window.ptr)) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+    
         
         int depth = int(abs(floor(player.coordinates.y)));
 //
@@ -309,6 +315,27 @@ void runApplication() {
         terrain.vao.bindArray();
         terrain.vbo.draw();
         
+        shader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
+        shopkeeper.vao.bindArray();
+        shopkeeper.vbo.draw();
+        shopkeeper.accelerate(terrain);
+        shopkeeper.collisions = {};
+        int shopkeeperX = static_cast<int>(shopkeeper.coordinates.x);
+        int shopkeeperY = static_cast<int>(shopkeeper.coordinates.y);
+        
+        bool valid = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
+        
+        player.coordinates.print();
+        shopkeeper.coordinates.print();
+        
+        if (mousePressed && valid) {
+            std::cout << "shopkeeper interaction triggered" << "\n";
+            openMenu = "shop";
+            selectedTab = "pickaxes";
+            visibleButtons[3] = true;
+            visibleButtons[4] = true;
+        }
+        
         shader.loadUniform<int>(true, "u_IsTexture");
         shader.loadUniform<Mat3>(orthoMatrix,"u_Transformation");
         player.vao.bindArray();
@@ -346,6 +373,12 @@ void runApplication() {
 //        std::cout << player.backpackCount << "\n";
         shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
+        
+        int time = static_cast<int>(glfwGetTime());
+        std::string timeString = "Time: " + std::to_string(time);
+        int width = gui.getWidth(timeString);
+        
+        gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white);
         gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
         gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, blue);
         gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);

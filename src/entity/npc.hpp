@@ -9,5 +9,11 @@
 #define npc_hpp
 
 #include <stdio.h>
+#include "sprite.hpp"
+
+class NPC: public Sprite {
+public:
+    NPC(float offsetX,float offsetY, const int textureIndex);
+};
 
 #endif /* npc_hpp */

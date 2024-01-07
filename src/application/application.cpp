@@ -119,14 +119,16 @@ void runApplication() {
         { //map of ore index to magnitude from center on height map to be generated
             {0,0.05},
             {1,0.075},
-            {2,0.1},
-            {4,0.125}
+            {2,0.085},
+            {4,0.090},
+            {7,0.105}
         },
         {
             {0,0.05},
             {4,0.08},
             {5,0.11},
-            {6,0.13}
+            {6,0.115},
+            {7,0.135}
         }
             
     };
@@ -325,8 +327,8 @@ void runApplication() {
         
         bool valid = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
         
-        player.coordinates.print();
-        shopkeeper.coordinates.print();
+    //        player.coordinates.print();
+    //        shopkeeper.coordinates.print();
         
         if (mousePressed && valid) {
             std::cout << "shopkeeper interaction triggered" << "\n";

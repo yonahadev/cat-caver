@@ -117,7 +117,8 @@ void Terrain::mineBlock(const int x, const int y) {
 
 
 int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth) { //only works for sets with a total of 100
-    const siv::PerlinNoise::seed_type seed = 123456u;
+    
+    const siv::PerlinNoise::seed_type seed = 567090;
     const siv::PerlinNoise perlin{seed};
     const double noiseFactor = 0.2;
     const double xPos = double(x)*noiseFactor;
@@ -127,13 +128,11 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
     const double distanceFromCenter = abs(0.5-noise);
     
 //    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-//    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
+    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
         
-    double total = 0;
     for (auto &[ore,magnitude]:layerOres) {
-        total += magnitude;
 //        std::cout << "total: " << magnitude << "\n";
-        if (distanceFromCenter <= total) {
+        if (distanceFromCenter <= magnitude) {
             return ore;
         }
     }

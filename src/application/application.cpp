@@ -87,6 +87,7 @@ void runApplication() {
         {"coal",2,1250,3},
         {"gold",3,2000,10},
         {"diamond",3,3000,50},
+        {"special",3,5000,0}
     };
     
     std::vector<Pickaxe> pickaxeData = {
@@ -382,7 +383,7 @@ void runApplication() {
         
         gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white);
         gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
-        gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, blue);
+        gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, white);
         gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
         
         if (openMenu == "ores") {

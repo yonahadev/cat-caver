@@ -84,7 +84,7 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
     
     Block block = terrain.blockData[mouse.currentTile];
     
-    mouse.backpackFull = player.backpackCount == player.equippedBackpack.capacity;
+    mouse.backpackFull = player.backpackCount >= player.equippedBackpack.capacity;
     
     bool isMineable = block.level != -1;
     
@@ -99,8 +99,17 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
         if (mouse.holding > blockHealth && mouse.backpackFull == false) {
             terrain.mineBlock(mouse.tileX, mouse.tileY);
             std::string blockName = block.name;
-            player.blockCounts[block] += 1;
-            player.backpackCount += 1;
+            if (block.name != "special") {
+                player.blockCounts[block] += 1;
+                player.backpackCount += 1;
+            } else {
+//                std::cout << "mined special block" << "\n";
+                std::vector<Block> minedBlocks = terrain.triggerExplosion(mouse.tileX, mouse.tileY);
+                for (auto &block: minedBlocks) {
+                    player.blockCounts[block] += 1;
+                    player.backpackCount += 1;
+                }
+            }
             mouse.holding = 0;
             terrain.generateBuffer();
         }

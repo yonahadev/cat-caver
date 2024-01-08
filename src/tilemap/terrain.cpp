@@ -115,6 +115,28 @@ void Terrain::mineBlock(const int x, const int y) {
     tiles[index] = 3;
 }
 
+std::vector<Block> Terrain::triggerExplosion(const int x, const int y) {
+//    std::cout << "explosion event" << "\n";
+    std::vector<Block> minedBlocks {};
+    const int radius = 2;
+    for (int i = -radius; i <= radius; i++) {
+        const int currentX = x+i;
+        for (int j = -radius; j <= radius; j++) {
+            const int currentY = y+j;
+            const Block block = blockData[getTile(currentX, currentY)];
+            const double squaredX = (x-currentX)*(x-currentX);
+            const double squaredY = (y-currentY)*(y-currentY);
+            const double dist = sqrt(squaredX+squaredY);
+            if (block.level != -1 && block.name != "special" && dist <= static_cast<double>(radius)) {
+                mineBlock(x+i, y+j);
+                minedBlocks.push_back(block);
+            }
+        }
+    }
+    return minedBlocks;
+}
+
+
 
 int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth) { //only works for sets with a total of 100
     
@@ -128,7 +150,7 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
     const double distanceFromCenter = abs(0.5-noise);
     
 //    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
+//    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
         
     for (auto &[ore,magnitude]:layerOres) {
 //        std::cout << "total: " << magnitude << "\n";

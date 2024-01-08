@@ -34,6 +34,7 @@ public:
     int height;
     int layerCount;
     std::vector<int> tiles;
+    std::vector<Block> triggerExplosion(const int x, const int y);
     std::vector<Block> blockData;
     bool isCollideable(const int tile) const;
     int getBlockHP(const int tile) const;

@@ -10,6 +10,7 @@
 #include "vertex.hpp"
 #include "quad.hpp"
 #include <string>
+#include "terrain.hpp"
 
 void Sprite::getCoordinates() const{
     std::cout << "Current coordinates: " << "x: " << coordinates.x << " y: " << coordinates.y << "\n";
@@ -75,7 +76,7 @@ void Sprite::jump(const Terrain &terrain) {
 void Sprite::accelerate(const Terrain &terrain) {
 
     
-    if (getCollision("bottom") == false) {
+    if (getCollision("bottom") == false & airborne < 500) {
         airborne -= 2.5;
     }
     

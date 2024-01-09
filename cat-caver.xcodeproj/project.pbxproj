@@ -361,9 +361,9 @@
 		E275DADF2B2B8E5E00E2969D /* game */ = {
 			isa = PBXGroup;
 			children = (
-				E275DAE12B2B8E8300E2969D /* block.hpp */,
 				E2ACBFCB2B323197001E2F7C /* pickaxe.hpp */,
 				E250DCF12B3DCAE700BF30DD /* backpack.hpp */,
+				E275DAE12B2B8E8300E2969D /* block.hpp */,
 			);
 			path = game;
 			sourceTree = "<group>";

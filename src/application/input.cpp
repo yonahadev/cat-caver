@@ -149,7 +149,6 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case 2: {
-                            if (atSurface == false) break;
                             if (openMenu == button.text) {
                                 openMenu = "";
                                 selectedTab = "pickaxes";
@@ -158,6 +157,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 visibleButtons[5] = false;
                             } else {
                                 openMenu = button.text;
+                                if (button.text == "ores") {
+                                    visibleButtons[3] = false;
+                                    visibleButtons[4] = false;
+                                }
                                 if (button.text == "shop") {
                                     if (atSurface) {
                                         visibleButtons[3] = true;
@@ -184,6 +187,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case 4: {
+                            if (button.text == "equipped") return;
                             int itemIndex = std::stoi(button.metaInfo);
                             Pickaxe pickaxe = pickaxeData[itemIndex];
                             if (button.text == "equip") {

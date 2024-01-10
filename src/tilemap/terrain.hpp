@@ -16,7 +16,7 @@
 #include "dungeonConfig.hpp"
 #include "block.hpp"
 #include <map>
-
+#include "tile.hpp"
 
 class Terrain {
 private:
@@ -33,12 +33,10 @@ public:
     VBO vbo;
     int height;
     int layerCount;
-    std::vector<int> tiles;
+    std::vector<Tile> tiles;
     std::vector<Block> triggerExplosion(const int x, const int y);
     std::vector<Block> blockData;
-    bool isCollideable(const int tile) const;
-    int getBlockHP(const int tile) const;
-    std::string getBlockName(const int tile) const;
+    std::vector<int> getRawBlockIndices() const;
     int getTile(const int x,const int y) const;
     int getTileIndex(const int x,const int y) const;
     void mineBlock(const int x,const int y);

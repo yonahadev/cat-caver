@@ -3,7 +3,7 @@
 //  cat-caver
 //
 //  Created by tom on 2024/01/06.
-//
+//s
 
 #ifndef sprite_hpp
 #define sprite_hpp
@@ -39,7 +39,7 @@ public:
     void getCoordinates() const;
     void getHitbox() const;
     void getMatrix() const;
-    void jump (const Terrain &terrain);
+    void jump ();
     void accelerate(const Terrain &terrain);
     void move(const float x,const float y);
     virtual void moveSprite(const float x,const float y, const Terrain &dungeon);

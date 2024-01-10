@@ -36,9 +36,9 @@ void Sprite::checkCollisions(const Terrain &terrain) {
     //calculate coordinates that the Sprite is touching
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
-            int currentTile = terrain.getTile(x, y);
+            int currentTile = terrain.getRawBlockIndices()[terrain.getTileIndex(x, y)];
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
-             if (terrain.blockData[currentTile].level != -1 && collisionsOn == true) {
+             if (currentTile != 3 && collisionsOn == true) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }
@@ -66,10 +66,9 @@ void Sprite::move(const float x,const float y) {
                          0.0f,0.0f,1.0f);
 }
 
-void Sprite::jump(const Terrain &terrain) {
+void Sprite::jump() {
     if (airborne == 0.0f) {
         airborne += 80;
-//        std::cout << "jumping" << "\n";
     }
 }
 

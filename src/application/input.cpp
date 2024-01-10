@@ -231,7 +231,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             float currentTime = glfwGetTime();
             if (currentTime - time > jumpDelay ) {
-                player.jump(terrain);
+                player.jump();
                 time = currentTime;
             }
         }
@@ -240,14 +240,14 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
            float currentTime = glfwGetTime();
            if (currentTime - time > jumpDelay ) {
-               player.jump(terrain);
+               player.jump();
                time = currentTime;
            }
        }
    } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
        float currentTime = glfwGetTime();
        if (currentTime - time > jumpDelay ) {
-           player.jump(terrain);
+           player.jump();
            time = currentTime;
        }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {

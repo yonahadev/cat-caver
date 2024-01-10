@@ -29,6 +29,7 @@
 		E26B16592B2A094F00B2105B /* vertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E26B16572B2A094F00B2105B /* vertexArray.cpp */; };
 		E2A33FFF2B49DF0D004EA1E0 /* sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */; };
 		E2A340022B49E1B9004EA1E0 /* npc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A340002B49E1B9004EA1E0 /* npc.cpp */; };
+		E2A340092B4EBB05004EA1E0 /* tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A340072B4EBB05004EA1E0 /* tile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,6 +121,8 @@
 		E2A33FFE2B49DF0D004EA1E0 /* sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sprite.hpp; sourceTree = "<group>"; };
 		E2A340002B49E1B9004EA1E0 /* npc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = npc.cpp; sourceTree = "<group>"; };
 		E2A340012B49E1B9004EA1E0 /* npc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = npc.hpp; sourceTree = "<group>"; };
+		E2A340072B4EBB05004EA1E0 /* tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tile.cpp; sourceTree = "<group>"; };
+		E2A340082B4EBB05004EA1E0 /* tile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tile.hpp; sourceTree = "<group>"; };
 		E2ACBFCB2B323197001E2F7C /* pickaxe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = pickaxe.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -342,6 +345,8 @@
 				E2A340012B49E1B9004EA1E0 /* npc.hpp */,
 				E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */,
 				E2A33FFE2B49DF0D004EA1E0 /* sprite.hpp */,
+				E2A340072B4EBB05004EA1E0 /* tile.cpp */,
+				E2A340082B4EBB05004EA1E0 /* tile.hpp */,
 			);
 			path = entity;
 			sourceTree = "<group>";
@@ -445,6 +450,7 @@
 				E26B16592B2A094F00B2105B /* vertexArray.cpp in Sources */,
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,
 				E225B0852B1C9E24003A5B17 /* glad.c in Sources */,
+				E2A340092B4EBB05004EA1E0 /* tile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,8 +21,6 @@ void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
 void Gui::renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour) {
     std::vector<Vertex> vertices;
     generateUIQuad(width, height, x, y, vertices);
-    vbo = VBO();
-    vao = VAO();
     vao.bindArray();
     vbo.bindBuffer();
     vbo.bindData(vertices);
@@ -34,7 +32,7 @@ void Gui::renderQuad(const int x, const int y, const int width, const int height
 
 int Gui::getWidth(const std::string &string) {
     //generates the text to get the width preemptively without drawing it
-    return text.generate(string, 0, 0);
+    return text.generateCharacters(string, 0, 0).displayLength;
 }
 
 void Gui::renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour) {

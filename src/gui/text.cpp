@@ -21,13 +21,13 @@ void Text::draw() const {
     vbo.draw();
 }
 
-int Text::generate(const std::string &string, const int x, const int y) {
-    std::vector<Vertex> vertices;
+TextData Text::generateCharacters(const std::string &string,const int x, const int y) {
+    std::vector<Character> characters;
     int xOffset = 0;
     for (int i = 0; i < string.size(); i++) {
         const char ch = string[i];
         Character current = getCharacter(ch);
-//        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
+        //        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
         //for some reason data set y offsets is not properly accounting for text offset? - manual implementation
         int yOffset = 0;
         if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g') {
@@ -35,22 +35,31 @@ int Text::generate(const std::string &string, const int x, const int y) {
         } else if (ch == '\'' || ch == '-') {
             yOffset += 18;
         }
-        generateTextQuad(xOffset+x, y+yOffset, current, vertices);
+        current.xOffset = xOffset+x;
+        current.yOffset = y+yOffset;
+        characters.push_back(current);
         if (i < string.size()-1) {
             xOffset += current.width+5;
         } else {
             xOffset += current.width;
         }
     }
-    vbo = VBO();
-    vao = VAO();
+    return {characters,xOffset};
+}
+
+void Text::generate(const std::string &string, const int x, const int y) {
+    std::vector<Vertex> vertices;
+    TextData textData = generateCharacters(string, x, y);
+    
+    for (Character &character: textData.characters) {
+        generateTextQuad(character, vertices);
+    }
+    
     vao.bindArray();
     vbo.bindBuffer();
     vbo.bindData(vertices);
     vao.enableAttributes();
     vao.unbindArray();
-    
-    return xOffset; // accounts for initial offset as well as removing the final padding
 }
 
 Character Text::getCharacter(const char character) {
@@ -66,7 +75,6 @@ Character Text::getCharacter(const char character) {
 }
 
 void Text::processStream(std::ifstream &stream) {
-    
     std::smatch matches;
     std::string line;
     int count = 1;
@@ -106,4 +114,6 @@ std::ifstream Text::readFile(const std::string &fileName) {
 Text::Text(const std::string &fileName) {
     std::ifstream stream = readFile(fileName);
     processStream(stream);
+    vbo = VBO();
+    vao = VAO();
 }

@@ -31,7 +31,7 @@ public:
     void renderButton(const Button &button, Texture &texture, Shader &shader);
     void renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour);
     void renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour);
-    Gui(const std::string &fontFile,const std::vector<Vec4f> &colours): text(fontFile),colours(colours) {}
+    Gui(const std::string &fontFile,const std::vector<Vec4f> &colours): text(fontFile),vao(VAO()),vbo(VBO()),colours(colours) {}
 };
 
 #endif /* gui_hpp */

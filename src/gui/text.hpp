@@ -15,6 +15,11 @@
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
 
+struct TextData {
+    std::vector<Character> characters;
+    int displayLength;
+};
+
 class Text {
 private:
     void processStream(std::ifstream &stream);
@@ -25,7 +30,8 @@ private:
     VBO vbo;
 public:
     void draw() const;
-    int generate(const std::string &string, const int x, const int y);
+    TextData generateCharacters(const std::string &string,const int x, const int y);
+    void generate(const std::string &string, const int x, const int y);
     Text(const std::string &fileName);
 };
 

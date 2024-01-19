@@ -15,6 +15,19 @@ const float * Mat3::getFloatArray() const {
     return &matrix_Array[0];
 }
 
+void Mat3::transpose(std::vector<float> &floats) {
+    floats.push_back(matrix_Array[0]);
+    floats.push_back(matrix_Array[3]);
+    floats.push_back(matrix_Array[6]);
+    floats.push_back(matrix_Array[1]);
+    floats.push_back(matrix_Array[4]);
+    floats.push_back(matrix_Array[7]);
+    floats.push_back(matrix_Array[2]);
+    floats.push_back(matrix_Array[5]);
+    floats.push_back(matrix_Array[8]);
+}
+
+
 Mat3 Mat3::Orthographic(float left, float right, float bottom, float top) {
     
     return Mat3(

@@ -12,11 +12,15 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <vector>
 
 template <typename T>
 struct Vec2 {
     T x;
     T y;
+    
+//    std::vector<T> values;
+    
     
     bool operator == (const Vec2<T> &other) const {
         return x == other.x && y == other.y;
@@ -45,6 +49,11 @@ struct Vec2 {
     }
     
     Vec2(T x,T y): x(x), y(y) {}
+    
+//    const T * getValueArray() {
+//        values = {x,y};
+//        return &values[0];
+//    }
     
     void print() const {
         std::cout << std::string(*this) << "\n";

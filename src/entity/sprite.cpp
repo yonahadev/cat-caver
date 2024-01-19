@@ -10,7 +10,6 @@
 #include "vertex.hpp"
 #include "quad.hpp"
 #include <string>
-#include "terrain.hpp"
 
 void Sprite::getCoordinates() const{
     std::cout << "Current coordinates: " << "x: " << coordinates.x << " y: " << coordinates.y << "\n";
@@ -32,11 +31,12 @@ bool Sprite::getCollision(const std::string &search) const {
     return false;
 }
 
-void Sprite::checkCollisions(const Terrain &terrain) {
+void Sprite::checkCollisions(const std::vector<int> &blockIndices) {
     //calculate coordinates that the Sprite is touching
+    int width = 16;
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
-            int currentTile = terrain.getRawBlockIndices()[terrain.getTileIndex(x, y)];
+            int currentTile = blockIndices[x+(-y*width)];
 //            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
              if (currentTile != 3 && collisionsOn == true) {
                 if (x > coordinates.x) {
@@ -72,40 +72,40 @@ void Sprite::jump() {
     }
 }
 
-void Sprite::accelerate(const Terrain &terrain) {
+void Sprite::accelerate(const std::vector<int> &blockIndices) {
 
     
     if (getCollision("bottom") == false & airborne < 500) {
         airborne -= 2.5;
     }
     
-    moveSprite(0, airborne/1000, terrain);
+    moveSprite(0, airborne/1000, blockIndices);
 
 }
 
-void Sprite::teleport(const float x, const float y,const Terrain &terrain) {
+void Sprite::teleport(const float x, const float y,const std::vector<int> &blockIndices) {
     Vec2f changeInPosition = {x-coordinates.x,y-coordinates.y};
     collisionsOn = false;
-    moveSprite(changeInPosition.x, changeInPosition.y, terrain);
+    moveSprite(changeInPosition.x, changeInPosition.y, blockIndices);
     collisionsOn = true;
 }
 
-void Sprite::moveSprite(const float x,const float y, const Terrain &terrain) {
+void Sprite::moveSprite(const float x,const float y, const std::vector<int> &blockIndices) {
     move(x,0);
-    update(terrain, matrix.matrix_Array[2], matrix.matrix_Array[5]);
+    update(blockIndices, matrix.matrix_Array[2], matrix.matrix_Array[5]);
     if (collisions.size() > 0) {
         move(-x,0);
         collisions = {};
     }
     move(0,y);
-    update(terrain, matrix.matrix_Array[2], matrix.matrix_Array[5]);
+    update(blockIndices, matrix.matrix_Array[2], matrix.matrix_Array[5]);
     if (collisions.size() > 0) {
         if (getCollision("bottom") == true) {
             airborne = 0;
         }
         move(0,-y);
     }
-    update(terrain, matrix.matrix_Array[2], matrix.matrix_Array[5]);
+    update(blockIndices, matrix.matrix_Array[2], matrix.matrix_Array[5]);
 }
 
 void Sprite::adjustHitbox() {
@@ -115,22 +115,24 @@ void Sprite::adjustHitbox() {
     hitboxBottom = coordinates.y;
 }
 
-void Sprite::update(const Terrain &terrain,float xPos,float yPos) {
+void Sprite::update(const std::vector<int> &blockIndices,float xPos,float yPos) {
     coordinates = {xPos,yPos};
     adjustHitbox();
-    checkCollisions(terrain);
+    checkCollisions(blockIndices);
 }
-    
-Sprite::Sprite(float offsetX,float offsetY, const int textureIndex): matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {
-    collisionsOn = true;
+
+void Sprite::generateGLQuad() {
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
-    vbo = VBO();
-    vao = VAO();
     vao.bindArray();
     vbo.bindBuffer();
-    vbo.bindData(vertices);
     vao.enableAttributes();
+    vbo.bindData(vertices);
     vao.unbindArray();
+//    std::cout << vbo.verticesCount << "\n";
+}
+
+Sprite::Sprite(float offsetX,float offsetY, const int textureIndex): textureIndex(textureIndex),collisionsOn(true),matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {
+
 }
 

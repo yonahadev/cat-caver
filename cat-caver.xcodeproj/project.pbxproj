@@ -116,6 +116,8 @@
 		E26B16572B2A094F00B2105B /* vertexArray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertexArray.cpp; sourceTree = "<group>"; };
 		E26B16582B2A094F00B2105B /* vertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertexArray.hpp; sourceTree = "<group>"; };
 		E275DAE12B2B8E8300E2969D /* block.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = block.hpp; sourceTree = "<group>"; };
+		E279D2BC2B56CB49005878B2 /* terrainVertexShader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = terrainVertexShader.glsl; sourceTree = "<group>"; };
+		E279D2BD2B56CB7F005878B2 /* terrainFragmentShader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = terrainFragmentShader.glsl; sourceTree = "<group>"; };
 		E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
 		E2A33FFE2B49DF0D004EA1E0 /* sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sprite.hpp; sourceTree = "<group>"; };
@@ -306,8 +308,8 @@
 			children = (
 				E262ABD52B1B6C06002F988D /* math.cpp */,
 				E262ABD62B1B6C06002F988D /* mat3.hpp */,
-				E262ABD72B1B6C06002F988D /* math.hpp */,
 				E262ABD82B1B6C06002F988D /* mat3.cpp */,
+				E262ABD72B1B6C06002F988D /* math.hpp */,
 				E262ABE72B1BB6BD002F988D /* vec2.hpp */,
 				E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */,
 			);
@@ -330,6 +332,8 @@
 			children = (
 				E262ABE42B1B7E92002F988D /* fragment.glsl */,
 				E262ABE52B1B7E92002F988D /* vertex.glsl */,
+				E279D2BC2B56CB49005878B2 /* terrainVertexShader.glsl */,
+				E279D2BD2B56CB7F005878B2 /* terrainFragmentShader.glsl */,
 			);
 			path = shaders;
 			sourceTree = "<group>";

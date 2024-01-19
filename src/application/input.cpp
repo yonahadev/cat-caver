@@ -135,7 +135,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                     std::cout << button.text << " id:" << button.id << "\n";
                     switch(button.id) {
                         case 0: {
-                            player.teleport(1, -3, terrain);
+                            player.teleport(1, -3, terrain.getRawBlockIndices());
                             break;
                         }
                         case 1: {
@@ -227,7 +227,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
     float moveSpeed = 0.03f;
     
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-       player.moveSprite(-moveSpeed,0,terrain);
+       player.moveSprite(-moveSpeed,0,terrain.getRawBlockIndices());
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
             float currentTime = glfwGetTime();
             if (currentTime - time > jumpDelay ) {
@@ -236,7 +236,7 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
             }
         }
    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-       player.moveSprite(moveSpeed,0,terrain);
+       player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
            float currentTime = glfwGetTime();
            if (currentTime - time > jumpDelay ) {
@@ -251,15 +251,15 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
            time = currentTime;
        }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-           player.moveSprite(-moveSpeed,0,terrain);
+           player.moveSprite(-moveSpeed,0,terrain.getRawBlockIndices());
             
             
        } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-           player.moveSprite(moveSpeed,0,terrain);
+           player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
        }
     }
     
-    player.accelerate(terrain);
+    player.accelerate(terrain.getRawBlockIndices());
     
     player.collisions = {};
 }

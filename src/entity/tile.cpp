@@ -7,4 +7,4 @@
 
 #include "tile.hpp"
 
-Tile::Tile(int x, int y, int textureIndex): blockIndex(textureIndex) {}
+Tile::Tile(int x, int y, int textureIndex): Sprite(x, y, textureIndex), blockIndex(textureIndex) {}

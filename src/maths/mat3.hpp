@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <array>
+#include <vector>
 
 class Mat3 {
 private:
@@ -23,6 +24,7 @@ public:
         float v3, float v4, float v5,
         float v6, float v7, float v8
     );
+    void transpose(std::vector<float> &floats);
     const float * getFloatArray() const;
     Mat3(const std::array<float,9>& array);
     operator std::string() const;

@@ -49,6 +49,7 @@ TextData Text::generateCharacters(const std::string &string,const int x, const i
 
 void Text::generate(const std::string &string, const int x, const int y) {
     std::vector<Vertex> vertices;
+    
     TextData textData = generateCharacters(string, x, y);
     
     for (Character &character: textData.characters) {
@@ -114,6 +115,4 @@ std::ifstream Text::readFile(const std::string &fileName) {
 Text::Text(const std::string &fileName) {
     std::ifstream stream = readFile(fileName);
     processStream(stream);
-    vbo = VBO();
-    vao = VAO();
 }

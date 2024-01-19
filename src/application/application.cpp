@@ -14,6 +14,7 @@
 #include "texture.hpp"
 #include "player.hpp"
 #include "mat3.hpp"
+#include "vertex.hpp"
 #include <vector>
 #include <string>
 #include "input.hpp"
@@ -76,6 +77,7 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+/// <#Description#>
 void runApplication() {
     
     //level -1 means you can't mine it / it isn't collideable
@@ -91,14 +93,14 @@ void runApplication() {
     };
     
     std::vector<Pickaxe> pickaxeData = {
-        {"wooden",1,1,0},
+        {"wooden",1,1000,0},
         {"Shovel",1,3,1},
         {"bare hands",1,5,275},
         {"Fork",2,8,500}
     };
     
     std::vector<Backpack> backpackData = {
-        {"pockets",5,0},
+        {"pockets",5000,0},
         {"sack",15,0},
         {"crate",35,250},
         {"fat sack", 75, 500}
@@ -119,10 +121,10 @@ void runApplication() {
     dungeonConfig.layerInfo = {
         { //map of ore index to magnitude from center on height map to be generated
             {0,0.05},
-            {1,0.075},
-            {2,0.085},
-            {4,0.090},
-            {7,0.105}
+            {1,0.085},
+            {2,0.095},
+            {4,0.105},
+            {7,0.145}
         },
         {
             {0,0.05},
@@ -139,6 +141,7 @@ void runApplication() {
     glfwSetMouseButtonCallback(window.ptr, handleMouseButton);
     
     Shader shader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/vertex.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/fragment.glsl");
+    Shader terrainShader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/terrainVertexShader.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/terrainFragmentShader.glsl");
     Texture texture(urls);
     
 
@@ -153,8 +156,10 @@ void runApplication() {
     }
     
     Player player(1,-4,8,map);
+    player.generateGLQuad();
     
     NPC shopkeeper(1,-4,9);
+    shopkeeper.generateGLQuad();
 
     player.ownedPickaxes[pickaxeData[0]] = true;
     player.equippedPickaxe = pickaxeData[0];
@@ -222,17 +227,106 @@ void runApplication() {
     };
     
     
+    VAO vao = VAO();
+    
+    VBO vbo = VBO();
+    
+    VBO matrixVBO = VBO();
+    
+    VBO textureIndexVBO = VBO();
+    
+    std::vector<float> instanceVertices = {
+        0.0f,0.0f,
+        1.0f,0.0f,
+        1.0f,1.0f,
+        0.0f,0.0f,
+        1.0f,1.0f,
+        0.0f,1.0f
+    };
+    
+    
+    vao.bindArray();
+    vbo.bindBuffer();
+    
+    glBufferData(GL_ARRAY_BUFFER,instanceVertices.size()*sizeof(float),instanceVertices.data(),GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, 2 * sizeof(float), static_cast<void*>(nullptr));
+    glEnableVertexAttribArray(0);
+    
+    glBindVertexArray(0);
+    
+    const int textureCount = 10;
+    
+    std::vector<float> texels; //only need x texels
+    for (int i = 0; i == textureCount; i++) {
+        
+        int textureStart = i/textureCount;
+        int textureEnd = (i+1.0f)/textureCount;
+        
+        texels.push_back(textureStart); //0,0 tex coords
+        
+        texels.push_back(textureEnd); //1,0 tex coords
+        
+        
+    }
+    
+
+
     while (!glfwWindowShouldClose(window.ptr)) {
+        
+        int instanceCount = 0;
+        
+        std::vector<int> textureIndices;
+        std::vector<Mat3> matrices; //tile matrices so we can pass to the instance draw call
+        for (Tile &tile: terrain.tiles) {
+            matrices.push_back(tile.matrix);
+            textureIndices.push_back(tile.textureIndex);
+            instanceCount += 1;
+            std::cout << tile.textureIndex << "\n";
+        }
+        
+        std::vector<float> modelMatrices;
+        
+        for (Mat3 &mat: matrices) {
+            mat.transpose(modelMatrices);
+        }
+        
+        vao.bindArray();
+        matrixVBO.bindBuffer();
+        
+        glBufferData(GL_ARRAY_BUFFER,modelMatrices.size()*sizeof(float),modelMatrices.data(),GL_DYNAMIC_DRAW);
+        
+        glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE, 9 * sizeof(float), static_cast<void*>(nullptr));
+        glEnableVertexAttribArray(1);
+        
+        glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(3 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        
+        glVertexAttribPointer(3,3,GL_FLOAT,GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(6 * sizeof(float)));
+        glEnableVertexAttribArray(3);
+
+        glVertexAttribDivisor(1, 1);
+        glVertexAttribDivisor(2, 1);
+        glVertexAttribDivisor(3, 1);
+        
+        
+        textureIndexVBO.bindBuffer();
+    
+        
+        glBufferData(GL_ARRAY_BUFFER,textureIndices.size()*sizeof(int),textureIndices.data(),GL_DYNAMIC_DRAW);
+        glVertexAttribPointer(4,2,GL_FLOAT,GL_FALSE, 2 * sizeof(int), static_cast<void*>(nullptr));
+        glEnableVertexAttribArray(4);
+        glVertexAttribDivisor(4, 1);
+        
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     
         
         int depth = int(abs(floor(player.coordinates.y)));
-//
-        if (depth > terrain.height-3) {
-            terrain.generateLayer();
-        }
-        
+
+//        if (depth > terrain.height-10) {
+//            terrain.generateLayer();
+//        }
+     
         bool atSurface = depth <= 4;
         if (atSurface == false) {
             openMenu = "";
@@ -315,13 +409,27 @@ void runApplication() {
         shader.loadUniform<int>(true, "u_IsTexture");
         texture.setTexture("spritesheet");
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
-        terrain.vao.bindArray();
-        terrain.vbo.draw();
+        
+        
+  
+        terrainShader.bind();
+        
+        terrainShader.loadUniform<Mat3>(orthoMatrix*player.matrix, "u_Transformation");
+        
+        vao.bindArray();
+        
+        int uniformLocation = glGetUniformLocation(terrainShader.shaderProgram, "texels");
+        
+//        glUniform1fv(uniformLocation,80,&texels[0]);
+        
+        glDrawArraysInstanced(GL_TRIANGLES,0,6,instanceCount);
+        
+        shader.bind();
         
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
         shopkeeper.vao.bindArray();
         shopkeeper.vbo.draw();
-        shopkeeper.accelerate(terrain);
+        shopkeeper.accelerate(terrain.getRawBlockIndices());
         shopkeeper.collisions = {};
         int shopkeeperX = static_cast<int>(shopkeeper.coordinates.x);
         int shopkeeperY = static_cast<int>(shopkeeper.coordinates.y);
@@ -373,7 +481,6 @@ void runApplication() {
             shader.loadUniform<int>(0, "u_LightRadius");
         }
         
-//        std::cout << player.backpackCount << "\n";
         shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
         

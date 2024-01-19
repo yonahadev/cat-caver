@@ -9,8 +9,9 @@
 #define tile_hpp
 
 #include <stdio.h>
+#include "sprite.hpp"
 
-class Tile {
+class Tile: public Sprite {
 private:
 public:
     int blockIndex;

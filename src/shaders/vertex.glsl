@@ -1,6 +1,7 @@
 #version 410 core
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 a_TexCoords;
+layout (location = 2) in mat3 a_ModelMatrix;
 
 uniform int u_IsTexture;
 

@@ -138,40 +138,45 @@ void Terrain::generateLayer() {
             }
         }
     }
-    tiles.insert(tiles.end(), layerTiles.begin(), layerTiles.end());
+    
+    for (Tile &tile: layerTiles) {
+        tiles.emplace_back(tile.coordinates.x,tile.coordinates.y+height,tile.blockIndex);
+    }
+
     
     height += config.layerDepth;
     
     layerCount += 1;
 
     
-    generateBuffer();
+//    generateBuffer();
 }
 
 void Terrain::generateBuffer() {
-    std::vector<Vertex> vertices;
-    for (int y = 0; y<height; y++) {
-        for (int x = 0; x<config.width; x++) {
-            generateQuad(x, -y, tiles[x+y*config.width].blockIndex, vertices);
-        }
-    }
-    vbo = VBO();
-    vao = VAO();
-    vao.bindArray();
-    vbo.bindBuffer();
-    vbo.bindData(vertices);
-    vao.enableAttributes();
-    vao.unbindArray();
+//    std::vector<Vertex> vertices;
+//    for (int y = 0; y<height; y++) {
+//        for (int x = 0; x<config.width; x++) {
+//            generateQuad(0, 0, tiles[x+y*config.width].blockIndex, vertices);
+//        }
+//    }
+//    vao.bindArray();
+//    vbo.bindBuffer();
+//    vbo.bindData(vertices);
+//    vao.enableAttributes();
+//    vao.unbindArray();
+//    for (Tile &tile: tiles) {
+//        tile.generateGLQuad();
+//    }
 }
 
-Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),layerCount(0),blockData(blockData),tiles() {
+Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),layerCount(0),tiles(),blockData(blockData) {
     int startingHeight = 5;
     for (int i = 0; i < startingHeight; i++) {
         for (int j = 0; j < config.width; j++) {
             if ( j == config.width-1 || i == 0 || j == 0) {
-                tiles.emplace_back(j,i,7);
+                tiles.emplace_back(j,-i,7);
             } else {
-                tiles.emplace_back(j,i,3);
+                tiles.emplace_back(j,-i,3);
             }
         }
     }

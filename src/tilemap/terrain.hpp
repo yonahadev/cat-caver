@@ -29,8 +29,8 @@ private:
 public:
     std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     const DungeonConfig config;
-    VAO vao;
-    VBO vbo;
+    VAO vao = VAO();
+    VBO vbo = VBO();
     int height;
     int layerCount;
     std::vector<Tile> tiles;

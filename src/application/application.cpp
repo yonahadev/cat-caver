@@ -233,7 +233,7 @@ void runApplication() {
     
     VBO matrixVBO = VBO();
     
-    VBO textureIndexVBO = VBO();
+    VBO texelsVBO = VBO();
     
     std::vector<float> instanceVertices = {
         0.0f,0.0f,
@@ -254,34 +254,32 @@ void runApplication() {
     
     glBindVertexArray(0);
     
+    
+    
     const int textureCount = 10;
-    
-    std::vector<float> texels; //only need x texels
-    for (int i = 0; i == textureCount; i++) {
-        
-        int textureStart = i/textureCount;
-        int textureEnd = (i+1.0f)/textureCount;
-        
-        texels.push_back(textureStart); //0,0 tex coords
-        
-        texels.push_back(textureEnd); //1,0 tex coords
-        
-        
-    }
-    
 
 
     while (!glfwWindowShouldClose(window.ptr)) {
         
         int instanceCount = 0;
         
-        std::vector<int> textureIndices;
+        std::vector<float> texels; //only need x texels
         std::vector<Mat3> matrices; //tile matrices so we can pass to the instance draw call
+        
         for (Tile &tile: terrain.tiles) {
-            matrices.push_back(tile.matrix);
-            textureIndices.push_back(tile.textureIndex);
             instanceCount += 1;
-            std::cout << tile.textureIndex << "\n";
+            
+            matrices.push_back(tile.matrix);
+            
+            int textureIndex = tile.textureIndex;
+            float textureStart = float(textureIndex)/textureCount;
+            float textureEnd = (textureIndex+1.0f)/textureCount;
+            
+            texels.push_back(textureStart); //0,0 tex coords
+            
+            texels.push_back(textureEnd); //1,0 tex coords
+            
+            std::cout << "Texels: " << textureStart << "," << textureEnd << "\n";
         }
         
         std::vector<float> modelMatrices;
@@ -309,11 +307,10 @@ void runApplication() {
         glVertexAttribDivisor(3, 1);
         
         
-        textureIndexVBO.bindBuffer();
-    
+        texelsVBO.bindBuffer();
         
-        glBufferData(GL_ARRAY_BUFFER,textureIndices.size()*sizeof(int),textureIndices.data(),GL_DYNAMIC_DRAW);
-        glVertexAttribPointer(4,2,GL_FLOAT,GL_FALSE, 2 * sizeof(int), static_cast<void*>(nullptr));
+        glBufferData(GL_ARRAY_BUFFER,texels.size()*sizeof(float),texels.data(),GL_DYNAMIC_DRAW);
+        glVertexAttribPointer(4,2,GL_FLOAT,GL_FALSE, 2 * sizeof(float), static_cast<void*>(nullptr));
         glEnableVertexAttribArray(4);
         glVertexAttribDivisor(4, 1);
         
@@ -323,9 +320,9 @@ void runApplication() {
         
         int depth = int(abs(floor(player.coordinates.y)));
 
-//        if (depth > terrain.height-10) {
-//            terrain.generateLayer();
-//        }
+        if (depth > terrain.height-10) {
+            terrain.generateLayer();
+        }
      
         bool atSurface = depth <= 4;
         if (atSurface == false) {
@@ -417,10 +414,6 @@ void runApplication() {
         terrainShader.loadUniform<Mat3>(orthoMatrix*player.matrix, "u_Transformation");
         
         vao.bindArray();
-        
-        int uniformLocation = glGetUniformLocation(terrainShader.shaderProgram, "texels");
-        
-//        glUniform1fv(uniformLocation,80,&texels[0]);
         
         glDrawArraysInstanced(GL_TRIANGLES,0,6,instanceCount);
         

@@ -29,8 +29,8 @@ public:
     bool collisionsOn;
     Mat3 matrix;
     Vec2f coordinates;
-    VBO vbo = VBO();
-    VAO vao = VAO();
+    VBO vbo;
+    VAO vao;
     std::vector<std::string> collisions;
     void generateGLQuad();
     void teleport(const float x, const float y,const std::vector<int> &blockIndices);

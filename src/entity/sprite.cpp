@@ -124,6 +124,10 @@ void Sprite::update(const std::vector<int> &blockIndices,float xPos,float yPos) 
 void Sprite::generateGLQuad() {
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
+//    vbo = VBO();
+//    vao = VAO();
+    vao.genArrays();
+    vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
     vao.enableAttributes();

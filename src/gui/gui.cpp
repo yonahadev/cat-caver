@@ -21,6 +21,8 @@ void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
 void Gui::renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour) {
     std::vector<Vertex> vertices;
     generateUIQuad(width, height, x, y, vertices);
+    vao.genArrays();
+    vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
     vbo.bindData(vertices);

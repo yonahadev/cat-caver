@@ -25,24 +25,29 @@ void VAO::enableAttributes() const {
     glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE, 4 * sizeof(float), reinterpret_cast<void*>(2 * sizeof(float)));
 }
 
-VAO::VAO() {
+void VAO::genArrays() {
     glGenVertexArrays(1,&ID);
 }
 
+VAO::VAO() {
+    ID = 0;
+}
+
 VAO::~VAO() {
-    glDeleteVertexArrays(1,&ID);
+    if (ID != 0) {
+        glDeleteVertexArrays(1,&ID);
+    }
 }
 
 
 //move constructor
 VAO::VAO(VAO&& other) noexcept: ID(other.ID) {
-    glDeleteVertexArrays(1,&ID);
     other.ID = 0;
 }
 
 //move assignment
 VAO& VAO::operator=(VAO&& other) noexcept {
-    if (this != &other)
+    if (this != &other && ID != 0)
     {
         glDeleteVertexArrays(1, &ID);
         ID = other.ID;

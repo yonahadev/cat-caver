@@ -26,12 +26,18 @@ void VBO::unbindBuffer() const {
     glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
-VBO::VBO() {
+void VBO::genBuffer() {
     glGenBuffers(1,&ID);
 }
 
+VBO::VBO() {
+    ID = 0;
+}
+
 VBO::~VBO() {
-    glDeleteBuffers(1,&ID);
+    if (ID != 0) {
+        glDeleteBuffers(1,&ID);
+    }
 }
 
 //move constructor
@@ -42,7 +48,7 @@ VBO::VBO(VBO&& other) noexcept: ID(other.ID), verticesCount(other.verticesCount)
 
 //move assignment
 VBO& VBO::operator=(VBO&& other) noexcept {
-    if (this != &other)
+    if (this != &other && ID != 0)
     {
         glDeleteBuffers(1, &ID);
         ID = other.ID;

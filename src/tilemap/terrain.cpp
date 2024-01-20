@@ -121,35 +121,19 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
 }
 
 void Terrain::generateLayer() {
-    std::vector<Tile> layerTiles {};
-    for (int i = 0; i < config.layerDepth; i++) {
-        for (int j = 0; j < config.width; j++) {
-            if (j == 0 || j == config.width-1) {
-                layerTiles.emplace_back(i,j,7);
-            } else {
-                int layer = layerCount;
-                int lastLayer = static_cast<int>(config.layerInfo.size())-1;
-                if (layerCount > lastLayer) {
-                    layer = lastLayer;
-                }
-                int blockIndex = getRandomOre(config.layerInfo[layer],j,i,config.layerDepth,config.width);
-                layerTiles.emplace_back(j,i,blockIndex);
-        
-            }
+    
+    for (int y = 0; y < 40; y++) {
+        for (int x = 0; x < 16; x++ ) {
+            tiles.emplace_back(x,-height-y,0);
+//            tiles.emplace_back(x,-6,3);
+//            tiles.emplace_back(x,-7,3);
         }
     }
-    
-    for (Tile &tile: layerTiles) {
-        tiles.emplace_back(tile.coordinates.x,tile.coordinates.y+height,tile.blockIndex);
-    }
-
     
     height += config.layerDepth;
     
     layerCount += 1;
 
-    
-//    generateBuffer();
 }
 
 void Terrain::generateBuffer() {

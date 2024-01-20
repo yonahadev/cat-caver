@@ -17,6 +17,7 @@ public:
     void bindArray() const;
     void unbindArray() const;
     void enableAttributes() const;
+    void genArrays();
     VAO();
     ~VAO();
     VAO(VAO &other) = delete;

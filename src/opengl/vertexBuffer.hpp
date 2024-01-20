@@ -20,6 +20,7 @@ public:
     void bindBuffer() const;
     void unbindBuffer() const ;
     void bindData(const std::vector<Vertex> &vertices);
+    void genBuffer();
     void draw() const;
     VBO();
     ~VBO();

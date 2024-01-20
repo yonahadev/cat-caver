@@ -56,6 +56,8 @@ void Text::generate(const std::string &string, const int x, const int y) {
         generateTextQuad(character, vertices);
     }
     
+    vao.genArrays();
+    vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
     vbo.bindData(vertices);

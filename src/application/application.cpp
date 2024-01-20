@@ -93,7 +93,7 @@ void runApplication() {
     };
     
     std::vector<Pickaxe> pickaxeData = {
-        {"wooden",1,1000,0},
+        {"wooden",1,10,0},
         {"Shovel",1,3,1},
         {"bare hands",1,5,275},
         {"Fork",2,8,500}
@@ -117,7 +117,7 @@ void runApplication() {
     dungeonConfig.underpopulationCount = 0;
     dungeonConfig.cellsForBirth = 1;
     dungeonConfig.turnCount = 0;
-    dungeonConfig.layerDepth = 10;
+    dungeonConfig.layerDepth = 20;
     dungeonConfig.layerInfo = {
         { //map of ore index to magnitude from center on height map to be generated
             {0,0.05},
@@ -244,6 +244,10 @@ void runApplication() {
         0.0f,1.0f
     };
     
+    vao.genArrays();
+    vbo.genBuffer();
+    matrixVBO.genBuffer();
+    texelsVBO.genBuffer();
     
     vao.bindArray();
     vbo.bindBuffer();
@@ -320,7 +324,7 @@ void runApplication() {
         
         int depth = int(abs(floor(player.coordinates.y)));
 
-        if (depth > terrain.height-10) {
+        if (depth > terrain.height-3) {
             terrain.generateLayer();
         }
      

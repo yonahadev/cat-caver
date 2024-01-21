@@ -30,9 +30,12 @@ public:
     std::vector<Vec2i> getNeighbours(const int x, const int y) const;
     const DungeonConfig config;
     VAO vao = VAO();
-    VBO vbo = VBO();
+    VBO vertexVBO = VBO();
+    VBO matrixVBO = VBO();
+    VBO texelsVBO = VBO();
     int height;
     int layerCount;
+    int instanceCount;
     std::vector<Tile> tiles;
     std::vector<Block> triggerExplosion(const int x, const int y);
     std::vector<Block> blockData;

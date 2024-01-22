@@ -13,7 +13,7 @@
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
 #include "vec2.hpp"
-#include "dungeonConfig.hpp"
+#include "terrainConfig.hpp"
 #include "block.hpp"
 #include <map>
 #include "tile.hpp"
@@ -28,11 +28,11 @@ private:
     int getRandomOre(const std::map<int,double> &layerOres,const int x, const int y, const int layerDepth, const int layerWidth);
 public:
     std::vector<Vec2i> getNeighbours(const int x, const int y) const;
-    const DungeonConfig config;
-    VAO vao = VAO();
-    VBO vertexVBO = VBO();
-    VBO matrixVBO = VBO();
-    VBO texelsVBO = VBO();
+    const TerrainConfig config;
+    VAO vao;
+    VBO vertexVBO;
+    VBO matrixVBO;
+    VBO texelsVBO;
     int height;
     int layerCount;
     int instanceCount;
@@ -45,6 +45,6 @@ public:
     void mineBlock(const int x,const int y);
     void generateBuffer();
     void generateLayer();
-    Terrain(const DungeonConfig &config,const std::vector<Block> &blockData);
+    Terrain(const TerrainConfig &config,const std::vector<Block> &blockData);
 };
 #endif /* terrainClass_hpp */

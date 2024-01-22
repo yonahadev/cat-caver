@@ -72,6 +72,7 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     
     if (isMineable) {
         mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
+//        std::cout << "current tile: " << mouse.currentTile << "\n";
     } else {
         mouse.currentTile = -1;
     }

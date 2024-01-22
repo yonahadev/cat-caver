@@ -1,18 +1,18 @@
 //
-//  dungeonConfig.hpp
+//  terrainConfig.hpp
 //  TileMap
 //
 //  Created by tom on 2023/11/22.
 //
 
-#ifndef dungeonConfig_hpp
-#define dungeonConfig_hpp
+#ifndef terrainConfig_hpp
+#define terrainConfig_hpp
 
 #include <stdio.h>
 #include <vector>
 #include <map>
 
-struct DungeonConfig {
+struct TerrainConfig {
     int width;
     int powerupChance;
     int turnCount;
@@ -22,8 +22,8 @@ struct DungeonConfig {
     int layerDepth;
     std::vector<std::map<int, double>> layerInfo;
     
-    DungeonConfig() {}
+    TerrainConfig() {}
 };
 
 
-#endif /* dungeonConfig_hpp */
+#endif /* terrainConfig_hpp */

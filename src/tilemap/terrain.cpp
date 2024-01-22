@@ -72,6 +72,7 @@ int Terrain::getTileIndex(int x,int y) const{
 void Terrain::mineBlock(int x, int y) {
     int index = getTileIndex(x,y);
     tiles[index] = Tile(x,y,3);
+    std::cout << "Mined: " << x << "," << y << "\n";
 }
 
 std::vector<Block> Terrain::triggerExplosion(const int x, const int y) {
@@ -123,9 +124,20 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
 
 void Terrain::generateLayer() {
     
-    for (int y = 0; y < 40; y++) {
+    for (int y = 0; y < config.layerDepth; y++) {
         for (int x = 0; x < 16; x++ ) {
-            tiles.emplace_back(x,-height-y,0);
+            bool borderTile = x == 0 || x == config.width -1;
+            if (borderTile) {
+                tiles.emplace_back(x,-height-y,7);
+            } else {
+                int layer = layerCount;
+                int lastLayer = static_cast<int>(config.layerInfo.size())-1;
+                if (layerCount > lastLayer) {
+                    layer = lastLayer;
+                }
+                int blockIndex = getRandomOre(config.layerInfo[layer],x,y,config.layerDepth,config.width);
+                tiles.emplace_back(x,-height-y,blockIndex);
+            }
         }
     }
     
@@ -155,8 +167,7 @@ void Terrain::generateBuffer() {
         texels.push_back(textureStart); //0,0 tex coords
         
         texels.push_back(textureEnd); //1,0 tex coords
-        
-        std::cout << "Texels: " << textureStart << "," << textureEnd << "\n";
+    
     }
     
     std::vector<float> modelMatrices;
@@ -193,7 +204,7 @@ void Terrain::generateBuffer() {
     
 }
 
-Terrain::Terrain(const DungeonConfig &config, const std::vector<Block> &blockData): config(config),layerCount(0),tiles(),blockData(blockData) {
+Terrain::Terrain(const TerrainConfig &config, const std::vector<Block> &blockData): config(config),layerCount(0),tiles(),blockData(blockData) {
     
     std::vector<float> instanceVertices = {
         0.0f,0.0f,

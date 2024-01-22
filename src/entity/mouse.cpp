@@ -17,9 +17,7 @@ void Mouse::generateBuffer(const std::vector<Block> &blockData) {
 
         std::vector<Vertex> vertices;
         generateUIQuad(mined,mined,startX,startY,vertices);
-
-        vbo = VBO();
-        vao = VAO();
+        
         vao.bindArray();
         vbo.bindBuffer();
         vbo.bindData(vertices);
@@ -31,8 +29,6 @@ void Mouse::generateBuffer(const std::vector<Block> &blockData) {
     //        std::cout << currentTile << "\n";
             std::vector<Vertex> vertices;
             generateQuad(tileX,tileY,4,vertices);
-            vbo = VBO();
-            vao = VAO();
             vao.bindArray();
             vbo.bindBuffer();
             vbo.bindData(vertices);

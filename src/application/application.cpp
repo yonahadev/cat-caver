@@ -24,7 +24,7 @@
 #include "text.hpp"
 #include <fstream>
 #include <unordered_map>
-#include "dungeonConfig.hpp"
+#include "terrainConfig.hpp"
 #include "block.hpp"
 #include "quad.hpp"
 #include "gui.hpp"
@@ -110,15 +110,15 @@ void runApplication() {
     
     glfwGetWindowContentScale(window.ptr, &windowScale.x, &windowScale.y);
     
-    DungeonConfig dungeonConfig;
-    dungeonConfig.width = 16;
-    dungeonConfig.powerupChance = 1; //applied post layer generation
-    dungeonConfig.overpopulationCount = 5;
-    dungeonConfig.underpopulationCount = 0;
-    dungeonConfig.cellsForBirth = 1;
-    dungeonConfig.turnCount = 0;
-    dungeonConfig.layerDepth = 20;
-    dungeonConfig.layerInfo = {
+    TerrainConfig terrainConfig;
+    terrainConfig.width = 16;
+    terrainConfig.powerupChance = 1; //applied post layer generation
+    terrainConfig.overpopulationCount = 5;
+    terrainConfig.underpopulationCount = 0;
+    terrainConfig.cellsForBirth = 1;
+    terrainConfig.turnCount = 0;
+    terrainConfig.layerDepth = 20;
+    terrainConfig.layerInfo = {
         { //map of ore index to magnitude from center on height map to be generated
             {0,0.05},
             {1,0.085},
@@ -166,7 +166,7 @@ void runApplication() {
     player.ownedBackpacks[backpackData[0]] = true;
     player.equippedBackpack = backpackData[0];
     
-    Terrain terrain(dungeonConfig,blockData);
+    Terrain terrain(terrainConfig,blockData);
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-aspectRatio.x/2)+0.5,
@@ -198,19 +198,20 @@ void runApplication() {
     Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt",colourVector);
     
     Mouse mouse;
+    mouse.vao.genArrays();
+    mouse.vbo.genBuffer();
 
     std::vector<Vertex> vertices;
     generateUIQuad(16, 10, (-aspectRatio.x/2)+0.5, (-aspectRatio.y/2)+0.5, vertices);
-    VBO lightVBO = VBO();
-    VAO lightVAO = VAO();
+    VBO lightVBO;
+    VAO lightVAO;
+    lightVBO.genBuffer();
+    lightVAO.genArrays();
     lightVAO.bindArray();
     lightVBO.bindBuffer();
     lightVBO.bindData(vertices);
     lightVAO.enableAttributes();
     lightVAO.unbindArray();
-    
-    
-    std::cout << player.equippedPickaxe.name << "\n";
     
     std::string openMenu = "";
     std::string selectedTab = "pickaxes";
@@ -226,18 +227,16 @@ void runApplication() {
         {5,false}
     };
     
-    
-
-    
-    
-    
-    const int textureCount = 10;
-
-
     while (!glfwWindowShouldClose(window.ptr)) {
     
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        
+//        for (Tile &tile: terrain.tiles) {
+//            if (tile.blockIndex != 3) {
+//                tile.accelerate(terrain.getRawBlockIndices());
+//            }
+//        }
         
         int depth = int(abs(floor(player.coordinates.y)));
 

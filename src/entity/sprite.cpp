@@ -124,8 +124,6 @@ void Sprite::update(const std::vector<int> &blockIndices,float xPos,float yPos) 
 void Sprite::generateGLQuad() {
     std::vector<Vertex> vertices;
     generateQuad(0, 0, textureIndex, vertices);
-//    vbo = VBO();
-//    vao = VAO();
     vao.genArrays();
     vbo.genBuffer();
     vao.bindArray();
@@ -133,7 +131,6 @@ void Sprite::generateGLQuad() {
     vao.enableAttributes();
     vbo.bindData(vertices);
     vao.unbindArray();
-//    std::cout << vbo.verticesCount << "\n";
 }
 
 Sprite::Sprite(float offsetX,float offsetY, const int textureIndex): textureIndex(textureIndex),collisionsOn(true),matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {

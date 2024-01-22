@@ -23,8 +23,8 @@
 class Gui {
 private:
     Text text;
-    VAO vao = VAO();
-    VBO vbo = VBO();
+    VAO vao;
+    VBO vbo;
     std::vector<Vec4f> colours;
 public:
     int getWidth(const std::string &string);

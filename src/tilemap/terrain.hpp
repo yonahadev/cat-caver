@@ -33,6 +33,8 @@ public:
     VBO vertexVBO;
     VBO matrixVBO;
     VBO texelsVBO;
+    VAO backgroundVAO;
+    VBO backgroundVBO;
     int height;
     int layerCount;
     int instanceCount;

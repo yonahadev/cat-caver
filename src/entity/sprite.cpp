@@ -46,11 +46,11 @@ void Sprite::checkCollisions(const std::vector<int> &blockIndices) {
                     collisions.push_back("left");
 
                 }
-                if (y > coordinates.x) {
+                if (y > coordinates.y) {
                     collisions.push_back("top");
 
                 }
-                if (y < coordinates.x) {
+                if (y < coordinates.y) {
                     collisions.push_back("bottom");
 
                 }
@@ -109,9 +109,9 @@ void Sprite::moveSprite(const float x,const float y, const std::vector<int> &blo
 }
 
 void Sprite::adjustHitbox() {
-    hitboxLeft = coordinates.x+0.2f;
+    hitboxLeft = coordinates.x+0.25f;
     hitboxRight = coordinates.x+0.8f;
-    hitboxTop = coordinates.y+0.8f;
+    hitboxTop = coordinates.y+0.975f;
     hitboxBottom = coordinates.y;
 }
 

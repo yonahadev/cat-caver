@@ -36,7 +36,7 @@ public:
     void teleport(const float x, const float y,const std::vector<int> &blockIndices);
     void update(const std::vector<int> &blockIndices,float xPos,float yPos);
     bool getCollision(const std::string &search) const;
-    void checkCollisions(const std::vector<int> &blockIndices);
+    virtual void checkCollisions(const std::vector<int> &blockIndices);
     void getCoordinates() const;
     void getHitbox() const;
     void getMatrix() const;

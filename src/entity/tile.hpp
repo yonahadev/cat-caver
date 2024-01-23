@@ -16,6 +16,7 @@ private:
 public:
     int blockIndex;
     Tile(int x,int y, int textureIndex);
+    void checkCollisions(const std::vector<int> &blockIndices) override;
 };
 
 #endif /* Tile_hpp */

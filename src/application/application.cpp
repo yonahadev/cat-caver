@@ -232,11 +232,10 @@ void runApplication() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-//        for (Tile &tile: terrain.tiles) {
-//            if (tile.blockIndex != 3) {
-//                tile.accelerate(terrain.getRawBlockIndices());
-//            }
-//        }
+        for (Tile &tile: terrain.tiles) {
+            tile.accelerate(terrain.getRawBlockIndices());
+            tile.collisions = {};
+        }
         
         int depth = int(abs(floor(player.coordinates.y)));
 
@@ -327,7 +326,8 @@ void runApplication() {
         texture.setTexture("spritesheet");
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
         
-        
+        terrain.backgroundVAO.bindArray();
+        terrain.backgroundVBO.draw();
   
         terrainShader.bind();
         
@@ -338,6 +338,8 @@ void runApplication() {
         glDrawArraysInstanced(GL_TRIANGLES,0,6,terrain.instanceCount);
         
         shader.bind();
+        
+
         
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
         shopkeeper.vao.bindArray();

@@ -158,16 +158,17 @@ void Terrain::generateBuffer() {
     for (Tile &tile: tiles) {
         instanceCount += 1;
         
-        matrices.push_back(tile.matrix);
         
         int textureIndex = tile.textureIndex;
         float textureStart = float(textureIndex)/textureCount;
         float textureEnd = (textureIndex+1.0f)/textureCount;
         
-        texels.push_back(textureStart); //0,0 tex coords
-        
-        texels.push_back(textureEnd); //1,0 tex coords
     
+        if (tile.blockIndex != 3) {
+            matrices.push_back(tile.matrix);
+            texels.push_back(textureStart); //0,0 tex coords
+            texels.push_back(textureEnd); //1,0 tex coords
+        }
     }
     
     std::vector<float> modelMatrices;
@@ -202,6 +203,20 @@ void Terrain::generateBuffer() {
     glEnableVertexAttribArray(4);
     glVertexAttribDivisor(4, 1);
     
+    backgroundVAO.bindArray();
+    backgroundVBO.bindBuffer();
+    
+    std::vector<Vertex> vertices;
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < config.width; x++) {
+            generateQuad(x, -y, 3, vertices);
+        }
+    }
+    
+    backgroundVBO.bindData(vertices);
+    backgroundVAO.enableAttributes();
+    
 }
 
 Terrain::Terrain(const TerrainConfig &config, const std::vector<Block> &blockData): config(config),layerCount(0),tiles(),blockData(blockData) {
@@ -219,6 +234,8 @@ Terrain::Terrain(const TerrainConfig &config, const std::vector<Block> &blockDat
     vertexVBO.genBuffer();
     matrixVBO.genBuffer();
     texelsVBO.genBuffer();
+    backgroundVAO.genArrays();
+    backgroundVBO.genBuffer();
     
     vao.bindArray();
     vertexVBO.bindBuffer();

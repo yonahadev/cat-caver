@@ -232,9 +232,17 @@ void runApplication() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        bool terrainUpdated = false;
+        
         for (Tile &tile: terrain.tiles) {
-            tile.accelerate(terrain.getRawBlockIndices());
-            tile.collisions = {};
+            if (tile.blockIndex != 3) {
+                terrainUpdated = tile.accelerate(terrain.getRawBlockIndices());
+                tile.collisions = {};
+            }
+        }
+        
+        if (terrainUpdated) {
+            terrain.generateBuffer();
         }
         
         int depth = int(abs(floor(player.coordinates.y)));

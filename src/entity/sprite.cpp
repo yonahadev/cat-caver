@@ -72,14 +72,19 @@ void Sprite::jump() {
     }
 }
 
-void Sprite::accelerate(const std::vector<int> &blockIndices) {
+bool Sprite::accelerate(const std::vector<int> &blockIndices) {
 
     
     if (getCollision("bottom") == false & airborne < 500) {
         airborne -= 2.5;
     }
-    
-    moveSprite(0, airborne/1000, blockIndices);
+
+    if (collisions.size() == 0) {
+        moveSprite(0, airborne/1000, blockIndices); 
+        return true;
+    } else {
+        return false;
+    }
 
 }
 

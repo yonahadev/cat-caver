@@ -41,7 +41,7 @@ public:
     void getHitbox() const;
     void getMatrix() const;
     void jump ();
-    void accelerate(const std::vector<int> &blockIndices);
+    bool accelerate(const std::vector<int> &blockIndices);
     void move(const float x,const float y);
     virtual void moveSprite(const float x,const float y, const std::vector<int> &blockIndices);
     Sprite(float offsetX,float offsetY, const int textureIndex);

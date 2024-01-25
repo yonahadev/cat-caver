@@ -122,7 +122,7 @@ int Terrain::getRandomOre(const std::map<int,double> &layerOres,const int x, con
     return 0;
 }
 
-void Terrain::generateLayer() {
+void Terrain::generateLayer(int depth) {
     
     for (int y = 0; y < config.layerDepth; y++) {
         for (int x = 0; x < 16; x++ ) {
@@ -145,29 +145,41 @@ void Terrain::generateLayer() {
     
     layerCount += 1;
 
-    generateBuffer();
+    
+    generateBuffer(depth);
 }
 
-void Terrain::generateBuffer() {
+void Terrain::generateBuffer(int depth) {
     instanceCount = 0;
     int textureCount = 10;
     
     std::vector<float> texels; //only need x texels
     std::vector<Mat3> matrices; //tile matrices so we can pass to the instance draw call
     
-    for (Tile &tile: tiles) {
-        instanceCount += 1;
-        
-        
-        int textureIndex = tile.textureIndex;
-        float textureStart = float(textureIndex)/textureCount;
-        float textureEnd = (textureIndex+1.0f)/textureCount;
-        
+    int renderTop;
     
-        if (tile.blockIndex != 3) {
-            matrices.push_back(tile.matrix);
-            texels.push_back(textureStart); //0,0 tex coords
-            texels.push_back(textureEnd); //1,0 tex coords
+    if (depth <= 6) {
+        renderTop = 0;
+    } else {
+        renderTop = depth-6;
+    }
+    
+    for (int y = renderTop; y < renderTop+20; y++) {
+        for (int x = 0; x < config.width; x++) {
+            
+            Tile &tile = tiles[x+y*config.width];
+            
+            instanceCount += 1;
+            int textureIndex = tile.textureIndex;
+            float textureStart = float(textureIndex)/textureCount;
+            float textureEnd = (textureIndex+1.0f)/textureCount;
+            
+            
+            if (tile.blockIndex != 3) {
+                matrices.push_back(tile.matrix);
+                texels.push_back(textureStart); //0,0 tex coords
+                texels.push_back(textureEnd); //1,0 tex coords
+            }
         }
     }
     
@@ -258,5 +270,6 @@ Terrain::Terrain(const TerrainConfig &config, const std::vector<Block> &blockDat
     }
     height = startingHeight;
     
-    generateBuffer();
+    generateBuffer(0);
+
 }

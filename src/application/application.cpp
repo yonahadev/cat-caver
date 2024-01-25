@@ -229,26 +229,48 @@ void runApplication() {
     
     while (!glfwWindowShouldClose(window.ptr)) {
     
+        
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        bool terrainUpdated = false;
+//        for (Tile &tile: terrain.tiles) {
+//            
+//            bool correctIndex = tile.blockIndex != 3;
+//            bool inTerrain = tile.coordinates.y != 0 && tile.coordinates.x != 0 && tile.coordinates.x != terrain.config.width -1;
+//            
+//            if (correctIndex && inTerrain) {
+//                
+//                tile.accelerate(terrain.getRawBlockIndices());
+//                tile.collisions = {};
+//                terrain.updated = tile.collisions.empty();
+//                
+//                if (tile.airborne < -15) {
+//                    tile.falling = true;
+//                }
+//                
+//                
+//                if (tile.falling) {
+//                    int x = std::floor(tile.coordinates.x);
+//                    int y = std::floor(tile.coordinates.y);
+//                    if (tile.airborne == 0.0f) {
+//                        tile.falling = false;
+////                        std::cout << "tile stopped falling: " << x << "," << y << "\n";
+//                        terrain.tiles[x+(-y*terrain.config.width)] = Tile(x,y,tile.blockIndex);
+//                        terrain.tiles[x+((-y-1)*terrain.config.width)] = Tile(x,y+1,3);
+//                    } else {
+////                        std::cout << "falling block: " << x << "," << y << "\n";
+//                    }
+//
+//                }//using value greater than the -2.5 subtraced per frame to check for actually falling tiles
+//            }
+//        }
         
-        for (Tile &tile: terrain.tiles) {
-            if (tile.blockIndex != 3) {
-                terrainUpdated = tile.accelerate(terrain.getRawBlockIndices());
-                tile.collisions = {};
-            }
-        }
-        
-        if (terrainUpdated) {
-            terrain.generateBuffer();
-        }
         
         int depth = int(abs(floor(player.coordinates.y)));
 
-        if (depth > terrain.height-3) {
-            terrain.generateLayer();
+        if (depth > terrain.height-20) {
+            terrain.generateLayer(depth);
+            terrain.generateBuffer(depth);
         }
      
         bool atSurface = depth <= 4;

@@ -10,8 +10,8 @@
 Tile::Tile(int x, int y, int textureIndex): Sprite(x, y, textureIndex), blockIndex(textureIndex) {}
 
 void Tile::checkCollisions(const std::vector<int> &blockIndices) {
+    
     int width = 16;
-    int y = (std::floor(coordinates.y));
     int x = std::floor(coordinates.x);
     
     

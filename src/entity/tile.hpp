@@ -15,6 +15,7 @@ class Tile: public Sprite {
 private:
 public:
     int blockIndex;
+    bool falling = false;
     Tile(int x,int y, int textureIndex);
     void checkCollisions(const std::vector<int> &blockIndices) override;
 };

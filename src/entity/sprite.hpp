@@ -31,6 +31,7 @@ public:
     Vec2f coordinates;
     VBO vbo;
     VAO vao;
+    bool falling = false;
     std::vector<std::string> collisions;
     void generateGLQuad();
     void teleport(const float x, const float y,const std::vector<int> &blockIndices);

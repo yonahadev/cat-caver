@@ -112,7 +112,9 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
                 }
             }
             mouse.holding = 0;
-            terrain.generateBuffer();
+            int depth = int(abs(floor(player.coordinates.y)));
+
+            terrain.generateBuffer(depth);
         }
         mouse.minedPercentage = (mouse.holding/blockHealth)*100;
 //        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";

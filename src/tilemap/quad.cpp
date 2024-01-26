@@ -8,11 +8,14 @@
 #include "quad.hpp"
 #include <iostream>
 
+constexpr int textureCount = 13.0f;
+constexpr float textureMultiplier = 1.0f/textureCount;
+
 void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices) {
+        float textureEnd = (textureIndex+1) * textureMultiplier;
+        float textureStart = textureIndex * textureMultiplier;
     
-    float textureEnd = (textureIndex+1) * 0.1f;
-    float textureStart = textureIndex * 0.1f;
-    
+
         vertices.emplace_back(0.0f+offsetX,0.0f+offsetY,          textureStart,0.0f);
         vertices.emplace_back(1.0f+offsetX,0.0f+offsetY,         textureEnd,0.0f);
         vertices.emplace_back(1.0f+offsetX,1.0f+offsetY,        textureEnd,1.0f);
@@ -43,11 +46,10 @@ void generateTextQuad(const Character &ch, std::vector<Vertex> &vertices) {
         vertices.emplace_back(posX,endPosY,         startX,endY);
 }
 
-void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices) {
+void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices, int textureIndex) {
     
-    int textureIndex = 1;
-    float textureEnd = (textureIndex+1) * 0.1f;
-    float textureStart = textureIndex * 0.1f;
+    float textureEnd = (textureIndex+1) * textureMultiplier;
+    float textureStart = textureIndex * textureMultiplier;
     
     float posX = 0.0f + offsetX;
     float endPosX = posX + width;

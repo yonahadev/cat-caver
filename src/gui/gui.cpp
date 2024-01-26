@@ -11,23 +11,26 @@
 
 void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
     text.generate(button.text,button.x,button.y);
-    renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour);
+    renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour,false,1);
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");
     shader.loadUniform<Vec4f>(colours[button.textColour], "u_QuadColour");
     text.draw();
 }
 
-void Gui::renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour) {
+void Gui::renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour,bool isTexture, int textureIndex) {
     std::vector<Vertex> vertices;
-    generateUIQuad(width, height, x, y, vertices);
+    generateUIQuad(width, height, x, y, vertices,textureIndex);
     vao.genArrays();
     vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
     vbo.bindData(vertices);
     vao.enableAttributes();
-    shader.loadUniform<int>(false, "u_IsTexture");
+    shader.loadUniform<int>(isTexture, "u_IsTexture");
+    if (isTexture) {
+        texture.setTexture("spritesheet");
+    }
     shader.loadUniform<Vec4f>(colours[bgColour], "u_QuadColour");
     vbo.draw();
 }

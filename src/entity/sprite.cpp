@@ -33,12 +33,17 @@ bool Sprite::getCollision(const std::string &search) const {
 
 void Sprite::checkCollisions(const std::vector<int> &blockIndices) {
     //calculate coordinates that the Sprite is touching
-    int width = 16;
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
         for (int x = (std::floor(hitboxLeft)); x <= (std::floor(hitboxRight)); x++ ) {
-            int currentTile = blockIndices[x+(-y*width)];
-//            std::cout << x << "," << y << " Current tile: " << currentTile << "\n";
-             if (currentTile != 3 && collisionsOn == true) {
+            
+            const int currentTile = blockIndices[x+(-y*terrainWidth)];
+            
+            
+            
+            bool touchingPlatform = platformCollision && currentTile == 12;
+            bool notNearPlatform = platformCollision == false && currentTile != 12;
+            
+             if (currentTile != 3 && collisionsOn == true && (touchingPlatform == true || notNearPlatform)) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }
@@ -60,7 +65,7 @@ void Sprite::checkCollisions(const std::vector<int> &blockIndices) {
     }
 }
 
-void Sprite::move(const float x,const float y) {
+void Sprite::move(float x,float y) {
     matrix *= Mat3(1.0f,0.0f,x,
                           0.0f,1.0f,y,
                          0.0f,0.0f,1.0f);
@@ -87,14 +92,14 @@ bool Sprite::accelerate(const std::vector<int> &blockIndices) {
 
 }
 
-void Sprite::teleport(const float x, const float y,const std::vector<int> &blockIndices) {
+void Sprite::teleport(float x, float y,const std::vector<int> &blockIndices) {
     Vec2f changeInPosition = {x-coordinates.x,y-coordinates.y};
     collisionsOn = false;
     moveSprite(changeInPosition.x, changeInPosition.y, blockIndices);
     collisionsOn = true;
 }
 
-void Sprite::moveSprite(const float x,const float y, const std::vector<int> &blockIndices) {
+void Sprite::moveSprite(float x,float y, const std::vector<int> &blockIndices) {
     move(x,0);
     update(blockIndices, matrix.matrix_Array[2], matrix.matrix_Array[5]);
     if (collisions.size() > 0) {
@@ -113,10 +118,17 @@ void Sprite::moveSprite(const float x,const float y, const std::vector<int> &blo
 }
 
 void Sprite::adjustHitbox() {
-    hitboxLeft = coordinates.x+0.25f;
-    hitboxRight = coordinates.x+0.8f;
-    hitboxTop = coordinates.y+0.975f;
-    hitboxBottom = coordinates.y;
+    if (textureIndex == 12) {
+        hitboxLeft = coordinates.x+0.25f;
+        hitboxRight = coordinates.x+0.8f;
+        hitboxTop = coordinates.y+0.2;
+        hitboxBottom = coordinates.y;
+    } else {
+        hitboxLeft = coordinates.x+0.25f;
+        hitboxRight = coordinates.x+0.8f;
+        hitboxTop = coordinates.y+0.975f;
+        hitboxBottom = coordinates.y;
+    }
 }
 
 void Sprite::update(const std::vector<int> &blockIndices,float xPos,float yPos) {
@@ -137,7 +149,7 @@ void Sprite::generateGLQuad() {
     vao.unbindArray();
 }
 
-Sprite::Sprite(float offsetX,float offsetY, const int textureIndex): textureIndex(textureIndex),collisionsOn(true),matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {
+Sprite::Sprite(float offsetX,float offsetY, int textureIndex): textureIndex(textureIndex),collisionsOn(true),matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {
 
 }
 

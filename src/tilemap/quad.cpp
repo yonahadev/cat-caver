@@ -7,11 +7,9 @@
 
 #include "quad.hpp"
 #include <iostream>
+#include "constants.hpp"
 
-constexpr int textureCount = 13.0f;
-constexpr float textureMultiplier = 1.0f/textureCount;
-
-void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices) {
+void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<Vertex> &vertices) {
         float textureEnd = (textureIndex+1) * textureMultiplier;
         float textureStart = textureIndex * textureMultiplier;
     
@@ -46,7 +44,7 @@ void generateTextQuad(const Character &ch, std::vector<Vertex> &vertices) {
         vertices.emplace_back(posX,endPosY,         startX,endY);
 }
 
-void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices, int textureIndex) {
+void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<Vertex> &vertices, int textureIndex) {
     
     float textureEnd = (textureIndex+1) * textureMultiplier;
     float textureStart = textureIndex * textureMultiplier;

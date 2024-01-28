@@ -6,8 +6,9 @@
 //
 #include "mouse.hpp"
 #include "quad.hpp"
+#include "constants.hpp"
 
-void Mouse::generateBuffer(const std::vector<Block> &blockData) {
+void Mouse::generateBuffer() {
     if (holding > 0 && backpackFull == false) {
         float mined = minedPercentage/100.0f;
 
@@ -16,7 +17,7 @@ void Mouse::generateBuffer(const std::vector<Block> &blockData) {
         float startY = tileY+reverse;
 
         std::vector<Vertex> vertices;
-        generateUIQuad(mined,mined,startX,startY,vertices);
+        generateUIQuad(mined,mined,startX,startY,vertices,1);
         
         vao.bindArray();
         vbo.bindBuffer();
@@ -24,7 +25,7 @@ void Mouse::generateBuffer(const std::vector<Block> &blockData) {
         vao.enableAttributes();
         vao.unbindArray();
     } else {
-        bool isMineable = blockData[currentTile].level != -1;
+        bool isMineable = blockData[currentTile].level != -1 && currentTile != 12;
         if (currentTile != -1 && isMineable ) {
     //        std::cout << currentTile << "\n";
             std::vector<Vertex> vertices;

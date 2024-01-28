@@ -25,13 +25,12 @@ private:
     Text text;
     VAO vao;
     VBO vbo;
-    std::vector<Vec4f> colours;
 public:
     int getWidth(const std::string &string);
     void renderButton(const Button &button, Texture &texture, Shader &shader);
-    void renderText(const std::string &string, const int x, const int y, Texture &texture, Shader &shader,const int colour);
-    void renderQuad(const int x, const int y, const int width, const int height, Texture &texture, Shader &shader, const int bgColour, bool isTexture, int textureIndex);
-    Gui(const std::string &fontFile,const std::vector<Vec4f> &colours): text(fontFile),colours(colours) {}
+    void renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour);
+    void renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour, bool isTexture, int textureIndex);
+    Gui(const std::string &fontFile): text(fontFile) {}
 };
 
 #endif /* gui_hpp */

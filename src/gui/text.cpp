@@ -21,7 +21,7 @@ void Text::draw() const {
     vbo.draw();
 }
 
-TextData Text::generateCharacters(const std::string &string,const int x, const int y) {
+TextData Text::generateCharacters(const std::string &string,int x, int y) {
     std::vector<Character> characters;
     int xOffset = 0;
     for (int i = 0; i < string.size(); i++) {
@@ -47,7 +47,7 @@ TextData Text::generateCharacters(const std::string &string,const int x, const i
     return {characters,xOffset};
 }
 
-void Text::generate(const std::string &string, const int x, const int y) {
+void Text::generate(const std::string &string, int x, int y) {
     std::vector<Vertex> vertices;
     
     TextData textData = generateCharacters(string, x, y);

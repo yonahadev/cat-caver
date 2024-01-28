@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include "constants.hpp"
 
 class Sprite {  
 public:
@@ -32,20 +33,21 @@ public:
     VBO vbo;
     VAO vao;
     bool falling = false;
+    bool platformCollision = true;
     std::vector<std::string> collisions;
     void generateGLQuad();
-    void teleport(const float x, const float y,const std::vector<int> &blockIndices);
+    void teleport(float x, float y,const std::vector<int> &blockIndices);
     void update(const std::vector<int> &blockIndices,float xPos,float yPos);
     bool getCollision(const std::string &search) const;
     virtual void checkCollisions(const std::vector<int> &blockIndices);
     void getCoordinates() const;
     void getHitbox() const;
     void getMatrix() const;
-    void jump ();
+    void jump();
     bool accelerate(const std::vector<int> &blockIndices);
-    void move(const float x,const float y);
-    virtual void moveSprite(const float x,const float y, const std::vector<int> &blockIndices);
-    Sprite(float offsetX,float offsetY, const int textureIndex);
+    void move(float x,float y);
+    virtual void moveSprite(float x,float y, const std::vector<int> &blockIndices);
+    Sprite(float offsetX,float offsetY, int textureIndex);
 };
 
 #endif /* player_hpp */

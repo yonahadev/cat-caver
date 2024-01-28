@@ -30,8 +30,8 @@ private:
     VBO vbo;
 public:
     void draw() const;
-    TextData generateCharacters(const std::string &string,const int x, const int y);
-    void generate(const std::string &string, const int x, const int y);
+    TextData generateCharacters(const std::string &string,int x, int y);
+    void generate(const std::string &string, int x, int y);
     Text(const std::string &fileName);
 };
 

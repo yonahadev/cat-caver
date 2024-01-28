@@ -11,12 +11,11 @@ Tile::Tile(int x, int y, int textureIndex): Sprite(x, y, textureIndex), blockInd
 
 void Tile::checkCollisions(const std::vector<int> &blockIndices) {
     
-    int width = 16;
-    int x = std::floor(coordinates.x);
+    const int x = std::floor(coordinates.x);
     
     
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
-            int currentTile = blockIndices[x+(-y*width)];
+            int currentTile = blockIndices[x+(-y*terrainWidth)];
                 if (y < coordinates.y && currentTile != 3 ) {
                     collisions.push_back("bottom");
                 }

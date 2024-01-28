@@ -26,7 +26,7 @@ public:
     int tileY;
     float holding;
     bool backpackFull;
-    void generateBuffer(const std::vector<Block> &blockData);
+    void generateBuffer();
 };
 
 #endif /* mouse_hpp */

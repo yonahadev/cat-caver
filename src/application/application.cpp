@@ -24,7 +24,6 @@
 #include "text.hpp"
 #include <fstream>
 #include <unordered_map>
-#include "terrainConfig.hpp"
 #include "block.hpp"
 #include "quad.hpp"
 #include "gui.hpp"
@@ -33,6 +32,7 @@
 #include "backpack.hpp"
 #include "PerlinNoise.hpp"
 #include "NPC.hpp"
+#include "constants.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
 
@@ -80,61 +80,9 @@ void resizeWindow(GLFWwindow* window, int width, int height) {
 /// <#Description#>
 void runApplication() {
     
-    //level -1 means you can't mine it / it isn't collideable
-    std::vector<Block> blockData = {
-        {"stone",1,1000,1},
-        {"copper",2,1500,5},
-        {"iron",2,1500,5},
-        {"dirt",-1,1000,0},
-        {"coal",2,1250,3},
-        {"gold",3,2000,10},
-        {"diamond",3,3000,50},
-        {"special",3,5000,0}
-    };
-    
-    std::vector<Pickaxe> pickaxeData = {
-        {"wooden",1,10,0},
-        {"Shovel",1,3,1},
-        {"bare hands",1,5,275},
-        {"Fork",2,8,500}
-    };
-    
-    std::vector<Backpack> backpackData = {
-        {"pockets",5000,0},
-        {"sack",15,0},
-        {"crate",35,250},
-        {"fat sack", 75, 500}
-    };
-    
     Window window(screenSize,WINDOW_NAME);
     
     glfwGetWindowContentScale(window.ptr, &windowScale.x, &windowScale.y);
-    
-    TerrainConfig terrainConfig;
-    terrainConfig.width = 16;
-    terrainConfig.powerupChance = 1; //applied post layer generation
-    terrainConfig.overpopulationCount = 5;
-    terrainConfig.underpopulationCount = 0;
-    terrainConfig.cellsForBirth = 1;
-    terrainConfig.turnCount = 0;
-    terrainConfig.layerDepth = 20;
-    terrainConfig.layerInfo = {
-        { //map of ore index to magnitude from center on height map to be generated
-            {0,0.05},
-            {1,0.085},
-            {2,0.095},
-            {4,0.105},
-            {7,0.145}
-        },
-        {
-            {0,0.05},
-            {4,0.08},
-            {5,0.11},
-            {6,0.115},
-            {7,0.135}
-        }
-            
-    };
     
     glfwSetKeyCallback(window.ptr, handleKeypress);
     glfwSetWindowSizeCallback(window.ptr, resizeWindow);
@@ -144,29 +92,14 @@ void runApplication() {
     Shader terrainShader("/Users/tom/Documents/cplusplus/cat-caver/src/shaders/terrainVertexShader.glsl","/Users/tom/Documents/cplusplus/cat-caver/src/shaders/terrainFragmentShader.glsl");
     Texture texture(urls);
     
-
-
     
-    std::unordered_map<Block, int> map;
-    for (Block &block: blockData) {
-        std::string blockName = block.name;
-        if (block.level != -1) {
-            map[block] = 0;
-        }
-    }
-    
-    Player player(1,-4,8,map);
+    Player player(1,-2,8);
     player.generateGLQuad();
     
-    NPC shopkeeper(1,-4,9);
+    NPC shopkeeper(1,-2,9);
     shopkeeper.generateGLQuad();
-
-    player.ownedPickaxes[pickaxeData[0]] = true;
-    player.equippedPickaxe = pickaxeData[0];
-    player.ownedBackpacks[backpackData[0]] = true;
-    player.equippedBackpack = backpackData[0];
     
-    Terrain terrain(terrainConfig,blockData);
+    Terrain terrain;
     
     Mat3 orthoMatrix = Mat3::Orthographic(
                                           (-aspectRatio.x/2)+0.5,
@@ -175,34 +108,14 @@ void runApplication() {
                                           (aspectRatio.y/2)+0.5
                                           );
     
-    //enum maps directly to the colour vector
-    
-    enum colours {
-        white,
-        black,
-        grey,
-        red,
-        green,
-        blue
-    };
-    
-    std::vector<Vec4f> colourVector = {
-        {1.0f,1.0f,1.0f,1.0f},
-        {0.0f,0.0f,0.0f,1.0f},
-        {0.3f,0.3f,0.3f,0.7f},
-        {1.0f,0.0f,0.0f,0.7f},
-        {0.0f,1.0f,0.0f,0.7f},
-        {0.0f,0.0f,1.0f,0.7f},
-    };
-    
-    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt",colourVector);
+    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
     Mouse mouse;
     mouse.vao.genArrays();
     mouse.vbo.genBuffer();
 
     std::vector<Vertex> vertices;
-    generateUIQuad(16, 10, (-aspectRatio.x/2)+0.5, (-aspectRatio.y/2)+0.5, vertices);
+    generateUIQuad(16, 10, (-aspectRatio.x/2)+0.5, (-aspectRatio.y/2)+0.5, vertices,1);
     VBO lightVBO;
     VAO lightVAO;
     lightVBO.genBuffer();
@@ -266,14 +179,15 @@ void runApplication() {
 //        }
         
         
-        int depth = int(abs(floor(player.coordinates.y)));
+        const int depth = int(abs(floor(player.coordinates.y)));
 
         if (depth > terrain.height-20) {
             terrain.generateLayer(depth);
             terrain.generateBuffer(depth);
         }
      
-        bool atSurface = depth <= 4;
+        const bool atSurface = depth <= 4;
+        
         if (atSurface == false) {
             openMenu = "";
             visibleButtons[3] = false;
@@ -295,13 +209,12 @@ void runApplication() {
         }
         
         
-        int pickaxeButtonWidth = gui.getWidth("pickaxes");
+        const int pickaxeButtonWidth = gui.getWidth("pickaxes");
         buttons.emplace_back(3,"backpacks",gui.getWidth("backpacks"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+20,screenSize.y-400,red,white,"");
         buttons.emplace_back(3,"pickaxes",pickaxeButtonWidth,30,screenSize.x/2-(300/2),screenSize.y-400,red,white,"");
         
         int count = 0;
-        for (Pickaxe &pickaxe: pickaxeData) {
-//            std::cout << "Button for " << pickaxe.name << "\n";
+        for (const Pickaxe &pickaxe: pickaxeData) {
             int offset = count*50;
             auto it = player.ownedPickaxes.find(pickaxe);
             bool owned = it != player.ownedPickaxes.end();
@@ -323,20 +236,19 @@ void runApplication() {
             count++;
         }
         count = 0;
-        for (Backpack &backpack: backpackData) {
-//            std::cout << "Button for " << pickaxe.name << "\n";
-            int offset = count*50;
+        for (const Backpack &backpack: backpackData) {
+            const int offset = count*50;
             if (player.ownedBackpacks[backpack]) {
                 if (player.equippedBackpack == backpack) {
-                    int width = gui.getWidth("equipped");
+                    const int width = gui.getWidth("equipped");
                     buttons.emplace_back(5,"equipped",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,grey,white,std::to_string(count));
                 } else {
-                    int width = gui.getWidth("equip");
+                    const int width = gui.getWidth("equip");
                     buttons.emplace_back(5,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
                 }
             } else {
                 std::string text = "$"+std::to_string(backpack.cost);
-                int width = gui.getWidth(text);
+                const int width = gui.getWidth(text);
                 buttons.emplace_back(5,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
                     
             }
@@ -376,10 +288,10 @@ void runApplication() {
         shopkeeper.vbo.draw();
         shopkeeper.accelerate(terrain.getRawBlockIndices());
         shopkeeper.collisions = {};
-        int shopkeeperX = static_cast<int>(shopkeeper.coordinates.x);
-        int shopkeeperY = static_cast<int>(shopkeeper.coordinates.y);
+        const int shopkeeperX = static_cast<int>(shopkeeper.coordinates.x);
+        const int shopkeeperY = static_cast<int>(shopkeeper.coordinates.y);
         
-        bool valid = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
+        const bool valid = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
         
     //        player.coordinates.print();
     //        shopkeeper.coordinates.print();
@@ -397,7 +309,7 @@ void runApplication() {
         player.vao.bindArray();
         player.vbo.draw();
         
-        mouse.generateBuffer(blockData);
+        mouse.generateBuffer();
         if (mouse.vbo.verticesCount > 0) {
             shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
             shader.loadUniform<int>(false, "u_IsTexture");
@@ -429,9 +341,9 @@ void runApplication() {
         shader.loadUniform<Mat3>(guiMatrix, "u_Transformation");
         
         
-        int time = static_cast<int>(glfwGetTime());
+        const int time = static_cast<int>(glfwGetTime());
         std::string timeString = "Time: " + std::to_string(time);
-        int width = gui.getWidth(timeString);
+        const int width = gui.getWidth(timeString);
         
         gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white);
         gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
@@ -439,7 +351,7 @@ void runApplication() {
         gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
         
         if (openMenu == "ores") {
-            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue);
+            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue,false,1);
             int count = 0;
             for (auto &[block,value]: player.blockCounts) {
                 int offset = count*50;
@@ -447,17 +359,17 @@ void runApplication() {
                 count++;
             }
         } else if (openMenu == "shop") {
-            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue);
+            gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue,false,1);
             if (selectedTab == "pickaxes") {
                 int count = 0;
-                for (Pickaxe &pickaxe: pickaxeData) {
+                for (const Pickaxe &pickaxe: pickaxeData) {
                     int offset = count*50;
                     gui.renderText(pickaxe.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
                     count++;
                 }
             } else if (selectedTab == "backpacks") {
                 int count = 0;
-                for (Backpack &backpack: backpackData) {
+                for (const Backpack &backpack: backpackData) {
                     int offset = count*50;
                     gui.renderText(backpack.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
                     count++;
@@ -465,10 +377,12 @@ void runApplication() {
             }
         }
         
+        gui.renderQuad(0, 0, 400, 400, texture, shader, white, true, 9);
+        
         for (Button &button: buttons) {
             auto it = visibleButtons.find(button.id);
             //checks if the iterator reaches the end of the map and then also requires the value to be true for visiblity
-            bool buttonVisible = it != visibleButtons.end() && it -> second;
+            const bool buttonVisible = it != visibleButtons.end() && it -> second;
             if (buttonVisible) {
                 gui.renderButton(button, texture, shader);
             }

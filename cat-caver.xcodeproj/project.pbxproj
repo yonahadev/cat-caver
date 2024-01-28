@@ -112,12 +112,12 @@
 		E262ABF22B1BBE9C002F988D /* terrain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = terrain.hpp; sourceTree = "<group>"; };
 		E262ABF72B1BC059002F988D /* quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quad.cpp; sourceTree = "<group>"; };
 		E262ABF82B1BC059002F988D /* quad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quad.hpp; sourceTree = "<group>"; };
-		E26B16562B28AAD900B2105B /* terrainConfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = terrainConfig.hpp; sourceTree = "<group>"; };
 		E26B16572B2A094F00B2105B /* vertexArray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vertexArray.cpp; sourceTree = "<group>"; };
 		E26B16582B2A094F00B2105B /* vertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vertexArray.hpp; sourceTree = "<group>"; };
 		E275DAE12B2B8E8300E2969D /* block.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = block.hpp; sourceTree = "<group>"; };
 		E279D2BC2B56CB49005878B2 /* terrainVertexShader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = terrainVertexShader.glsl; sourceTree = "<group>"; };
 		E279D2BD2B56CB7F005878B2 /* terrainFragmentShader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = terrainFragmentShader.glsl; sourceTree = "<group>"; };
+		E279D2F22B666C76005878B2 /* constants.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = constants.hpp; sourceTree = "<group>"; };
 		E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
 		E2A33FFE2B49DF0D004EA1E0 /* sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sprite.hpp; sourceTree = "<group>"; };
@@ -323,6 +323,7 @@
 				E262ABE92B1BB844002F988D /* input.cpp */,
 				E262ABE22B1B7A27002F988D /* application.hpp */,
 				E262ABDF2B1B79B4002F988D /* application.cpp */,
+				E279D2F22B666C76005878B2 /* constants.hpp */,
 			);
 			path = application;
 			sourceTree = "<group>";
@@ -358,7 +359,6 @@
 		E262ABF02B1BBE81002F988D /* tilemap */ = {
 			isa = PBXGroup;
 			children = (
-				E26B16562B28AAD900B2105B /* terrainConfig.hpp */,
 				E262ABF12B1BBE9B002F988D /* terrain.cpp */,
 				E262ABF22B1BBE9C002F988D /* terrain.hpp */,
 				E262ABF72B1BC059002F988D /* quad.cpp */,

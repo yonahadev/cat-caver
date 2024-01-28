@@ -13,7 +13,7 @@
 
 class NPC: public Sprite {
 public:
-    NPC(float offsetX,float offsetY, const int textureIndex);
+    NPC(float offsetX,float offsetY, int textureIndex);
 };
 
 #endif /* npc_hpp */

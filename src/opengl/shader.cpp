@@ -51,7 +51,7 @@ void Shader::loadUniform<Mat3>(Mat3 matrix,const std::string &uniformName) const
 }
 
 template <>
-void Shader::loadUniform<int>(const int integer,const std::string &uniformName) const {
+void Shader::loadUniform<int>(int integer,const std::string &uniformName) const {
     bind();
     int uniformLocation = glGetUniformLocation(shaderProgram, uniformName.c_str());
     glUniform1i(uniformLocation,integer);

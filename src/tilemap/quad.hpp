@@ -12,9 +12,9 @@
 #include <vector>
 #include "character.hpp"
 
-void generateQuad(const int offsetX,const int offsetY, const int textureIndex, std::vector<Vertex> &vertices);
+void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<Vertex> &vertices);
 void generateTextQuad(const Character &currentChar, std::vector<Vertex> &vertices);
-void generateUIQuad(const float width, const float height, const float offsetX, const float offsetY, std::vector<Vertex> &vertices, int textureIndex);
+void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<Vertex> &vertices, int textureIndex);
 
 #include <stdio.h>
 

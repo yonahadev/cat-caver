@@ -10,8 +10,9 @@
 #include "vertex.hpp"
 #include "quad.hpp"
 #include <string>
+#include "constants.hpp"
 
-void Player::moveSprite(const float x,const float y, const std::vector<int> &blockIndices) {
+void Player::moveSprite(float x,float y, const std::vector<int> &blockIndices) {
     move(-x,0);
     update(blockIndices, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
     if (collisions.size() > 0) {
@@ -28,7 +29,18 @@ void Player::moveSprite(const float x,const float y, const std::vector<int> &blo
     }
     update(blockIndices, -matrix.matrix_Array[2], -matrix.matrix_Array[5]);
 }
-Player::Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map): Sprite(offsetX, offsetY, textureIndex),blockCounts(map),money(0),backpackCount(0),neighbours() {
+Player::Player(float offsetX,float offsetY,int texIndex): Sprite(offsetX, offsetY, texIndex),equippedPickaxe(pickaxeData[0]),equippedBackpack(backpackData[0]),money(0),backpackCount(0),neighbours(){
     matrix = {1,0,-offsetX,0,1,-offsetY,0,0,1};
+    
+    for (const Block &block: blockData) {
+        std::string blockName = block.name;
+        if (block.level != -1) {
+            blockCounts[block] = 0;
+        }
+    }
+    
+    ownedPickaxes[pickaxeData[0]] = true;
+    ownedBackpacks[backpackData[0]] = true;
+    
 }
 

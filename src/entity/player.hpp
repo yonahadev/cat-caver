@@ -32,8 +32,8 @@ public:
     int money;
     int backpackCount;
     std::vector<Vec2i> neighbours;
-    void moveSprite(const float x,const float y, const std::vector<int> &blockIndices);
-    Player(float offsetX,float offsetY, const int textureIndex, const std::unordered_map<Block, int> &map);
+    void moveSprite(float x,float y, const std::vector<int> &blockIndices) override;
+    Player(float offsetX,float offsetY,int texIndex);
 };
 
 #endif /* player_hpp */

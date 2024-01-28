@@ -15,14 +15,13 @@
 #include <sstream>
 #include <vector>
 #include "quad.hpp"
+#include "constants.hpp"
 
 void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse, const Player &player) {
     
     glfwGetCursorPos(window, &mouse.screenX, &mouse.screenY);
     double mouseX = mouse.screenX;
     double mouseY = mouse.screenY;
-    
-//    if (mouseX > screenSize.x || mouseX < 0 || mouseY > screenSize.y || mouseY < 0 ) return 0;
     
     float xMultiplier = screenSize.x/aspectRatio.x;
     float yMultiplier = screenSize.y/aspectRatio.y;
@@ -42,8 +41,6 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     mouseY += 0.5;
     
     
-//    std::cout << "Mouse coordinates: " << mouseX << "," << mouseY << "\n";
-    
     int newX = floor(mouseX);
     int newY = floor(mouseY);
     
@@ -53,10 +50,6 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     
     mouse.tileX = newX;
     mouse.tileY = newY;
-    
-    //    std::cout << "Tile coordinates: " << mouse.tileX << "," << mouse.tileY << "\n";
-//    bool mouseInXBoundary = mouse.tileX > 0 && mouse.tileX < terrain.config.width-1;
-//    bool mouseInYBoundary = -mouse.tileY < terrain.height && -mouse.tileY > 0;
     
     int playerX = round(player.coordinates.x);
     int playerY = round(player.coordinates.y);
@@ -83,11 +76,11 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
 
     if (mouse.currentTile == -1) return;
     
-    Block block = terrain.blockData[mouse.currentTile];
+    Block block = blockData[mouse.currentTile];
     
     mouse.backpackFull = player.backpackCount >= player.equippedBackpack.capacity;
     
-    bool isMineable = block.level != -1;
+    bool isMineable = block.level != -1 && mouse.currentTile != 12;
     
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && isMineable) {
         
@@ -129,7 +122,6 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
     
         float mouseY = screenSize.y-mouse.screenY;
         for (const auto &button: buttons) {
-            
                 bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
                 bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
                 auto it = visibleButtons.find(button.id);
@@ -138,7 +130,9 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                     std::cout << button.text << " id:" << button.id << "\n";
                     switch(button.id) {
                         case 0: {
-                            player.teleport(1, -3, terrain.getRawBlockIndices());
+                            player.platformCollision = true;
+                            player.teleport(1, -2, terrain.getRawBlockIndices());
+                            terrain.generateBuffer(0);
                             break;
                         }
                         case 1: {
@@ -260,7 +254,16 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
        } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
            player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
        }
-    }
+   }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        int x = floor(player.coordinates.x);
+        int y = floor(-player.coordinates.y+1);
+        const Tile &tile = terrain.tiles[x+y*terrainWidth];
+        if (tile.textureIndex == 12) {
+            player.platformCollision = false;
+            std::cout << "Fallen through platform" << "\n";
+        }
+   }
     
     player.accelerate(terrain.getRawBlockIndices());
     

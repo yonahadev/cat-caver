@@ -14,6 +14,6 @@
 float radians(float degrees);
 int getHCF(int number1, int number2);
 int min(int number1, int number2);
-int getRandomInt(const int lower,const int higher);
+int getRandomInt(int lower,int higher);
 
 #endif /* math_hpp */

@@ -29,6 +29,7 @@ public:
     VBO texelsVBO;
     VAO backgroundVAO;
     VBO backgroundVBO;
+    int generatedDepth;
     int height;
     int layerCount;
     int instanceCount;

@@ -9,8 +9,9 @@
 #include "quad.hpp"
 #include "vertex.hpp"
 #include "constants.hpp"
+#include <iostream>
 
-void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
+void GUI::renderButton(const Button &button, Texture &texture, Shader &shader) {
     text.generate(button.text,button.x,button.y);
     renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour,false,1);
     shader.loadUniform<int>(true, "u_IsTexture");
@@ -19,7 +20,7 @@ void Gui::renderButton(const Button &button, Texture &texture, Shader &shader) {
     text.draw();
 }
 
-void Gui::renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour,bool isTexture, int textureIndex) {
+void GUI::renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour,bool isTexture, int textureIndex) {
     std::vector<Vertex> vertices;
     generateUIQuad(width, height, x, y, vertices,textureIndex);
     vao.genArrays();
@@ -36,12 +37,28 @@ void Gui::renderQuad(int x, int y, int width, int height, Texture &texture, Shad
     vbo.draw();
 }
 
-int Gui::getWidth(const std::string &string) {
+int GUI::getWidth(const std::string &string) {
     //generates the text to get the width preemptively without drawing it
     return text.generateCharacters(string, 0, 0).displayLength;
 }
 
-void Gui::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour) {
+void GUI::setVisibleButtons(const std::vector<int> &buttons) {
+    for (auto &[key,value]: visibleButtons) {
+        visibleButtons[key] = false;
+    }
+    for (const int &buttonSet: buttons) {
+        visibleButtons[buttonSet] = true;
+    }
+}
+
+void GUI::setDialogue(int dialogue) {
+    currentDialogue = dialogueList[dialogue];
+    currentLine = 0;
+    lineCount = static_cast<int>(currentDialogue.size())-1;
+    std::cout << "Setting dialogue: " << dialogue << " Final line index:" << lineCount << "\n";
+}
+
+void GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour) {
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");
     shader.loadUniform<Vec4f>(colourVector[colour], "u_QuadColour");

@@ -80,7 +80,7 @@ void Sprite::jump() {
 bool Sprite::accelerate(const std::vector<int> &blockIndices) {
 
     
-    if (getCollision("bottom") == false & airborne > -500) {
+    if (getCollision("bottom") == false & airborne > -350) {
         airborne -= 2.5;
     }
 

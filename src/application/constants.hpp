@@ -65,13 +65,37 @@ const std::vector<Backpack> backpackData = {
     {"fat sack", 75, 500}
 };
 
+const std::vector<std::vector<std::string>> dialogueList {
+    
+    {
+    "Welcome to cat caver - you're stuck here I'm afraid...",
+    "But maybe if you help me collect what I need we can escape.",
+    "Come talk to me again after you collect 1000 dollars."
+}
+};
+
+enum dialogues {
+    startDialogue
+};
+
 enum colours {
     white,
     black,
     grey,
     red,
     green,
-    blue
+    blue,
+    transparent
+};
+
+enum buttons {
+    teleport,
+    sell,
+    oresAndShop,
+    tabSelector,
+    pickaxeEquip,
+    backpackEquip,
+    dialogueButton
 };
 
 const std::vector<Vec4f> colourVector = {
@@ -81,6 +105,7 @@ const std::vector<Vec4f> colourVector = {
     {1.0f,0.0f,0.0f,0.7f},
     {0.0f,1.0f,0.0f,0.7f},
     {0.0f,0.0f,1.0f,0.7f},
+    {1.0f,1.0f,1.0f,0.0f}
 };
 
 #endif /* constants_hpp */

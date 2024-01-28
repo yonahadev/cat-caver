@@ -108,7 +108,7 @@ void runApplication() {
                                           (aspectRatio.y/2)+0.5
                                           );
     
-    Gui gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
+    GUI gui("/Users/tom/Documents/cplusplus/cat-caver/res/fontImg.fnt");
     
     Mouse mouse;
     mouse.vao.genArrays();
@@ -126,19 +126,9 @@ void runApplication() {
     lightVAO.enableAttributes();
     lightVAO.unbindArray();
     
-    std::string openMenu = "";
-    std::string selectedTab = "pickaxes";
-    
     float keyTime = glfwGetTime();
     
-    std::unordered_map<int,bool> visibleButtons = {
-        {0,true},
-        {1,true},
-        {2,true},
-        {3,false},
-        {4,false},
-        {5,false}
-    };
+    gui.setVisibleButtons({teleport,oresAndShop,sell});
     
     while (!glfwWindowShouldClose(window.ptr)) {
     
@@ -185,19 +175,22 @@ void runApplication() {
             terrain.generateLayer(depth);
             terrain.generateBuffer(depth);
         }
+        
+        if (abs(depth-terrain.generatedDepth) > 5) {
+            terrain.generateBuffer(depth);
+        }
      
         const bool atSurface = depth <= 4;
         
         if (atSurface == false) {
-            openMenu = "";
-            visibleButtons[3] = false;
-            visibleButtons[4] = false;
-            visibleButtons[5] = false;
+            gui.openMenu = "";
+            gui.setVisibleButtons({teleport,oresAndShop,sell});
             
         }
         
-        std::vector<Button> buttons = {};
+        std::vector<Button> buttons = {}; //atm have to redefine per frame to account for changes to screen size
         buttons.emplace_back(0,"surface",gui.getWidth("surface"),40,50,screenSize.y-200,red,white,"");
+        buttons.emplace_back(6,"dialogue",screenSize.x,screenSize.y,0,0,transparent,transparent,"");
         buttons.emplace_back(2,"ores",gui.getWidth("ores"),40,50,screenSize.y-300,green,white,"");
         
         if (atSurface) {
@@ -261,7 +254,7 @@ void runApplication() {
         handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
         handleMining(window.ptr,terrain,mouse,player);
         handleKeyPress(window.ptr, player,terrain,keyTime);
-        handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize, openMenu,selectedTab, mousePressed,pickaxeData,backpackData, visibleButtons, atSurface);
+        handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize, mousePressed, gui, atSurface);
         
         shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
         shader.loadUniform<int>(true, "u_IsTexture");
@@ -281,8 +274,6 @@ void runApplication() {
         
         shader.bind();
         
-
-        
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
         shopkeeper.vao.bindArray();
         shopkeeper.vbo.draw();
@@ -296,12 +287,15 @@ void runApplication() {
     //        player.coordinates.print();
     //        shopkeeper.coordinates.print();
         
-        if (mousePressed && valid) {
-            std::cout << "shopkeeper interaction triggered" << "\n";
-            openMenu = "shop";
-            selectedTab = "pickaxes";
-            visibleButtons[3] = true;
-            visibleButtons[4] = true;
+        if (mousePressed && valid && gui.inDialogue == false) {
+            std::cout << dialogueList[0][2] << "\n";
+            gui.inDialogue = true;
+            gui.setVisibleButtons({dialogueButton});
+            gui.setDialogue(0);
+//            gui.openMenu = "shop";
+//            gui.selectedTab = "pickaxes";
+//            gui.visibleButtons[tabSelector] = true;
+//            gui.visibleButtons[pickaxeEquip] = true;
         }
         
         shader.loadUniform<int>(true, "u_IsTexture");
@@ -350,7 +344,7 @@ void runApplication() {
         gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, white);
         gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
         
-        if (openMenu == "ores") {
+        if (gui.openMenu == "ores") {
             gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue,false,1);
             int count = 0;
             for (auto &[block,value]: player.blockCounts) {
@@ -358,16 +352,16 @@ void runApplication() {
                 gui.renderText(block.name+ ": " + std::to_string(value), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
                 count++;
             }
-        } else if (openMenu == "shop") {
+        } else if (gui.openMenu == "shop") {
             gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue,false,1);
-            if (selectedTab == "pickaxes") {
+            if (gui.selectedTab == "pickaxes") {
                 int count = 0;
                 for (const Pickaxe &pickaxe: pickaxeData) {
                     int offset = count*50;
                     gui.renderText(pickaxe.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
                     count++;
                 }
-            } else if (selectedTab == "backpacks") {
+            } else if (gui.selectedTab == "backpacks") {
                 int count = 0;
                 for (const Backpack &backpack: backpackData) {
                     int offset = count*50;
@@ -377,12 +371,17 @@ void runApplication() {
             }
         }
         
-        gui.renderQuad(0, 0, 400, 400, texture, shader, white, true, 9);
+        if (gui.inDialogue) {
+            gui.renderQuad(0,25, 200, 200, texture, shader, white, true, 9);
+            gui.renderQuad(200, 25, screenSize.x*(0.75), screenSize.y*(0.25), texture, shader, red, false, 1);
+            gui.renderText(gui.currentDialogue[gui.currentLine], 225, screenSize.y*(0.25)-100, texture, shader, white);
+        }
+        
         
         for (Button &button: buttons) {
-            auto it = visibleButtons.find(button.id);
+            auto it = gui.visibleButtons.find(button.id);
             //checks if the iterator reaches the end of the map and then also requires the value to be true for visiblity
-            const bool buttonVisible = it != visibleButtons.end() && it -> second;
+            const bool buttonVisible = it != gui.visibleButtons.end() && it -> second;
             if (buttonVisible) {
                 gui.renderButton(button, texture, shader);
             }

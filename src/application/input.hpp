@@ -20,12 +20,13 @@
 #include "mouse.hpp"
 #include "button.hpp"
 #include "backpack.hpp"
+#include "gui.hpp"
 
 void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse, const Player &player);
 
 void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player);
 
-void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player,const std::vector<Button> &buttons, const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab,bool mousePressed,const std::vector<Pickaxe> &pickaxeData, const std::vector<Backpack> &backpackData, std::unordered_map<int, bool> &visibleButtons, const bool atSurface);
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player,const std::vector<Button> &buttons, const Vec2i &screenSize,bool mousePressed, GUI &gui, const bool atSurface);
 
 void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &dungeon, float &time);
 

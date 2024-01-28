@@ -73,7 +73,7 @@ Character Text::getCharacter(const char character) {
         Character charData = charMap[charIndex];
         return charData;
     } else {
-        throw std::runtime_error("Could not find char data in map");
+        throw std::runtime_error("Failed to parse invalid character!");
     }
 }
 

@@ -116,7 +116,7 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
     }
 }
 
-void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize, std::string &openMenu,std::string &selectedTab, bool mousePressed,const std::vector<Pickaxe> &pickaxeData, const std::vector<Backpack> &backpackData,std::unordered_map<int, bool> &visibleButtons, const bool atSurface) {
+void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, const std::vector<Button> &buttons,const Vec2i &screenSize, bool mousePressed,GUI &gui, const bool atSurface) {
 
     if (mousePressed == false) return;
     
@@ -124,18 +124,18 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
         for (const auto &button: buttons) {
                 bool validX = mouse.screenX >= button.x && mouse.screenX <= button.x+button.width;
                 bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
-                auto it = visibleButtons.find(button.id);
-                bool visible = it != visibleButtons.end() && it->second;
+                auto it = gui.visibleButtons.find(button.id);
+                bool visible = it != gui.visibleButtons.end() && it->second;
                 if (validX && validY && visible) {
-                    std::cout << button.text << " id:" << button.id << "\n";
+//                    cou
                     switch(button.id) {
-                        case 0: {
+                        case teleport: {
                             player.platformCollision = true;
                             player.teleport(1, -2, terrain.getRawBlockIndices());
                             terrain.generateBuffer(0);
                             break;
                         }
-                        case 1: {
+                        case sell: {
                             if (atSurface == false) break;
                             player.backpackCount = 0;
                             for (auto &[block,count]: player.blockCounts) {
@@ -145,45 +145,45 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             }
                             break;
                         }
-                        case 2: {
-                            if (openMenu == button.text) {
-                                openMenu = "";
-                                selectedTab = "pickaxes";
-                                visibleButtons[3] = false;
-                                visibleButtons[4] = false;
-                                visibleButtons[5] = false;
+                        case oresAndShop: {
+                            if (gui.openMenu == button.text) {
+                                gui.openMenu = "";
+                                gui.selectedTab = "pickaxes";
+                                gui.visibleButtons[tabSelector] = false;
+                                gui.visibleButtons[pickaxeEquip] = false;
+                                gui.visibleButtons[backpackEquip] = false;
                             } else {
-                                openMenu = button.text;
+                                gui.openMenu = button.text;
                                 if (button.text == "ores") {
-                                    visibleButtons[3] = false;
-                                    visibleButtons[4] = false;
+                                    gui.visibleButtons[tabSelector] = false;
+                                    gui.visibleButtons[pickaxeEquip] = false;
                                 }
                                 if (button.text == "shop") {
                                     if (atSurface) {
-                                        visibleButtons[3] = true;
-                                        visibleButtons[4] = true;
+                                        gui.visibleButtons[tabSelector] = true;
+                                        gui.visibleButtons[pickaxeEquip] = true;
                                     } else {
-                                        openMenu = "";
+                                        gui.openMenu = "";
                                     }
                                 }
                             }   
                             break;
                         }
-                        case 3: {
-                            selectedTab = button.text;
-                            std::cout << "Selected tab: " << selectedTab << "\n";
-                            if (selectedTab == "backpacks") {
-                                visibleButtons[4] = false;
-                                visibleButtons[5] = true;
+                        case tabSelector: {
+                            gui.selectedTab = button.text;
+                            std::cout << "Selected tab: " << gui.selectedTab << "\n";
+                            if (gui.selectedTab == "backpacks") {
+                                gui.visibleButtons[pickaxeEquip] = false;
+                                gui.visibleButtons[backpackEquip] = true;
 
-                            } else if (selectedTab == "pickaxes") {
+                            } else if (gui.selectedTab == "pickaxes") {
                                 
-                                visibleButtons[4] = true;
-                                visibleButtons[5] = false;
+                                gui.visibleButtons[pickaxeEquip] = true;
+                                gui.visibleButtons[backpackEquip] = false;
                             }
                             break;
                         }
-                        case 4: {
+                        case pickaxeEquip: {
                             if (button.text == "equipped") return;
                             int itemIndex = std::stoi(button.metaInfo);
                             Pickaxe pickaxe = pickaxeData[itemIndex];
@@ -198,7 +198,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             }
                             break;
                         }
-                        case 5: {
+                        case backpackEquip: {
                             int itemIndex = std::stoi(button.metaInfo);
                             Backpack backpack = backpackData[itemIndex];
                             if (button.text == "equip") {
@@ -210,6 +210,15 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 player.ownedBackpacks[backpack] = true;
                                 player.money -= backpack.cost;
                             }
+                            break;
+                        }
+                        case dialogueButton: {
+                            if (gui.currentLine < gui.lineCount) {
+                                gui.currentLine +=1;
+                            } else {
+                                gui.inDialogue = false;
+                            }
+                            std::cout << "Changed to dialogue: " << gui.currentLine << "\n";
                             break;
                         }
                             }

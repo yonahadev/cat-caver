@@ -153,6 +153,8 @@ void Terrain::generateLayer(int depth) {
 void Terrain::generateBuffer(int depth) {
     instanceCount = 0;
     
+    generatedDepth = depth;
+    
     std::vector<float> texels; //only need x texels
     std::vector<Mat3> matrices; //tile matrices so we can pass to the instance draw call
     

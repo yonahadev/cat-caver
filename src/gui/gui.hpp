@@ -24,10 +24,10 @@
 
 class GUI {
 private:
-    Text text;
     VAO vao;
     VBO vbo;
 public:
+    Text text;
     std::string openMenu = "";
     std::string selectedTab = "pickaxes";
     bool inDialogue = false;
@@ -39,7 +39,7 @@ public:
     int getWidth(const std::string &string);
     void renderButton(const Button &button, Texture &texture, Shader &shader);
     void setVisibleButtons(const std::vector<int> &buttons);
-    void renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour);
+    void renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth);
     void renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour, bool isTexture, int textureIndex);
     GUI(const std::string &fontFile): text(fontFile) {}
 };

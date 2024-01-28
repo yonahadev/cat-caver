@@ -39,7 +39,7 @@ void GUI::renderQuad(int x, int y, int width, int height, Texture &texture, Shad
 
 int GUI::getWidth(const std::string &string) {
     //generates the text to get the width preemptively without drawing it
-    return text.generateCharacters(string, 0, 0).displayLength;
+    return text.generateCharacters(string,0,0).displayLength;
 }
 
 void GUI::setVisibleButtons(const std::vector<int> &buttons) {
@@ -58,10 +58,20 @@ void GUI::setDialogue(int dialogue) {
     std::cout << "Setting dialogue: " << dialogue << " Final line index:" << lineCount << "\n";
 }
 
-void GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour) {
+void GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth) {
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");
     shader.loadUniform<Vec4f>(colourVector[colour], "u_QuadColour");
-    text.generate(string, x, y);
-    text.draw();
+    if (multiLine) {
+        std::vector<std::string> splitStrings = text.generateMultiLineText(string, maxWidth);
+        int count = 0;
+        for (std::string &str: splitStrings) {
+            text.generate(str, x, y-(count*50));
+            text.draw();
+            count += 1;
+        }
+    } else {
+        text.generate(string, x, y);
+        text.draw();
+    }
 }

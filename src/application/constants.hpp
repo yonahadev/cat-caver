@@ -65,8 +65,7 @@ const std::vector<Backpack> backpackData = {
     {"fat sack", 75, 500}
 };
 
-const std::vector<std::vector<std::string>> dialogueList {
-    
+const std::vector<std::vector<std::string>> dialogueList { //this is the max justifiable line length
     {
     "Welcome to cat caver - you're stuck here I'm afraid...",
     "But maybe if you help me collect what I need we can escape.",

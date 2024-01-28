@@ -130,6 +130,8 @@ void runApplication() {
     
     gui.setVisibleButtons({teleport,oresAndShop,sell});
     
+//    gui.text.generateMultiLineText(dialogueList[0][0], 700);
+    
     while (!glfwWindowShouldClose(window.ptr)) {
     
         
@@ -339,17 +341,17 @@ void runApplication() {
         std::string timeString = "Time: " + std::to_string(time);
         const int width = gui.getWidth(timeString);
         
-        gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white);
-        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white);
-        gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, white);
-        gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green);
+        gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white,false,-1);
+        gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white,false,-1);
+        gui.renderText("Backpack: " + std::to_string(player.backpackCount)+"/"+std::to_string(player.equippedBackpack.capacity), 50, screenSize.y-100, texture, shader, white,false,-1);
+        gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-150, texture, shader, green,false,-1);
         
         if (gui.openMenu == "ores") {
             gui.renderQuad(screenSize.x/2-(300/2), screenSize.y-350, 300, 300, texture, shader, blue,false,1);
             int count = 0;
             for (auto &[block,value]: player.blockCounts) {
                 int offset = count*50;
-                gui.renderText(block.name+ ": " + std::to_string(value), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                gui.renderText(block.name+ ": " + std::to_string(value), screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white,false,-1);
                 count++;
             }
         } else if (gui.openMenu == "shop") {
@@ -358,14 +360,14 @@ void runApplication() {
                 int count = 0;
                 for (const Pickaxe &pickaxe: pickaxeData) {
                     int offset = count*50;
-                    gui.renderText(pickaxe.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                    gui.renderText(pickaxe.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white,false,-1);
                     count++;
                 }
             } else if (gui.selectedTab == "backpacks") {
                 int count = 0;
                 for (const Backpack &backpack: backpackData) {
                     int offset = count*50;
-                    gui.renderText(backpack.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white);
+                    gui.renderText(backpack.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, screenSize.x/2-(300/2), screenSize.y-100-offset, texture,shader,white,false,-1);
                     count++;
                 }
             }
@@ -374,7 +376,9 @@ void runApplication() {
         if (gui.inDialogue) {
             gui.renderQuad(0,25, 200, 200, texture, shader, white, true, 9);
             gui.renderQuad(200, 25, screenSize.x*(0.75), screenSize.y*(0.25), texture, shader, red, false, 1);
-            gui.renderText(gui.currentDialogue[gui.currentLine], 225, screenSize.y*(0.25)-100, texture, shader, white);
+            
+            std::string currentLine = gui.currentDialogue[gui.currentLine];
+            gui.renderText(gui.currentDialogue[gui.currentLine], 225, screenSize.y*(0.25)-25, texture, shader, white,true,screenSize.x*(0.75)-75);
         }
         
         

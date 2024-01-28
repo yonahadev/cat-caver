@@ -29,6 +29,7 @@ private:
     VAO vao;
     VBO vbo;
 public:
+    std::vector<std::string> generateMultiLineText(const std::string &string, int maxWidth);
     void draw() const;
     TextData generateCharacters(const std::string &string,int x, int y);
     void generate(const std::string &string, int x, int y);

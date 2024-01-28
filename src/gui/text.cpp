@@ -47,6 +47,35 @@ TextData Text::generateCharacters(const std::string &string,int x, int y) {
     return {characters,xOffset};
 }
 
+std::vector<std::string> Text::generateMultiLineText(const std::string &string, int maxWidth) {
+    std::vector<std::string> splitStrings;
+    std::stringstream stringStream(string);
+    
+    std::string line;
+    std::string component;
+    
+    int lineWidth = 0;
+    while (getline(stringStream, component, ' ')) {
+        int width = generateCharacters(component, 0, 0).displayLength;
+        lineWidth += width;
+        if (lineWidth <= maxWidth) {
+            line += std::string(" ") += component;
+        } else {
+            splitStrings.push_back(line);
+            line = component;
+            lineWidth = width;
+        }
+    }
+    splitStrings.push_back(line);
+    
+    
+    for (std::string &str: splitStrings) {
+        std::cout << str << "\n";
+    }
+    
+    return splitStrings;
+}
+
 void Text::generate(const std::string &string, int x, int y) {
     std::vector<Vertex> vertices;
     

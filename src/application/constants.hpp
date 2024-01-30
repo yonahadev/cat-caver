@@ -53,13 +53,13 @@ const std::vector<Block> blockData = {
 
 const std::vector<Pickaxe> pickaxeData = {
     {"wooden",1,10,0},
-    {"Shovel",1,3,1},
-    {"bare hands",1,5,275},
-    {"Fork",2,8,500}
+    {"Shovel",2,3,1},
+    {"bare hands",3,5,275},
+    {"Fork",3,8,500}
 };
 
 const std::vector<Backpack> backpackData = {
-    {"pockets",5000,0},
+    {"pockets",3,0},
     {"sack",15,0},
     {"crate",35,250},
     {"fat sack", 75, 500}
@@ -69,7 +69,8 @@ const std::vector<std::vector<std::string>> dialogueList { //this is the max jus
     {
     "Welcome to cat caver - you're stuck here I'm afraid...",
     "But maybe if you help me collect what I need we can escape.",
-    "Come talk to me again after you collect 1000 dollars."
+    "I'm gonna need a lot of materials to get to the next area, but,",
+    "I think with your help we can do it.",
 }
 };
 

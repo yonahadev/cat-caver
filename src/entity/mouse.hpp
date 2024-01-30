@@ -26,6 +26,7 @@ public:
     int tileY;
     float holding;
     bool backpackFull;
+    bool validPickaxeLevel;
     void generateBuffer();
 };
 

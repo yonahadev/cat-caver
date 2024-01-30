@@ -22,9 +22,9 @@
 #include "backpack.hpp"
 #include "gui.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse, const Player &player);
+void handleMouseMove(GLFWwindow* window,const Vec2i &screenSize,const Vec2i &aspectRatio, const Terrain &terrain, Mouse &mouse, const Player &player);
 
-void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player);
+void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, GUI &gui);
 
 void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player,const std::vector<Button> &buttons, const Vec2i &screenSize,bool mousePressed, GUI &gui, const bool atSurface);
 

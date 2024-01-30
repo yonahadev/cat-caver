@@ -9,7 +9,7 @@
 #include "constants.hpp"
 
 void Mouse::generateBuffer() {
-    if (holding > 0 && backpackFull == false) {
+    if (holding > 0 && backpackFull == false && validPickaxeLevel) {
         float mined = minedPercentage/100.0f;
 
         float reverse = (1-mined)/2;
@@ -36,7 +36,6 @@ void Mouse::generateBuffer() {
             vao.enableAttributes();
             vao.unbindArray();
         } else {
-    //        std::cout << "invalid mouse position" << "\n";
             vbo.verticesCount = 0;
         }
     }

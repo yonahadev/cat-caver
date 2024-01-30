@@ -55,7 +55,7 @@ void GUI::setDialogue(int dialogue) {
     currentDialogue = dialogueList[dialogue];
     currentLine = 0;
     lineCount = static_cast<int>(currentDialogue.size())-1;
-    std::cout << "Setting dialogue: " << dialogue << " Final line index:" << lineCount << "\n";
+    std::cout << "Setting dialogue: " << dialogue << " Final line index: " << lineCount << "\n";
 }
 
 void GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth) {

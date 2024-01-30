@@ -30,6 +30,9 @@ public:
     Text text;
     std::string openMenu = "";
     std::string selectedTab = "pickaxes";
+    std::string errorMessage;
+    int errorTimeSet;
+    int errorDuration;
     bool inDialogue = false;
     std::unordered_map<int,bool> visibleButtons;
     std::vector<std::string> currentDialogue;

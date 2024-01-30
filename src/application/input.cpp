@@ -17,7 +17,9 @@
 #include "quad.hpp"
 #include "constants.hpp"
 
-void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse, const Player &player) {
+void handleMouseMove(GLFWwindow* window,const Vec2i &screenSize,const Vec2i &aspectRatio,const Terrain &terrain, Mouse &mouse, const Player &player) {
+    
+    
     
     glfwGetCursorPos(window, &mouse.screenX, &mouse.screenY);
     double mouseX = mouse.screenX;
@@ -34,8 +36,8 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     
     mouseY *=  -1;
     
-    mouseX += pos.x;
-    mouseY += pos.y;
+    mouseX += player.coordinates.x;
+    mouseY += player.coordinates.y;
     
     mouseX += 0.5;
     mouseY += 0.5;
@@ -72,7 +74,7 @@ void handleMouseMove(GLFWwindow* window,const Vec2f &pos,const Vec2i &screenSize
     
 }
 
-void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player) {
+void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, GUI &gui) {
 
     if (mouse.currentTile == -1) return;
     
@@ -89,15 +91,15 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
         
         int blockHealth = block.hp;
         
+        mouse.validPickaxeLevel =  player.equippedPickaxe.level >= block.level;
         
-        if (mouse.holding > blockHealth && mouse.backpackFull == false) {
+        if (mouse.holding > blockHealth && mouse.backpackFull == false && mouse.validPickaxeLevel) {
             terrain.mineBlock(mouse.tileX, mouse.tileY);
             std::string blockName = block.name;
             if (block.name != "special") {
                 player.blockCounts[block] += 1;
                 player.backpackCount += 1;
             } else {
-//                std::cout << "mined special block" << "\n";
                 std::vector<Block> minedBlocks = terrain.triggerExplosion(mouse.tileX, mouse.tileY);
                 for (auto &block: minedBlocks) {
                     player.blockCounts[block] += 1;
@@ -110,7 +112,6 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
             terrain.generateBuffer(depth);
         }
         mouse.minedPercentage = (mouse.holding/blockHealth)*100;
-//        std::cout << "holding mouse button for: " << mouse.holding << "ms \n";
     } else {
         mouse.holding = 0;
     }
@@ -215,10 +216,12 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                         case dialogueButton: {
                             if (gui.currentLine < gui.lineCount) {
                                 gui.currentLine +=1;
+                                std::cout << "Changed to dialogue: " << gui.currentLine << "\n";
                             } else {
                                 gui.inDialogue = false;
+                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                std::cout << "Finished dialgoue" << "\n";
                             }
-                            std::cout << "Changed to dialogue: " << gui.currentLine << "\n";
                             break;
                         }
                             }

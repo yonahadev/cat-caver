@@ -252,10 +252,11 @@ void runApplication() {
         }
         
 
-        
-        handleMouseMove(window.ptr, player.coordinates, screenSize, aspectRatio,terrain,mouse,player);
-        handleMining(window.ptr,terrain,mouse,player);
-        handleKeyPress(window.ptr, player,terrain,keyTime);
+        handleMouseMove(window.ptr, screenSize, aspectRatio,terrain,mouse,player);
+        if (gui.inDialogue == false) {
+            handleMining(window.ptr,terrain,mouse,player,gui);
+            handleKeyPress(window.ptr,player,terrain,keyTime);
+        }
         handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize, mousePressed, gui, atSurface);
         
         shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
@@ -290,14 +291,9 @@ void runApplication() {
     //        shopkeeper.coordinates.print();
         
         if (mousePressed && valid && gui.inDialogue == false) {
-            std::cout << dialogueList[0][2] << "\n";
             gui.inDialogue = true;
             gui.setVisibleButtons({dialogueButton});
             gui.setDialogue(0);
-//            gui.openMenu = "shop";
-//            gui.selectedTab = "pickaxes";
-//            gui.visibleButtons[tabSelector] = true;
-//            gui.visibleButtons[pickaxeEquip] = true;
         }
         
         shader.loadUniform<int>(true, "u_IsTexture");
@@ -311,6 +307,14 @@ void runApplication() {
             shader.loadUniform<int>(false, "u_IsTexture");
             if (mouse.backpackFull && mouse.holding > 0) {
                 shader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
+                gui.errorMessage = "Backpack full";
+                gui.errorTimeSet = glfwGetTime();
+                gui.errorDuration = 2;
+            } else if (mouse.validPickaxeLevel == false && mouse.holding > 0) {
+                shader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
+                gui.errorMessage = "Please upgrade your pickaxe";
+                gui.errorTimeSet = glfwGetTime();
+                gui.errorDuration = 2;
             } else {
                 shader.loadUniform<Vec4f>(colourVector[green], "u_QuadColour");
             }
@@ -377,14 +381,27 @@ void runApplication() {
             gui.renderQuad(0,25, 200, 200, texture, shader, white, true, 9);
             gui.renderQuad(200, 25, screenSize.x*(0.75), screenSize.y*(0.25), texture, shader, red, false, 1);
             
+            
+            
             std::string currentLine = gui.currentDialogue[gui.currentLine];
             gui.renderText(gui.currentDialogue[gui.currentLine], 225, screenSize.y*(0.25)-25, texture, shader, white,true,screenSize.x*(0.75)-75);
+        }
+        
+        if (gui.errorDuration != 0 && gui.inDialogue == false) {
+            if (glfwGetTime() - gui.errorTimeSet < gui.errorDuration) {
+                int width = gui.getWidth(gui.errorMessage);
+                int maxWidth = screenSize.x*(0.5);
+                if (width > maxWidth) {
+                    gui.renderText(gui.errorMessage, screenSize.x*(0.25), screenSize.y*(0.25), texture, shader, red, true, screenSize.x*(0.5));
+                } else {
+                    gui.renderText(gui.errorMessage, screenSize.x*(0.5)-width*(0.5), screenSize.y*(0.25), texture, shader, red, false, screenSize.x*(0.5));
+                }
+            }
         }
         
         
         for (Button &button: buttons) {
             auto it = gui.visibleButtons.find(button.id);
-            //checks if the iterator reaches the end of the map and then also requires the value to be true for visiblity
             const bool buttonVisible = it != gui.visibleButtons.end() && it -> second;
             if (buttonVisible) {
                 gui.renderButton(button, texture, shader);

@@ -70,7 +70,7 @@ std::vector<std::string> Text::generateMultiLineText(const std::string &string, 
     
     
     for (std::string &str: splitStrings) {
-        std::cout << str << "\n";
+//        std::cout << str << "\n";
     }
     
     return splitStrings;

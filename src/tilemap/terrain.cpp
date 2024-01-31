@@ -114,7 +114,7 @@ int Terrain::getRandomOre(int layer,int x,int y) const { //only works for sets w
 //    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
 //    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
         
-    for (auto &[ore,magnitude]:layerInfo[layer]) {
+    for (auto &[ore,magnitude]:worldData[currentWorld].layerInfo[layer]) {
 //        std::cout << "total: " << magnitude << "\n";
         if (distanceFromCenter <= magnitude) {
             return ore;
@@ -133,7 +133,7 @@ void Terrain::generateLayer(int depth) {
                 tiles.emplace_back(x,-height-y,7);
             } else {
                 int layer = layerCount;
-                int lastLayer = static_cast<int>(layerInfo.size())-1;
+                int lastLayer = static_cast<int>(worldData[currentWorld].layerInfo.size())-1;
                 if (layerCount > lastLayer) {
                     layer = lastLayer;
                 }
@@ -236,7 +236,29 @@ void Terrain::generateBuffer(int depth) {
     
 }
 
-Terrain::Terrain(): layerCount(0),tiles() {
+void Terrain::setupWorld(int worldIndex) {
+    currentWorld = worldIndex;
+    layerCount = 0;
+    int startingHeight = 5;
+    tiles = std::vector<Tile>{};
+    for (int i = 0; i < startingHeight; i++) {
+        for (int j = 0; j < terrainWidth; j++) {
+            if ( j == terrainWidth-1 || i == 0 || j == 0) {
+                tiles.emplace_back(j,-i,7);
+            } else if (i == 3) {
+                tiles.emplace_back(j,-i,12);
+            }
+            else {
+                tiles.emplace_back(j,-i,3);
+            }
+        }
+    }
+    height = startingHeight;
+    
+    generateBuffer(0);
+};
+
+Terrain::Terrain(): layerCount(0),tiles(),currentWorld(0) {
     
     std::vector<float> instanceVertices = {
         0.0f,0.0f,
@@ -263,21 +285,6 @@ Terrain::Terrain(): layerCount(0),tiles() {
     
     glBindVertexArray(0);
     
-    int startingHeight = 5;
-    for (int i = 0; i < startingHeight; i++) {
-        for (int j = 0; j < terrainWidth; j++) {
-            if ( j == terrainWidth-1 || i == 0 || j == 0) {
-                tiles.emplace_back(j,-i,7);
-            } else if (i == 3) {
-                tiles.emplace_back(j,-i,12);
-            }
-            else {
-                tiles.emplace_back(j,-i,3);
-            }
-        }
-    }
-    height = startingHeight;
-    
-    generateBuffer(0);
+    setupWorld(0);
 
 }

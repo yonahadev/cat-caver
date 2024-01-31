@@ -39,6 +39,7 @@ Player::Player(float offsetX,float offsetY,int texIndex): Sprite(offsetX, offset
         }
     }
     
+    ownedWorlds.push_back(worldData[0].name);
     ownedPickaxes[pickaxeData[0]] = true;
     ownedBackpacks[backpackData[0]] = true;
     

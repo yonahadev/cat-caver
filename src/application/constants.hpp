@@ -12,6 +12,7 @@
 #include "block.hpp"
 #include "pickaxe.hpp"
 #include "backpack.hpp"
+#include "world.hpp"
 #include "vec4.hpp"
 #include <map>
 
@@ -21,22 +22,53 @@ constexpr int layerDepth = 20;
 constexpr int textureCount = 13.0f;
 constexpr float textureMultiplier = 1.0f/textureCount;
 
-const std::vector<std::map<int, double>> layerInfo {
-    { //map of ore index to magnitude from center on height map to be generated
-        {0,0.05},
-        {1,0.085},
-        {2,0.095},
-        {4,0.105},
-        {7,0.145}
+const std::vector<World> worldData {
+    {
+        "Surface Layer", //name
+        0, //cost
+        { // block costs
+            {1,1}
+        },
+        {
+            { //map of ore index to magnitude from center on height map to be generated
+                {0,0.05},
+                {1,0.085},
+                {2,0.095},
+                {4,0.105},
+                {7,0.145}
+            },
+            {
+                {0,0.05},
+                {4,0.08},
+                {5,0.11},
+                {6,0.115},
+                {7,0.135}
+            }
+        }
     },
     {
-        {0,0.05},
-        {4,0.08},
-        {5,0.11},
-        {6,0.115},
-        {7,0.135}
+        "Lower Surface", //name
+        0, //cost
+        { // block costs
+            {1,10}
+        },
+        {
+            { //map of ore index to magnitude from center on height map to be generated
+                {0,0.05},
+                {2,0.085},
+                {4,0.095},
+                {5,0.105},
+                {6,0.145}
+            },
+            {
+                {0,0.03},
+                {4,0.08},
+                {6,0.11},
+                {2,0.115},
+                {7,0.135}
+            }
+        }
     }
-        
 };
 
 //level -1 means you can't mine it / it isn't collideable
@@ -95,7 +127,9 @@ enum buttons {
     tabSelector,
     pickaxeEquip,
     backpackEquip,
-    dialogueButton
+    dialogueButton,
+    worldSelect,
+    closeButton
 };
 
 const std::vector<Vec4f> colourVector = {

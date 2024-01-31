@@ -150,24 +150,24 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             if (gui.openMenu == button.text) {
                                 gui.openMenu = "";
                                 gui.selectedTab = "pickaxes";
-                                gui.visibleButtons[tabSelector] = false;
-                                gui.visibleButtons[pickaxeEquip] = false;
-                                gui.visibleButtons[backpackEquip] = false;
+                                gui.setVisibleButtons({teleport,sell,oresAndShop,closeButton});
                             } else {
                                 gui.openMenu = button.text;
                                 if (button.text == "ores") {
-                                    gui.visibleButtons[tabSelector] = false;
-                                    gui.visibleButtons[pickaxeEquip] = false;
+                                    gui.setVisibleButtons({closeButton});
                                 }
                                 if (button.text == "shop") {
                                     if (atSurface) {
-                                        gui.visibleButtons[tabSelector] = true;
-                                        gui.visibleButtons[pickaxeEquip] = true;
+                                        gui.setVisibleButtons({tabSelector,pickaxeEquip,closeButton});
                                     } else {
                                         gui.openMenu = "";
                                     }
                                 }
-                            }   
+                                if (button.text == "progress") {
+                                    gui.setVisibleButtons({worldSelect,closeButton});
+                                }
+                                
+                            }
                             break;
                         }
                         case tabSelector: {
@@ -223,10 +223,28 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 std::cout << "Finished dialgoue" << "\n";
                             }
                             break;
-                        }
+                        } case worldSelect: {
+                            int worldIndex = std::stoi(button.metaInfo);
+                            World world = worldData[worldIndex];
+                            if (button.text == "equip") {
+                                terrain.setupWorld(worldIndex);
+                                std::cout << "Selected" << world.name << "\n";
+                            } else if (player.money >= world.cost) {
+                                std::cout << "Selected" << world.name << "\n";
+                                player.ownedWorlds.push_back(world.name);
+                                player.money -= world.cost;
+                                terrain.setupWorld(worldIndex);
                             }
-                    
+                            break;
+                        }
+                        case closeButton: {
+                            gui.openMenu = "";
+                            gui.setVisibleButtons({teleport,sell,oresAndShop});
+                            break;
+                        }
                     }
+                    
+                }
             }
         }
 

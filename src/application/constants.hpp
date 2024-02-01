@@ -14,6 +14,7 @@
 #include "backpack.hpp"
 #include "world.hpp"
 #include "vec4.hpp"
+#include "dialogueNode.hpp"
 #include <map>
 
 constexpr int terrainWidth = 20;
@@ -97,13 +98,34 @@ const std::vector<Backpack> backpackData = {
     {"fat sack", 75, 500}
 };
 
-const std::vector<std::vector<std::string>> dialogueList { //this is the max justifiable line length
+const std::vector<DialogueNode> dialogueList { //this is the max justifiable line length
     {
-    "Welcome to cat caver - you're stuck here I'm afraid...",
-    "But maybe if you help me collect what I need we can escape.",
-    "I'm gonna need a lot of materials to get to the next area, but,",
-    "I think with your help we can do it.",
-}
+        { //dialogue 0
+        "Welcome to cat caver - you're stuck here I'm afraid...",
+        "But maybe if you help me collect what I need we can escape.",
+        "I'm gonna need a lot of materials to get to the next area, but,",
+        "I think with your help we can do it.",
+    },
+        {{"Dialogue 1","1"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+    },
+    {
+        { //dialogue 1
+        "Well I guess I could tell you a bit about what happened here...",
+        "We're the last remaning survivors on the planet but the secret lies in the earths core.",
+        "As you might expect that requires a lot of digging power.",
+        "So you might wanna get a better pickaxe",
+    },
+        {{"Dialogue 0","0"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+    },
+    {
+        { //dialogue 2
+        "Go down to the mine and collect some ores",
+        "Once you find enough stuff come sell it to me",
+        "I'll get you hooked up with some better gear"
+    },
+        {{"Dialgoue 1","1"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+    },
+    
 };
 
 enum dialogues {
@@ -129,7 +151,8 @@ enum buttons {
     backpackEquip,
     dialogueButton,
     worldSelect,
-    closeButton
+    closeButton,
+    dialogueChoice
 };
 
 const std::vector<Vec4f> colourVector = {

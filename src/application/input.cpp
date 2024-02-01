@@ -127,7 +127,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                 bool validY = mouseY >= button.y && mouseY <= button.y+button.height;
                 auto it = gui.visibleButtons.find(button.id);
                 bool visible = it != gui.visibleButtons.end() && it->second;
+            
+            
                 if (validX && validY && visible) {
+                    std::cout << "Pressed" << button.id << "\n";
 //                    cou
                     switch(button.id) {
                         case teleport: {
@@ -214,9 +217,9 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case dialogueButton: {
-                            if (gui.currentLine < gui.lineCount) {
-                                gui.currentLine +=1;
-                                std::cout << "Changed to dialogue: " << gui.currentLine << "\n";
+                            if (gui.dialogue.currentLine < gui.dialogue.lineCount) {
+                                gui.dialogue.currentLine +=1;
+                                std::cout << "Changed to dialogue: " << gui.dialogue.currentLine << "\n";
                             } else {
                                 gui.inDialogue = false;
                                 gui.setVisibleButtons({teleport,oresAndShop,sell});
@@ -241,6 +244,14 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             gui.openMenu = "";
                             gui.setVisibleButtons({teleport,sell,oresAndShop});
                             break;
+                        }
+                        case dialogueChoice: {
+                            std::cout << "pressed choice button" << "\n";
+                            if (button.metaInfo == "SHOP") {
+                                
+                            } else {
+                                gui.dialogue.setDialogue(std::stoi(button.metaInfo));
+                            }
                         }
                     }
                     

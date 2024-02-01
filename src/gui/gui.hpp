@@ -20,6 +20,7 @@
 #include "button.hpp"
 #include <unordered_map>
 #include "constants.hpp"
+#include "dialogue.hpp"
 
 
 class GUI {
@@ -27,18 +28,15 @@ private:
     VAO vao;
     VBO vbo;
 public:
+    Dialogue dialogue;
     Text text;
+    bool inDialogue = false;
     std::string openMenu = "";
     std::string selectedTab = "pickaxes";
     std::string errorMessage;
     int errorTimeSet;
     int errorDuration;
-    bool inDialogue = false;
     std::unordered_map<int,bool> visibleButtons;
-    std::vector<std::string> currentDialogue;
-    int currentLine;
-    int lineCount;
-    void setDialogue(int dialogue);
     int getWidth(const std::string &string);
     void renderButton(const Button &button, Texture &texture, Shader &shader);
     void setVisibleButtons(const std::vector<int> &buttons);

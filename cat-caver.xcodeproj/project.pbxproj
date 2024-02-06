@@ -126,6 +126,8 @@
 		E2A1462B2B6BA23C0096024A /* dialogue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dialogue.hpp; sourceTree = "<group>"; };
 		E2A1462C2B6BA31D0096024A /* dialogueNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dialogueNode.cpp; sourceTree = "<group>"; };
 		E2A1462D2B6BA31D0096024A /* dialogueNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dialogueNode.hpp; sourceTree = "<group>"; };
+		E2A146312B6D36080096024A /* quest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = quest.cpp; sourceTree = "<group>"; };
+		E2A146322B6D36080096024A /* quest.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quest.hpp; sourceTree = "<group>"; };
 		E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite.cpp; sourceTree = "<group>"; };
 		E2A33FFE2B49DF0D004EA1E0 /* sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sprite.hpp; sourceTree = "<group>"; };
 		E2A340002B49E1B9004EA1E0 /* npc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = npc.cpp; sourceTree = "<group>"; };
@@ -382,6 +384,8 @@
 				E250DCF12B3DCAE700BF30DD /* backpack.hpp */,
 				E275DAE12B2B8E8300E2969D /* block.hpp */,
 				E279D2F52B694088005878B2 /* world.hpp */,
+				E2A146312B6D36080096024A /* quest.cpp */,
+				E2A146322B6D36080096024A /* quest.hpp */,
 			);
 			path = game;
 			sourceTree = "<group>";

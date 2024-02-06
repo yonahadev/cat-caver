@@ -16,6 +16,7 @@
 #include "vec4.hpp"
 #include "dialogueNode.hpp"
 #include <map>
+#include "quest.hpp"
 
 constexpr int terrainWidth = 20;
 constexpr int layerDepth = 20;
@@ -73,7 +74,7 @@ const std::vector<World> worldData {
 };
 
 //level -1 means you can't mine it / it isn't collideable
-const std::vector<Block> blockData = {
+const std::vector<Block> blockData {
     {"stone",1,1000,1},
     {"copper",2,1500,5},
     {"iron",2,1500,5},
@@ -84,18 +85,33 @@ const std::vector<Block> blockData = {
     {"special",3,5000,0}
 };
 
-const std::vector<Pickaxe> pickaxeData = {
+const std::vector<Pickaxe> pickaxeData {
     {"wooden",1,10,0},
     {"Shovel",2,3,1},
     {"bare hands",3,5,275},
     {"Fork",3,8,500}
 };
 
-const std::vector<Backpack> backpackData = {
+const std::vector<Backpack> backpackData {
     {"pockets",3,0},
     {"sack",15,0},
     {"crate",35,250},
     {"fat sack", 75, 500}
+};
+
+const std::vector<Quest> questList {
+    {"Talk to the shopkeeper",
+        "See what bro has to say",
+        0,
+        {}
+    },
+    {"Good ol' digging",
+        "Collect 10 iron blocks and 100 coins",
+        100,
+        {
+            {2,10}
+        }
+    }
 };
 
 const std::vector<DialogueNode> dialogueList { //this is the max justifiable line length
@@ -106,7 +122,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "I'm gonna need a lot of materials to get to the next area, but,",
         "I think with your help we can do it.",
     },
-        {{"Dialogue 1","1"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+        {{"Dialogue 1","1"},{"Next Quest!","QUEST"},{"Open shop","SHOP"}} //choices
     },
     {
         { //dialogue 1
@@ -115,7 +131,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "As you might expect that requires a lot of digging power.",
         "So you might wanna get a better pickaxe",
     },
-        {{"Dialogue 0","0"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+        {{"Dialogue 0","0"},{"Cheers for the help","EXIT"},{"Open shop","SHOP"}} //choices
     },
     {
         { //dialogue 2
@@ -123,7 +139,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "Once you find enough stuff come sell it to me",
         "I'll get you hooked up with some better gear"
     },
-        {{"Dialgoue 1","1"},{"Dialogue 2","2"},{"SHOP","SHOP"}} //choices
+        {{"Dialgoue 1","1"},{"Dialogue 2","2"},{"Open shop","SHOP"}} //choices
     },
     
 };
@@ -155,7 +171,7 @@ enum buttons {
     dialogueChoice
 };
 
-const std::vector<Vec4f> colourVector = {
+const std::vector<Vec4f> colourVector {
     {1.0f,1.0f,1.0f,1.0f},
     {0.0f,0.0f,0.0f,1.0f},
     {0.3f,0.3f,0.3f,0.7f},

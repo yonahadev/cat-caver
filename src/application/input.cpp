@@ -246,10 +246,19 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case dialogueChoice: {
-                            std::cout << "pressed choice button" << "\n";
                             if (button.metaInfo == "SHOP") {
-                                
-                            } else {
+                                gui.openMenu = "shop";
+                                gui.inDialogue = false;
+                                gui.setVisibleButtons({closeButton});
+                            } else if (button.metaInfo == "QUEST") {
+                                player.currentQuest = questList[1];
+                                gui.inDialogue = false;
+                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                            }  else if (button.metaInfo == "EXIT") {
+                                gui.inDialogue = false;
+                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                            }
+                                else {
                                 gui.dialogue.setDialogue(std::stoi(button.metaInfo));
                             }
                         }

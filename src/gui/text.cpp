@@ -30,10 +30,12 @@ TextData Text::generateCharacters(const std::string &string,int x, int y) {
         //        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
         //for some reason data set y offsets is not properly accounting for text offset? - manual implementation
         int yOffset = 0;
-        if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g') {
+        if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g' || ch == 'Q') {
             yOffset = -6;
         } else if (ch == '\'' || ch == '-') {
             yOffset += 18;
+        } else if (ch == ' ') {
+            xOffset += 2;
         }
         current.xOffset = xOffset+x;
         current.yOffset = y+yOffset;

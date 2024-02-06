@@ -42,6 +42,7 @@ int GUI::getWidth(const std::string &string) {
     return text.generateCharacters(string,0,0).displayLength;
 }
 
+
 void GUI::setVisibleButtons(const std::vector<int> &buttons) {
     for (auto &[key,value]: visibleButtons) {
         visibleButtons[key] = false;
@@ -51,13 +52,13 @@ void GUI::setVisibleButtons(const std::vector<int> &buttons) {
     }
 }
 
-void GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth) {
+int GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth) {
     shader.loadUniform<int>(true, "u_IsTexture");
     texture.setTexture("fontImg");
     shader.loadUniform<Vec4f>(colourVector[colour], "u_QuadColour");
+    int count = 0;
     if (multiLine) {
         std::vector<std::string> splitStrings = text.generateMultiLineText(string, maxWidth);
-        int count = 0;
         for (std::string &str: splitStrings) {
             text.generate(str, x, y-(count*50));
             text.draw();
@@ -67,4 +68,5 @@ void GUI::renderText(const std::string &string, int x, int y, Texture &texture, 
         text.generate(string, x, y);
         text.draw();
     }
+    return count*50;
 }

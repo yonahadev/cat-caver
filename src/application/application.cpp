@@ -372,12 +372,41 @@ void runApplication() {
         const int width = gui.getWidth(timeString);
         
         if (gui.openMenu == "") {
-            const bool valid = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
+            int playerX = round(player.coordinates.x);
+            int playerY = round(player.coordinates.y);
             
-            if (mousePressed && valid && gui.inDialogue == false) {
+            std::vector<Vec2i> neighbours = terrain.getNeighbours(playerX, playerY);
+            
+            bool validPosition = false;
+            
+            for (Vec2i &block: neighbours) {
+                if (shopkeeperX == block.x && shopkeeperY == block.y) {
+                    validPosition = true;
+                }
+            }
+            
+            const bool validMouse = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
+            
+            if (mousePressed && validMouse && validPosition && gui.inDialogue == false) {
                 gui.inDialogue = true;
                 gui.setVisibleButtons({dialogueButton,dialogueChoice});
                 gui.dialogue.setDialogue(0);
+            }
+            
+            Quest quest = player.currentQuest;
+            std::string questTitle = quest.title;
+            int questTitleWidth = gui.getWidth(questTitle);
+            gui.renderText("Current Quest:", screenSize.x-questTitleWidth-50, screenSize.y-150, texture, shader, white, false, 1);
+            
+            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
+            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
+            int multilineOffset = gui.renderText(quest.description, screenSize.x-questTitleWidth-50, screenSize.y-250, texture, shader, grey, true, questTitleWidth);
+            count = 0;
+            for (const auto &[ore,requirement]: quest.blockRequirements) {
+                Block block = blockData[ore];
+                gui.renderQuad(screenSize.x-questTitleWidth-50-55, screenSize.y-262-count-multilineOffset, 50, 50, texture, shader, white, true, ore);
+                gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-250-count-multilineOffset, texture, shader,white,false,-1);
+                count += 50;
             }
             
             gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white,false,-1);

@@ -30,6 +30,7 @@ public:
     std::unordered_map<Pickaxe, bool> ownedPickaxes;
     std::unordered_map<Backpack, bool> ownedBackpacks;
     std::vector<std::string> ownedWorlds;
+    Quest currentQuest;
     int money;
     int backpackCount;
     std::vector<Vec2i> neighbours;

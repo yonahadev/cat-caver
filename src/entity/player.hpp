@@ -17,7 +17,7 @@
 #include "terrain.hpp"
 #include <vector>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include "Block.hpp"
 #include "pickaxe.hpp"
 #include "backpack.hpp"
@@ -26,7 +26,7 @@ class Player: public Sprite {
 public:
     Pickaxe equippedPickaxe;
     Backpack equippedBackpack;
-    std::unordered_map<Block, int> blockCounts;
+    std::map<Block, int> blockCounts;
     std::unordered_map<Pickaxe, bool> ownedPickaxes;
     std::unordered_map<Backpack, bool> ownedBackpacks;
     std::vector<std::string> ownedWorlds;

@@ -75,14 +75,14 @@ const std::vector<World> worldData {
 
 //level -1 means you can't mine it / it isn't collideable
 const std::vector<Block> blockData {
-    {"stone",1,1000,1},
-    {"copper",2,1500,5},
-    {"iron",2,1500,5},
-    {"dirt",-1,1000,0},
-    {"coal",2,1250,3},
-    {"gold",3,2000,10},
-    {"diamond",3,3000,50},
-    {"special",3,5000,0}
+    {0,"stone",1,1000,1},
+    {1,"copper",2,1500,5},
+    {2,"iron",2,1500,5},
+    {3,"dirt",-1,1000,0},
+    {4,"coal",2,1250,3},
+    {5,"gold",3,2000,10},
+    {6,"diamond",3,3000,50},
+    {7,"special",1,5000,0}
 };
 
 const std::vector<Pickaxe> pickaxeData {
@@ -106,10 +106,17 @@ const std::vector<Quest> questList {
         {}
     },
     {"Good ol' digging",
-        "Collect 10 iron blocks and 100 coins",
-        100,
+        "Collect 3 stone blocks and 10 coins",
+        10,
         {
-            {2,10}
+            {0,3}
+        }
+    },
+    {"Copper collector",
+        "Collect 5 copper",
+        0,
+        {
+            {1,5}
         }
     }
 };
@@ -122,7 +129,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "I'm gonna need a lot of materials to get to the next area, but,",
         "I think with your help we can do it.",
     },
-        {{"Dialogue 1","1"},{"Next Quest!","QUEST"},{"Open shop","SHOP"}} //choices
+        {{"Dialogue 1","1"},{"Quest status","QUEST COMPLETE"},{"Open shop","SHOP"}} //choices
     },
     {
         { //dialogue 1
@@ -131,7 +138,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "As you might expect that requires a lot of digging power.",
         "So you might wanna get a better pickaxe",
     },
-        {{"Dialogue 0","0"},{"Cheers for the help","EXIT"},{"Open shop","SHOP"}} //choices
+        {{"Give me my first quest","QUEST 1"},{"More info pls","2"},{"Cheers boss","EXIT"}} //choices
     },
     {
         { //dialogue 2
@@ -139,8 +146,15 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "Once you find enough stuff come sell it to me",
         "I'll get you hooked up with some better gear"
     },
-        {{"Dialgoue 1","1"},{"Dialogue 2","2"},{"Open shop","SHOP"}} //choices
+        {{"Dialgoue 1","1"},{"side quest","QUEST 2"},{"Open shop","SHOP"}} //choices
     },
+    {
+        { //dialogue 2
+        "You have not finished the quest yet - please get more stuff"
+    },
+        {{"Back","0"},{"let me out of hear","EXIT"}} //choices
+    },
+
     
 };
 
@@ -168,7 +182,8 @@ enum buttons {
     dialogueButton,
     worldSelect,
     closeButton,
-    dialogueChoice
+    dialogueChoice,
+    oreSell
 };
 
 const std::vector<Vec4f> colourVector {

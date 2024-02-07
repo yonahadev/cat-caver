@@ -25,6 +25,7 @@ void Mouse::generateBuffer() {
         vao.enableAttributes();
         vao.unbindArray();
     } else {
+        
         bool isMineable = blockData[currentTile].level != -1 && currentTile != 12;
         if (currentTile != -1 && isMineable ) {
     //        std::cout << currentTile << "\n";

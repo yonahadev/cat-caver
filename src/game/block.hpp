@@ -14,6 +14,7 @@
 
 
 struct Block {
+    int textureIndex;
     std::string name;
     int level;
     int hp;
@@ -21,6 +22,9 @@ struct Block {
     
     bool operator==(const Block &other) const = default; //c++20 equality operator for structs
     
+    bool operator < (const Block &other) const {
+        return textureIndex < other.textureIndex;
+    }
     
 };
 

@@ -34,7 +34,7 @@ Player::Player(float offsetX,float offsetY,int texIndex): Sprite(offsetX, offset
     
     for (const Block &block: blockData) {
         std::string blockName = block.name;
-        if (block.level != -1) {
+        if (block.sellValue != 0) {
             blockCounts[block] = 0;
         }
     }

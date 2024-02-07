@@ -128,6 +128,8 @@ void runApplication() {
     
     float keyTime = glfwGetTime();
     
+    mouse.currentTile = 3;
+    
     gui.setVisibleButtons({teleport,oresAndShop,sell});
     
 //    gui.text.generateMultiLineText(dialogueList[0][0], 700);
@@ -173,9 +175,9 @@ void runApplication() {
         }
         
         
-        const int depth = int(abs(floor(player.coordinates.y)));
+            const int depth = int(abs(floor(player.coordinates.y)));
 
-        if (depth > terrain.height-20) {
+            if (depth > terrain.height-20) {
             terrain.generateLayer(depth);
             terrain.generateBuffer(depth);
         }
@@ -194,17 +196,9 @@ void runApplication() {
         std::vector<Button> buttons = {}; //atm have to redefine per frame to account for changes to screen size
         buttons.emplace_back(0,"surface",gui.getWidth("surface"),40,50,screenSize.y-200,red,white,"");
         buttons.emplace_back(6,"dialogue",screenSize.x,screenSize.y,0,0,transparent,transparent,"");
-        buttons.emplace_back(2,"ores",gui.getWidth("ores"),40,50,screenSize.y-300,green,white,"");
+        buttons.emplace_back(2,"ores",gui.getWidth("ores"),40,50,screenSize.y-250,green,white,"");
         
-        buttons.emplace_back(2,"progress",gui.getWidth("progress"),40,50,screenSize.y-400,grey,white,"");
-        
-        if (atSurface) {
-            buttons.emplace_back(1,"sell",gui.getWidth("sell"),40,50,screenSize.y-250,blue,white,"");
-            buttons.emplace_back(2,"shop",gui.getWidth("shop"),40,50,screenSize.y-350,red,white,"");
-        } else {
-            buttons.emplace_back(1,"sell",gui.getWidth("sell"),40,50,screenSize.y-250,black,grey,"");
-            buttons.emplace_back(2,"shop",gui.getWidth("shop"),40,50,screenSize.y-350,black,grey,"");
-        }
+        buttons.emplace_back(2,"progress",gui.getWidth("progress"),40,50,screenSize.y-300,grey,white,"");
         
         int menuWidth = screenSize.x*(0.75);
         int menuHeight = screenSize.y*(0.75);
@@ -212,8 +206,10 @@ void runApplication() {
         int menuX = screenSize.x/2-(menuWidth/2);
         
         const int pickaxeButtonWidth = gui.getWidth("pickaxes");
+        const int backpackButtonWidth = gui.getWidth("backpacks");
         buttons.emplace_back(3,"backpacks",gui.getWidth("backpacks"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+20,screenSize.y-400,red,white,"");
         buttons.emplace_back(3,"pickaxes",pickaxeButtonWidth,30,screenSize.x/2-(300/2),screenSize.y-400,red,white,"");
+        buttons.emplace_back(3,"sell",gui.getWidth("sell"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+backpackButtonWidth+40,screenSize.y-400,red,white,"");
         
         
         buttons.emplace_back(8,"X",25,25,menuX+menuWidth-25,menuY+menuHeight-25,red,white,"");
@@ -260,6 +256,16 @@ void runApplication() {
 
             count++;
         }
+        
+        count = 0;
+        
+        for (auto &[block,value]: player.blockCounts) {
+            int offset = count*50;
+            int width = gui.getWidth("sell");
+            buttons.emplace_back(oreSell,"sell",gui.getWidth("sell"),30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(block.textureIndex));
+            count++;
+        }
+        
         count = 0;
         for (int i = 0; i< worldData.size(); i++) {
             
@@ -371,6 +377,8 @@ void runApplication() {
         std::string timeString = "Time: " + std::to_string(time);
         const int width = gui.getWidth(timeString);
         
+        bool interactionTriggered = false;
+        
         if (gui.openMenu == "") {
             int playerX = round(player.coordinates.x);
             int playerY = round(player.coordinates.y);
@@ -387,10 +395,11 @@ void runApplication() {
             
             const bool validMouse = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
             
+            
             if (mousePressed && validMouse && validPosition && gui.inDialogue == false) {
-                gui.inDialogue = true;
-                gui.setVisibleButtons({dialogueButton,dialogueChoice});
+                gui.setVisibleButtons({dialogueButton});
                 gui.dialogue.setDialogue(0);
+                interactionTriggered = true;
             }
             
             Quest quest = player.currentQuest;
@@ -404,9 +413,14 @@ void runApplication() {
             count = 0;
             for (const auto &[ore,requirement]: quest.blockRequirements) {
                 Block block = blockData[ore];
-                gui.renderQuad(screenSize.x-questTitleWidth-50-55, screenSize.y-262-count-multilineOffset, 50, 50, texture, shader, white, true, ore);
-                gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-250-count-multilineOffset, texture, shader,white,false,-1);
+                gui.renderQuad(screenSize.x-questTitleWidth-50-55, screenSize.y-312-count-multilineOffset, 50, 50, texture, shader, white, true, ore);
+                gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-300-count-multilineOffset, texture, shader,white,false,-1);
                 count += 50;
+            }
+            if (player.money < quest.moneyRequirement) {
+                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, red,false,-1);
+            } else {
+                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, green,false,-1);
             }
             
             gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white,false,-1);
@@ -454,6 +468,7 @@ void runApplication() {
                 count++;
             }
         } else if (gui.openMenu == "shop") {
+            gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-50, texture, shader, green,false,-1);
             gui.renderQuad(menuX, menuY, menuWidth, menuHeight, texture, shader, blue,false,1);
             if (gui.selectedTab == "pickaxes") {
                 int count = 0;
@@ -469,6 +484,20 @@ void runApplication() {
                     int offset = count*100;
                     gui.renderText(backpack.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, menuX, screenSize.y-50-offset, texture,shader,white,false,-1);
                     gui.renderText("capacity:"+ std::to_string(backpack.capacity), menuX, screenSize.y-100-offset, texture,shader,white,false,-1);
+                    count++;
+                }
+            } else if (gui.selectedTab == "sell") {
+                int count = 0;
+                for (auto &[block,value]: player.blockCounts) {
+                    int offset = count*50;
+                    int xOffset = 0;
+                    gui.renderText(std::to_string(value), menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
+                    xOffset += 25;
+                    gui.renderQuad(menuX+xOffset, screenSize.y-100-offset, 25, 25, texture, shader, white, true, block.textureIndex);
+                    xOffset += 25;
+                    gui.renderText(block.name, menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
+                    xOffset += gui.getWidth(block.name) + 25;
+                    gui.renderText("$"+std::to_string(block.sellValue), menuX+25+xOffset, screenSize.y-100-offset, texture,shader,green,false,-1);
                     count++;
                 }
             }
@@ -519,6 +548,9 @@ void runApplication() {
 
         handleGUI(window.ptr, terrain, mouse, player, buttons, screenSize, mousePressed, gui, atSurface);
         
+        if (interactionTriggered) {
+            gui.inDialogue = true;
+        }
         
         mousePressed = false;
         

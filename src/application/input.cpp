@@ -177,13 +177,11 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             gui.selectedTab = button.text;
                             std::cout << "Selected tab: " << gui.selectedTab << "\n";
                             if (gui.selectedTab == "backpacks") {
-                                gui.visibleButtons[pickaxeEquip] = false;
-                                gui.visibleButtons[backpackEquip] = true;
-
+                                gui.setVisibleButtons({closeButton,tabSelector,backpackEquip});
                             } else if (gui.selectedTab == "pickaxes") {
-                                
-                                gui.visibleButtons[pickaxeEquip] = true;
-                                gui.visibleButtons[backpackEquip] = false;
+                                gui.setVisibleButtons({closeButton,tabSelector,pickaxeEquip});
+                            } else if (gui.selectedTab == "sell") {
+                                gui.setVisibleButtons({closeButton,tabSelector,oreSell});
                             }
                             break;
                         }
@@ -217,9 +215,9 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case dialogueButton: {
-                            if (gui.dialogue.currentLine < gui.dialogue.lineCount) {
+                            if (gui.dialogue.currentLine < gui.dialogue.lineCount && gui.inDialogue) {
                                 gui.dialogue.currentLine +=1;
-                                std::cout << "Changed to dialogue: " << gui.dialogue.currentLine << "\n";
+                                std::cout << "Changed to dialogue: " << gui.dialogue.currentNode.dialogue[gui.dialogue.currentLine] << "\n";
                             } else {
                                 gui.inDialogue = false;
                                 gui.setVisibleButtons({teleport,oresAndShop,sell});
@@ -246,21 +244,71 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             break;
                         }
                         case dialogueChoice: {
-                            if (button.metaInfo == "SHOP") {
+                            
+                            std::string choice = button.metaInfo;
+                            
+                            std::string questNumber = "";
+                            if (choice.substr(0,5) == "QUEST") {
+                                questNumber = choice.substr(6,choice.size());
+                                std::cout << "QUEST" << "\n";
+                                std::cout << questNumber << "\n";
+
+                            }
+                            
+                            if (choice == "SHOP") {
                                 gui.openMenu = "shop";
                                 gui.inDialogue = false;
-                                gui.setVisibleButtons({closeButton});
-                            } else if (button.metaInfo == "QUEST") {
-                                player.currentQuest = questList[1];
+                                gui.setVisibleButtons({closeButton,tabSelector,pickaxeEquip});
+                                gui.selectedTab = "pickaxes";
+                            } else if (questNumber == "COMPLETE") {
+                                
+                                bool questCompleted = true;
+                                Quest quest = player.currentQuest;
+                                for (auto &[blockIndex,requirement]: quest.blockRequirements) {
+                                    Block block = blockData[blockIndex];
+                                    if (player.blockCounts[block] < requirement) {
+                                        std::cout << "insufficient: " << block.name << "\n";
+                                        questCompleted = false;
+                                    }
+                                }
+                                if (player.money < quest.moneyRequirement) {
+                                    std::cout << "Insufficient money" << "\n";
+                                    questCompleted = false;
+                                }
+                                
+                                if (questCompleted) {
+                                    player.currentQuest = questList[0];
+                                    gui.inDialogue = false;
+                                    gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                    player.money -= quest.moneyRequirement;
+                                    for (auto &[block,blockCount]: quest.blockRequirements) {
+                                        Block currentBlock = blockData[block];
+                                        player.blockCounts[currentBlock] -= blockCount;
+                                    }
+                                } else {
+                                    gui.dialogue.setDialogue(3);
+                                }
+                                
+                            } else if (questNumber != "") {
+                                player.currentQuest = questList[std::stoi(questNumber)];
                                 gui.inDialogue = false;
                                 gui.setVisibleButtons({teleport,oresAndShop,sell});
-                            }  else if (button.metaInfo == "EXIT") {
+                            }  else if (choice == "EXIT") {
                                 gui.inDialogue = false;
                                 gui.setVisibleButtons({teleport,oresAndShop,sell});
                             }
                                 else {
-                                gui.dialogue.setDialogue(std::stoi(button.metaInfo));
+                                gui.dialogue.setDialogue(std::stoi(choice));
                             }
+                            break;
+                        } case oreSell: {
+                            const int ore = std::stoi(button.metaInfo);
+                            Block block = blockData[ore];
+                            const int quantity = player.blockCounts[block];
+                            player.blockCounts[block] = 0;
+                            player.money += quantity * block.sellValue;
+                            player.backpackCount -= quantity;
+                            break;
                         }
                     }
                     

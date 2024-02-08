@@ -73,12 +73,10 @@ int Terrain::getTileIndex(int x,int y) const{
 
 void Terrain::mineBlock(int x, int y) {
     int index = getTileIndex(x,y);
-    tiles[index] = Tile(x,y,3);
-    std::cout << "Mined: " << x << "," << y << "\n";
+    tiles[index] = Tile(x,y,dirt);
 }
 
 std::vector<Block> Terrain::triggerExplosion(int x, int y) {
-//    std::cout << "explosion event" << "\n";
     std::vector<Block> minedBlocks {};
     int radius = 2;
     for (int i = -radius; i <= radius; i++) {
@@ -130,7 +128,7 @@ void Terrain::generateLayer(int depth) {
         for (int x = 0; x < terrainWidth; x++ ) {
             bool borderTile = x == 0 || x == terrainWidth -1;
             if (borderTile) {
-                tiles.emplace_back(x,-height-y,7);
+                tiles.emplace_back(x,-height-y,bedrock);
             } else {
                 int layer = layerCount;
                 int lastLayer = static_cast<int>(worldData[currentWorld].layerInfo.size())-1;
@@ -180,7 +178,7 @@ void Terrain::generateBuffer(int depth) {
             float textureEnd = (textureIndex+1) * textureMultiplier;
             
             
-            if (tile.blockIndex != 3) {
+            if (tile.blockIndex != dirt) {
                 matrices.push_back(tile.matrix);
                 texels.push_back(textureStart); //0,0 tex coords
                 texels.push_back(textureEnd); //1,0 tex coords
@@ -212,7 +210,6 @@ void Terrain::generateBuffer(int depth) {
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
     
-    
     texelsVBO.bindBuffer();
     
     glBufferData(GL_ARRAY_BUFFER,texels.size()*sizeof(float),texels.data(),GL_DYNAMIC_DRAW);
@@ -225,9 +222,15 @@ void Terrain::generateBuffer(int depth) {
     
     std::vector<Vertex> vertices;
     
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < terrainWidth; x++) {
-            generateQuad(x, -y, 3, vertices);
+    for (int y = -10; y < height; y++) {
+        for (int x = -10; x < terrainWidth+10; x++) {
+            int textureIndex;
+            if (x < 0 || x > terrainWidth-1 || y < 0) {
+                textureIndex = bedrock;
+            } else {
+                textureIndex = dirt;
+            }
+            generateQuad(x, -y, textureIndex, vertices);
         }
     }
     
@@ -239,17 +242,17 @@ void Terrain::generateBuffer(int depth) {
 void Terrain::setupWorld(int worldIndex) {
     currentWorld = worldIndex;
     layerCount = 0;
-    int startingHeight = 5;
+    int startingHeight = 10;
     tiles = std::vector<Tile>{};
     for (int i = 0; i < startingHeight; i++) {
         for (int j = 0; j < terrainWidth; j++) {
             if ( j == terrainWidth-1 || i == 0 || j == 0) {
-                tiles.emplace_back(j,-i,7);
-            } else if (i == 3) {
-                tiles.emplace_back(j,-i,12);
+                tiles.emplace_back(j,-i,bedrock);
+            } else if (i == 5) {
+                tiles.emplace_back(j,-i,bedrock);
             }
             else {
-                tiles.emplace_back(j,-i,3);
+                tiles.emplace_back(j,-i,dirt);
             }
         }
     }

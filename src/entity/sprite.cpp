@@ -39,11 +39,7 @@ void Sprite::checkCollisions(const std::vector<int> &blockIndices) {
             const int currentTile = blockIndices[x+(-y*terrainWidth)];
             
             
-            
-            bool touchingPlatform = platformCollision && currentTile == 12;
-            bool notNearPlatform = platformCollision == false && currentTile != 12;
-            
-             if (currentTile != 3 && collisionsOn == true && (touchingPlatform == true || notNearPlatform)) {
+             if (currentTile != dirt && collisionsOn == true) {
                 if (x > coordinates.x) {
                     collisions.push_back("right");
                 }

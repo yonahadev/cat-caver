@@ -16,7 +16,7 @@ void Tile::checkCollisions(const std::vector<int> &blockIndices) {
     
     for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
             int currentTile = blockIndices[x+(-y*terrainWidth)];
-                if (y < coordinates.y && currentTile != 3 ) {
+                if (y < coordinates.y && currentTile != dirt) {
                     collisions.push_back("bottom");
                 }
     }

@@ -14,8 +14,6 @@
 
 struct World {
     std::string name;
-    int cost;
-    std::map<int,int> blockCosts;
     std::vector<std::map<int, double>> layerInfo;
 };
 

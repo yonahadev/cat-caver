@@ -25,10 +25,8 @@ void Mouse::generateBuffer() {
         vao.enableAttributes();
         vao.unbindArray();
     } else {
-        
-        bool isMineable = blockData[currentTile].level != -1 && currentTile != 12;
+        bool isMineable = blockData[currentTile].level != -1 && blockData[currentTile].level != 99;
         if (currentTile != -1 && isMineable ) {
-    //        std::cout << currentTile << "\n";
             std::vector<Vertex> vertices;
             generateQuad(tileX,tileY,4,vertices);
             vao.bindArray();

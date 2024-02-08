@@ -66,8 +66,7 @@ void handleMouseMove(GLFWwindow* window,const Vec2i &screenSize,const Vec2i &asp
     }
     
     if (isMineable) {
-        mouse.currentTile  = terrain.getTile(mouse.tileX, mouse.tileY);
-//        std::cout << "current tile: " << mouse.currentTile << "\n";
+        mouse.currentTile = terrain.getTile(mouse.tileX, mouse.tileY);
     } else {
         mouse.currentTile = -1;
     }
@@ -76,13 +75,15 @@ void handleMouseMove(GLFWwindow* window,const Vec2i &screenSize,const Vec2i &asp
 
 void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player, GUI &gui) {
 
-    if (mouse.currentTile == -1) return;
+    if (mouse.currentTile == -1) {
+        return;
+    }
     
     Block block = blockData[mouse.currentTile];
     
     mouse.backpackFull = player.backpackCount >= player.equippedBackpack.capacity;
     
-    bool isMineable = block.level != -1 && mouse.currentTile != 12;
+    bool isMineable = block.level != -1;
     
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && isMineable) {
         
@@ -96,7 +97,7 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
         if (mouse.holding > blockHealth && mouse.backpackFull == false && mouse.validPickaxeLevel) {
             terrain.mineBlock(mouse.tileX, mouse.tileY);
             std::string blockName = block.name;
-            if (block.name != "special") {
+            if (block.name != "tnt") {
                 player.blockCounts[block] += 1;
                 player.backpackCount += 1;
             } else {
@@ -130,13 +131,17 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
             
             
                 if (validX && validY && visible) {
-                    std::cout << "Pressed" << button.id << "\n";
-//                    cou
                     switch(button.id) {
                         case teleport: {
-                            player.platformCollision = true;
-                            player.teleport(1, -2, terrain.getRawBlockIndices());
-                            terrain.generateBuffer(0);
+                            if (button.text == "surface") {
+                                player.teleport(1, -2, terrain.getRawBlockIndices());
+                                terrain.generateBuffer(0);
+                            } else if (button.text == "mine") {
+                                player.teleport(1, -7, terrain.getRawBlockIndices());
+                                terrain.generateBuffer(5);
+                            }
+                            gui.setVisibleButtons({menuToggles});
+                            gui.openMenu = "";
                             break;
                         }
                         case sell: {
@@ -149,12 +154,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             }
                             break;
                         }
-                        case oresAndShop: {
-                            if (gui.openMenu == button.text) {
-                                gui.openMenu = "";
-                                gui.selectedTab = "pickaxes";
-                                gui.setVisibleButtons({teleport,sell,oresAndShop,closeButton});
-                            } else {
+                        case menuToggles: {
                                 gui.openMenu = button.text;
                                 if (button.text == "ores") {
                                     gui.setVisibleButtons({closeButton});
@@ -169,8 +169,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 if (button.text == "progress") {
                                     gui.setVisibleButtons({worldSelect,closeButton});
                                 }
+                                if (button.text == "teleport") {
+                                    gui.setVisibleButtons({closeButton,teleport});
+                                }
                                 
-                            }
                             break;
                         }
                         case tabSelector: {
@@ -220,27 +222,27 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 std::cout << "Changed to dialogue: " << gui.dialogue.currentNode.dialogue[gui.dialogue.currentLine] << "\n";
                             } else {
                                 gui.inDialogue = false;
-                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                gui.setVisibleButtons({menuToggles,sell});
                                 std::cout << "Finished dialgoue" << "\n";
                             }
                             break;
                         } case worldSelect: {
                             int worldIndex = std::stoi(button.metaInfo);
                             World world = worldData[worldIndex];
-                            if (button.text == "equip") {
-                                terrain.setupWorld(worldIndex);
-                                std::cout << "Selected" << world.name << "\n";
-                            } else if (player.money >= world.cost) {
-                                std::cout << "Selected" << world.name << "\n";
-                                player.ownedWorlds.push_back(world.name);
-                                player.money -= world.cost;
-                                terrain.setupWorld(worldIndex);
-                            }
+//                            if (button.text == "equip") {
+//                                terrain.setupWorld(worldIndex);
+//                                std::cout << "Selected" << world.name << "\n";
+//                            } else if (player.money >= world.cost) {
+//                                std::cout << "Selected" << world.name << "\n";
+//                                player.ownedWorlds.push_back(world.name);
+//                                player.money -= world.cost;
+//                                terrain.setupWorld(worldIndex);
+//                            }
                             break;
                         }
                         case closeButton: {
                             gui.openMenu = "";
-                            gui.setVisibleButtons({teleport,sell,oresAndShop});
+                            gui.setVisibleButtons({menuToggles});
                             break;
                         }
                         case dialogueChoice: {
@@ -279,7 +281,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                 if (questCompleted) {
                                     player.currentQuest = questList[0];
                                     gui.inDialogue = false;
-                                    gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                    gui.setVisibleButtons({menuToggles,sell});
                                     player.money -= quest.moneyRequirement;
                                     for (auto &[block,blockCount]: quest.blockRequirements) {
                                         Block currentBlock = blockData[block];
@@ -292,10 +294,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             } else if (questNumber != "") {
                                 player.currentQuest = questList[std::stoi(questNumber)];
                                 gui.inDialogue = false;
-                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                gui.setVisibleButtons({menuToggles,sell});
                             }  else if (choice == "EXIT") {
                                 gui.inDialogue = false;
-                                gui.setVisibleButtons({teleport,oresAndShop,sell});
+                                gui.setVisibleButtons({menuToggles,sell});
                             }
                                 else {
                                 gui.dialogue.setDialogue(std::stoi(choice));
@@ -353,15 +355,14 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
            player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
        }
    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        int x = floor(player.coordinates.x);
-        int y = floor(-player.coordinates.y+1);
-        const Tile &tile = terrain.tiles[x+y*terrainWidth];
-        if (tile.textureIndex == 12) {
-            player.platformCollision = false;
-            std::cout << "Fallen through platform" << "\n";
-        }
-   }
+//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+//        int x = floor(player.coordinates.x);
+//        int y = floor(-player.coordinates.y+1);
+//        const Tile &tile = terrain.tiles[x+y*terrainWidth];
+//        if (tile.textureIndex == 12) {
+//            player.platformCollision = false;
+//        }
+//   }
     
     player.accelerate(terrain.getRawBlockIndices());
     

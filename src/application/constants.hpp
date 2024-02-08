@@ -21,23 +21,39 @@
 constexpr int terrainWidth = 20;
 constexpr int layerDepth = 20;
 
-constexpr int textureCount = 13.0f;
+constexpr int textureCount = 16.0f;
 constexpr float textureMultiplier = 1.0f/textureCount;
+
+enum sprites {
+    copper,
+    coal,
+    gold,
+    darkStone,
+    diamond,
+    dirt,
+    stone,
+    iron,
+    bedrock,
+    emerald,
+    sapphire,
+    ruby,
+    tnt,
+    chest,
+    playerSprite,
+    shopkeeperSprite
+};
+
 
 const std::vector<World> worldData {
     {
         "Surface Layer", //name
-        0, //cost
-        { // block costs
-            {1,1}
-        },
         {
             { //map of ore index to magnitude from center on height map to be generated
-                {0,0.05},
-                {1,0.085},
-                {2,0.095},
-                {4,0.105},
-                {7,0.145}
+                {stone,0.05},
+                {copper,0.085},
+                {iron,0.095},
+                {coal,0.105},
+                {tnt,0.145}
             },
             {
                 {0,0.05},
@@ -50,10 +66,6 @@ const std::vector<World> worldData {
     },
     {
         "Lower Surface", //name
-        0, //cost
-        { // block costs
-            {1,10}
-        },
         {
             { //map of ore index to magnitude from center on height map to be generated
                 {0,0.05},
@@ -74,16 +86,6 @@ const std::vector<World> worldData {
 };
 
 //level -1 means you can't mine it / it isn't collideable
-const std::vector<Block> blockData {
-    {0,"stone",1,1000,1},
-    {1,"copper",2,1500,5},
-    {2,"iron",2,1500,5},
-    {3,"dirt",-1,1000,0},
-    {4,"coal",2,1250,3},
-    {5,"gold",3,2000,10},
-    {6,"diamond",3,3000,50},
-    {7,"special",1,5000,0}
-};
 
 const std::vector<Pickaxe> pickaxeData {
     {"wooden",1,10,0},
@@ -175,7 +177,7 @@ enum colours {
 enum buttons {
     teleport,
     sell,
-    oresAndShop,
+    menuToggles,
     tabSelector,
     pickaxeEquip,
     backpackEquip,
@@ -184,6 +186,24 @@ enum buttons {
     closeButton,
     dialogueChoice,
     oreSell
+};
+
+
+const std::vector<Block> blockData {
+    {copper,"copper",2,1500,5},
+    {coal,"coal",2,1250,3},
+    {gold,"gold",3,2000,10},
+    {darkStone,"darkStone",5,4000,2},
+    {diamond,"diamond",5,4000,2},
+    {dirt,"dirt",-1,1000,0},
+    {stone,"stone",1,1000,1},
+    {iron,"iron",2,1500,5},
+    {bedrock,"bedrock",99,1500,0},
+    {emerald,"emerald",4,7500,100},
+    {sapphire,"sapphire",4,7500,100},
+    {ruby,"ruby",4,7500,2},
+    {tnt,"tnt",1,3500,1},
+    {chest,"chest",1,10000,0}
 };
 
 const std::vector<Vec4f> colourVector {

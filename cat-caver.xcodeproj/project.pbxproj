@@ -612,17 +612,15 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_PEDANTIC = NO;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/includes",
 					"${PROJECT_DIR}/src",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
-				OTHER_CFLAGS = (
-					"-Weverything",
-					"-Wall",
-					"-Wno-c++98-compat",
-				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-Wno-documentation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -637,17 +635,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_PEDANTIC = NO;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/includes",
 					"${PROJECT_DIR}/src",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
-				OTHER_CFLAGS = (
-					"-Weverything",
-					"-Wall",
-					"-Wno-c++98-compat",
-				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

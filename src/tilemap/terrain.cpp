@@ -87,7 +87,7 @@ std::vector<Block> Terrain::triggerExplosion(int x, int y) {
             const double squaredX = (x-currentX)*(x-currentX);
             const double squaredY = (y-currentY)*(y-currentY);
             const double dist = sqrt(squaredX+squaredY);
-            if (block.level != -1 && block.name != "special" && dist <= static_cast<double>(radius)) {
+            if (block.level != -1 && block.name != "tnt" && dist <= static_cast<double>(radius)) {
                 mineBlock(x+i, y+j);
                 minedBlocks.push_back(block);
             }
@@ -110,19 +110,23 @@ int Terrain::getRandomOre(int layer,int x,int y) const { //only works for sets w
     const double distanceFromCenter = abs(0.5-noise);
     
 //    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-//    std::cout << "Noise value: " << std::to_string(noise) << " distance from center: "  << std::to_string(distanceFromCenter) << "\n";
+//    std::cout << "Noise value: " << std::to_string(noise) << " deviation: "  << std::to_string(distanceFromCenter) << "\n";
         
-    for (auto &[ore,magnitude]:worldData[currentWorld].layerInfo[layer]) {
-//        std::cout << "total: " << magnitude << "\n";
+    for (auto &[magnitude,ore]:worldData[currentWorld].layerInfo[layer]) {
+//        std::cout << "Ore: " << ore << " Magnitude: " << magnitude << "\n";
         if (distanceFromCenter <= magnitude) {
+//            std::cout << "Deviation: " << distanceFromCenter  << " tile: " << ore << "\n";
             return ore;
         }
     }
-//    std::cout << "FAILED TO SELECT AN ORE" << "\n";
+    std::cout << "VALUE OUT OF RANGE" << "\n";
     return 0;
 }
 
 void Terrain::generateLayer(int depth) {
+    
+//    std::cout << "Current world: " << worldData[currentWorld].name << "\n";
+
     
     for (int y = 0; y < layerDepth; y++) {
         for (int x = 0; x < terrainWidth; x++ ) {
@@ -130,12 +134,13 @@ void Terrain::generateLayer(int depth) {
             if (borderTile) {
                 tiles.emplace_back(x,-height-y,bedrock);
             } else {
-                int layer = layerCount;
+                oreLayer = layerCount;
                 int lastLayer = static_cast<int>(worldData[currentWorld].layerInfo.size())-1;
                 if (layerCount > lastLayer) {
-                    layer = lastLayer;
+                    oreLayer = lastLayer;
                 }
-                int blockIndex = getRandomOre(layer,x,y);
+//                std::cout << "Current layer: " << layer << "\n";
+                int blockIndex = getRandomOre(oreLayer,x,y);
                 tiles.emplace_back(x,-height-y,blockIndex);
             }
         }

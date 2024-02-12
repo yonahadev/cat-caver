@@ -20,8 +20,8 @@
 class Terrain {
 private:
     void generateTerrain();
-    int getRandomOre(int layer,int x, int y) const;
 public:
+    int getRandomOre(int layer,int x, int y) const;
     std::vector<Vec2i> getNeighbours(int x, int y) const;
     void setupWorld(int worldIndex);
     VAO vao;
@@ -35,6 +35,7 @@ public:
     int height;
     int layerCount;
     int instanceCount;
+    int oreLayer;
     std::vector<Tile> tiles;
     std::vector<Block> triggerExplosion(int x,int y);
     std::vector<int> getRawBlockIndices() const;

@@ -23,6 +23,7 @@
 #include "dialogue.hpp"
 
 
+
 class GUI {
 private:
     VAO vao;
@@ -36,6 +37,10 @@ public:
     std::string errorMessage;
     int errorTimeSet;
     int errorDuration;
+    std::string rewardMessage;
+    int rewardTimeSet;
+    int rewardDuration;
+    std::unordered_map<Block,int> rewards;
     std::unordered_map<int,bool> visibleButtons;
     int getWidth(const std::string &string);
     void renderButton(const Button &button, Texture &texture, Shader &shader);

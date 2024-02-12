@@ -97,15 +97,35 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
         if (mouse.holding > blockHealth && mouse.backpackFull == false && mouse.validPickaxeLevel) {
             terrain.mineBlock(mouse.tileX, mouse.tileY);
             std::string blockName = block.name;
-            if (block.name != "tnt") {
-                player.blockCounts[block] += 1;
-                player.backpackCount += 1;
-            } else {
+            if (block.name == "tnt") {
                 std::vector<Block> minedBlocks = terrain.triggerExplosion(mouse.tileX, mouse.tileY);
                 for (auto &block: minedBlocks) {
                     player.blockCounts[block] += 1;
                     player.backpackCount += 1;
                 }
+            } else if (block.name == "chest") {
+                gui.rewards = {};
+                for (int i = 0; i < 5; i++) {
+                    int ore;
+                    while (true) {
+                        int randomOre = terrain.getRandomOre(terrain.oreLayer, i+getRandomInt(3, 10), i+getRandomInt(1, 9));
+                        if ( randomOre != chest && randomOre != tnt) {
+                            ore = randomOre;
+                            break;
+                        }
+                    }
+                    Block block = blockData[ore];
+                    player.blockCounts[block] += 1;
+                    player.backpackCount += 1;
+                    gui.rewards[block] += 1;
+                }
+                gui.rewardMessage = "Chest found";
+                gui.rewardTimeSet = glfwGetTime();
+                gui.rewardDuration = 3;
+                
+            } else {
+                player.blockCounts[block] += 1;
+                player.backpackCount += 1;
             }
             mouse.holding = 0;
             int depth = int(abs(floor(player.coordinates.y)));

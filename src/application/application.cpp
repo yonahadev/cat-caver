@@ -443,6 +443,23 @@ void runApplication() {
                 }
             }
             
+            if (gui.inDialogue == false && glfwGetTime() - gui.rewardTimeSet < gui.rewardDuration) {
+                int width = gui.getWidth(gui.rewardMessage);
+                int maxWidth = screenSize.x*(0.5);
+                if (width > maxWidth) {
+                    gui.renderText(gui.rewardMessage, screenSize.x*(0.25), screenSize.y*(0.4), texture, shader, white, true, screenSize.x*(0.5));
+                } else {
+                    gui.renderText(gui.rewardMessage, screenSize.x*(0.5)-width*(0.5), screenSize.y*(0.4), texture, shader, white, false, screenSize.x*(0.5));
+                }
+                int count = 1;
+                for (auto &[block,blockCount]: gui.rewards) {
+                    int y = screenSize.y*(0.4)-count*60;
+                    gui.renderQuad(screenSize.x*(0.25), y, 50, 50, texture, shader, white, true, block.textureIndex);
+                    gui.renderText(std::to_string(blockCount), screenSize.x*(0.25)+60,y, texture, shader, green, false, 0);
+                    count++;
+                }
+            }
+            
             if (gui.errorDuration != 0 && gui.inDialogue == false) {
                 if (glfwGetTime() - gui.errorTimeSet < gui.errorDuration) {
                     int width = gui.getWidth(gui.errorMessage);
@@ -466,7 +483,23 @@ void runApplication() {
 //            }
         if (gui.openMenu == "teleport") {
             gui.renderQuad(menuX, menuY, menuWidth, menuHeight, texture, shader, grey,false,1);
-            
+            gui.renderText("Teleport", menuX, menuHeight, texture, shader, white, -1, 0);
+            int count = 0;
+            for (const World &world: worldData) {
+                bool owned = false;
+                for (std::string &worldName: player.ownedWorlds){
+                    if (worldName == world.name) {
+                        owned = true;
+                    }
+                }
+                int textColour = red;
+                if (owned) {
+                    textColour = white;
+                }
+                gui.renderText(world.name, menuX+50+count*300, menuHeight-100, texture, shader, textColour, false, -1);
+                count++;
+            }
+ 
         } else if (gui.openMenu == "shop") {
             gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-50, texture, shader, green,false,-1);
             gui.renderQuad(menuX, menuY, menuWidth, menuHeight, texture, shader, blue,false,1);

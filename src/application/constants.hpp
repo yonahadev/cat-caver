@@ -49,38 +49,25 @@ const std::vector<World> worldData {
         "Surface Layer", //name
         {
             { //map of ore index to magnitude from center on height map to be generated
-                {stone,0.05},
-                {copper,0.085},
-                {iron,0.095},
-                {coal,0.105},
-                {tnt,0.145}
+                {0.05,stone},
+                {0.085,copper},
+                {0.095,iron},
+                {0.105,coal},
+                {0.145,tnt},
+                {0.155,chest}
             },
-            {
-                {0,0.05},
-                {4,0.08},
-                {5,0.11},
-                {6,0.115},
-                {7,0.135}
-            }
         }
     },
     {
         "Lower Surface", //name
         {
             { //map of ore index to magnitude from center on height map to be generated
-                {0,0.05},
-                {2,0.085},
-                {4,0.095},
-                {5,0.105},
-                {6,0.145}
+                {0.05,darkStone},
+                {0.085,gold},
+                {0.095,diamond},
+                {0.105,ruby},
+                {0.145,emerald}
             },
-            {
-                {0,0.03},
-                {4,0.08},
-                {6,0.11},
-                {2,0.115},
-                {7,0.135}
-            }
         }
     }
 };

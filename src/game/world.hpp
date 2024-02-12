@@ -14,7 +14,7 @@
 
 struct World {
     std::string name;
-    std::vector<std::map<int, double>> layerInfo;
+    std::vector<std::map<double, int>> layerInfo;
 };
 
 template<>

@@ -14,9 +14,138 @@
 #include "tile.hpp"
 #include "glad/glad.h"
 #include "constants.hpp"
+#include "customQueue.hpp"
+
+void Terrain::calculatePath(const Vec2i &startPoint, const Vec2i &endPoint) {
+    
+    
+    
+    path = {};
+    
+    CustomQueue unvisited = {};
+    CustomQueue visited = {};
+    
+    Vec2i startCoordinates = Vec2i(startPoint);
+    
+    Node startNode = {startCoordinates,startCoordinates,0,calculateDistance(startCoordinates,endPoint)};
+
+    unvisited.queue.push(startNode);
+    while (unvisited.queue.top().coordinates != endPoint) {
+        
+        Node currentNode = unvisited.queue.top();
+        
+        unvisited.queue.pop();
+        visited.queue.push(currentNode);
+        
+        std::vector<Vec2i> neighbours = getNeighbours(currentNode.coordinates.x,currentNode.coordinates.y);
+        
+    
+        for (Vec2i &neighbour: neighbours) {
+            
+            int tile = getTile(neighbour.x, neighbour.y);
+            
+//            std::cout << "Neighbour coordinates: " << neighbour.x  << "," << neighbour.y << " Tile: " << tile << "\n";
+            
+            Node neighbourNode = {neighbour,{0,0},0,calculateDistance(neighbour, endPoint)};
+            
+            Block block = blockData[tile];
+            
+            float nodeTravelCost = block.hp/1000; //gives a more reasonable value of seconds to mine
+            
+            if (unvisited.findValue(neighbour) && nodeTravelCost < neighbourNode.gCost) {
+                unvisited = unvisited.removeValue(neighbour);
+            }
+            if (visited.findValue(neighbour) && nodeTravelCost < neighbourNode.gCost) {
+                visited = visited.removeValue(neighbour);
+            }
+            if (unvisited.findValue(neighbour) == false && visited.findValue(neighbour) == false) {
+                neighbourNode.gCost = nodeTravelCost;
+                neighbourNode.parent = currentNode.coordinates;
+                unvisited.queue.push(neighbourNode);
+            }
+//            std::cout << "Node: " << std::string(neighbour.coordinates) << " Parent: " << std::string(neighbour.parent) << "\n";
+        }
+    }
+
+    //find path through going through parent pointers
+
+    Node currentNode = unvisited.queue.top();
+    std::cout << "x: " << currentNode.coordinates.x << " y: " << currentNode.coordinates.y << "\n";
+    while (currentNode.coordinates != startCoordinates) {
+        path.push_back(currentNode.coordinates);
+        currentNode = visited.returnValue(currentNode.parent);
+        std::cout << "x: " << currentNode.coordinates.x << " y: " << currentNode.coordinates.y << "\n";
+    }
+    
+
+}
+
+//std::vector<Node> Terrain::getNeighbourNodes(const Node &startNode, const Vec2i &endPoint) const {
+//    std::vector<Node> neighbourNodes;
+//    Vec2i startCoords = startNode.coordinates;
+//    std::vector <Vec2i> neighbours = getNeighbours(startCoords.x, startCoords.y);
+//    const Vec2i tempParent = {0,0};
+//    for (Vec2i &neighbour: neighbours) {
+//        if (getTile(neighbour.x,neighbour.y) == 1) {
+//            if (neighbour.x == startCoords.x || neighbour.y == startCoords.y) {
+//                Node newNode = {neighbour,0,calculateDistance(neighbour, endPoint),tempParent};
+//                neighbourNodes.push_back(newNode);
+//            } else {
+//                int left = 1;
+//                int right = 1;
+//                int up = 1;
+//                int down = 1;
+//                
+//                if (startCoords.x != 0) {
+//                    left = getTile(startCoords.x-1, startCoords.y);
+//                }
+//                
+//                if (startCoords.x != terrainWidth-1) {
+//                    right = getTile(startCoords.x+1, startCoords.y);
+//                }
+//                
+//                if (startCoords.y != height-1) {
+//                    up = getTile(startCoords.x, startCoords.y+1);
+//                }
+//                
+//                if (startCoords.y != 0) {
+//                    down = getTile(startCoords.x, startCoords.y-1);
+//                }
+//                
+//                if (neighbour.x == startCoords.x+1 && neighbour.y == startCoords.y+1) {
+//                    if (up == 1 && right == 1) {
+//                        Node newNode = {neighbour,0,calculateDistance(neighbour, endPoint),tempParent};
+//                        neighbourNodes.push_back(newNode);
+//                    }
+//                }
+//                if (neighbour.x == startCoords.x-1 && neighbour.y == startCoords.y+1) {
+//                    if (up == 1 && left == 1) {
+//                        Node newNode = {neighbour,0,calculateDistance(neighbour, endPoint),tempParent};
+//                        neighbourNodes.push_back(newNode);
+//                    }
+//                }
+//                if (neighbour.x == startCoords.x+1 && neighbour.y == startCoords.y-1) {
+//                    if (down == 1 && right == 1) {
+//                        Node newNode = {neighbour,0,calculateDistance(neighbour, endPoint),tempParent};
+//                        neighbourNodes.push_back(newNode);
+//                    }
+//                }
+//                if (neighbour.x == startCoords.x-1 && neighbour.y == startCoords.y-1) {
+//                    if (down == 1 && left == 1) {
+//                        Node newNode = {neighbour,0,calculateDistance(neighbour, endPoint),tempParent};
+//                        neighbourNodes.push_back(newNode);
+//                    }
+//                }
+//                
+//            }
+//        }
+//    }
+//    
+//    return neighbourNodes;
+//}
 
 
-std::vector<Vec2i> Terrain::getNeighbours(int x,int y) const {
+std::vector<Vec2i> Terrain::getNeighbours(int x,int y) const { //gets pairs of xy coordinates for valid neighbours in the tile map
     std::vector <Vec2i> neighbours = {};
     if (x > 1) {
         Vec2i left = {x-1,y};
@@ -67,7 +196,7 @@ int Terrain::getTile(int x,int y) const{
     return tiles[index].blockIndex;
 }
 
-int Terrain::getTileIndex(int x,int y) const{
+int Terrain::getTileIndex(int x,int y) const{ //uses the negative y values.
     return x+(-y*terrainWidth);
 }
 
@@ -87,7 +216,7 @@ std::vector<Block> Terrain::triggerExplosion(int x, int y) {
             const double squaredX = (x-currentX)*(x-currentX);
             const double squaredY = (y-currentY)*(y-currentY);
             const double dist = sqrt(squaredX+squaredY);
-            if (block.level != -1 && block.name != "tnt" && dist <= static_cast<double>(radius)) {
+            if (block.level != -1 && block.name != "tnt" && block.name != "chest" && dist <= static_cast<double>(radius)) {
                 mineBlock(x+i, y+j);
                 minedBlocks.push_back(block);
             }
@@ -119,7 +248,7 @@ int Terrain::getRandomOre(int layer,int x,int y) const { //only works for sets w
             return ore;
         }
     }
-    std::cout << "VALUE OUT OF RANGE" << "\n";
+//    std::cout << "VALUE OUT OF RANGE" << "\n"; //cases with magnitude greater than the largest provided in the range of ores
     return 0;
 }
 
@@ -151,6 +280,9 @@ void Terrain::generateLayer(int depth) {
     layerCount += 1;
 
     generateBuffer(depth);
+
+    
+    calculatePath({5,-12}, {15,-20});
 }
 
 void Terrain::generateBuffer(int depth) {
@@ -242,6 +374,24 @@ void Terrain::generateBuffer(int depth) {
     backgroundVBO.bindData(vertices);
     backgroundVAO.enableAttributes();
     
+    if (path.empty() == false) {
+        
+        std::cout << "generating path" << "\n";
+        
+        std::vector<Vertex> pathVertices;
+        
+        for (Vec2i &tile: path) {
+            generateQuad(tile.x, tile.y, chest, pathVertices);
+        }
+        
+        pathVAO.bindArray();
+        pathVBO.bindBuffer();
+        pathVBO.bindData(pathVertices);
+        pathVAO.enableAttributes();
+
+    }
+    
+    
 }
 
 void Terrain::setupWorld(int worldIndex) {
@@ -283,6 +433,8 @@ Terrain::Terrain(): layerCount(0),tiles(),currentWorld(0) {
     texelsVBO.genBuffer();
     backgroundVAO.genArrays();
     backgroundVBO.genBuffer();
+    pathVAO.genArrays();
+    pathVBO.genBuffer();
     
     vao.bindArray();
     vertexVBO.bindBuffer();

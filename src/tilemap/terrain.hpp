@@ -16,13 +16,17 @@
 #include "block.hpp"
 #include <map>
 #include "tile.hpp"
+#include "node.hpp"
 
 class Terrain {
 private:
     void generateTerrain();
 public:
+    std::vector<Vec2i> path;
     int getRandomOre(int layer,int x, int y) const;
     std::vector<Vec2i> getNeighbours(int x, int y) const;
+    std::vector<Node> getNeighbourNodes(const Node &startNode, const Vec2i &endPoint) const;
+    void calculatePath(const Vec2i &startPoint, const Vec2i &endPoint);
     void setupWorld(int worldIndex);
     VAO vao;
     VBO vertexVBO;
@@ -30,6 +34,8 @@ public:
     VBO texelsVBO;
     VAO backgroundVAO;
     VBO backgroundVBO;
+    VAO pathVAO;
+    VBO pathVBO;
     int currentWorld;
     int generatedDepth;
     int height;

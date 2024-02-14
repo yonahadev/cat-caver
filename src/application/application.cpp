@@ -132,6 +132,8 @@ void runApplication() {
     
     gui.setVisibleButtons({menuToggles});
     
+
+    
     
     while (!glfwWindowShouldClose(window.ptr)) {
     
@@ -298,10 +300,12 @@ void runApplication() {
         texture.setTexture("spritesheet");
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
         
+        
         terrain.backgroundVAO.bindArray();
         terrain.backgroundVBO.draw();
-  
+        
         terrainShader.bind();
+  
         
         terrainShader.loadUniform<Mat3>(orthoMatrix*player.matrix, "u_Transformation");
         
@@ -309,7 +313,19 @@ void runApplication() {
         
         glDrawArraysInstanced(GL_TRIANGLES,0,6,terrain.instanceCount);
         
+
+        
         shader.bind();
+        
+        if (terrain.path.empty() == false) {
+            shader.loadUniform<int>(false, "u_IsTexture");
+            shader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
+            terrain.pathVAO.bindArray();
+            terrain.pathVBO.draw();
+            shader.loadUniform<Vec4f>(colourVector[white], "u_QuadColour");
+            shader.loadUniform<int>(true, "u_IsTexture");
+            
+        }
         
         shader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
         shopkeeper.vao.bindArray();
@@ -402,26 +418,26 @@ void runApplication() {
                 interactionTriggered = true;
             }
             
-//            Quest quest = player.currentQuest;
-//            std::string questTitle = quest.title;
-//            int questTitleWidth = gui.getWidth(questTitle);
-//            gui.renderText("Current Quest:", screenSize.x-questTitleWidth-50, screenSize.y-150, texture, shader, white, false, 1);
-//            
-//            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
-//            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
-//            int multilineOffset = gui.renderText(quest.description, screenSize.x-questTitleWidth-50, screenSize.y-250, texture, shader, grey, true, questTitleWidth);
-//            count = 0;
-//            for (const auto &[ore,requirement]: quest.blockRequirements) {
-//                Block block = blockData[ore];
-//                gui.renderQuad(screenSize.x-questTitleWidth-50-55, screenSize.y-312-count-multilineOffset, 50, 50, texture, shader, white, true, ore);
-//                gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-300-count-multilineOffset, texture, shader,white,false,-1);
-//                count += 50;
-//            }
-//            if (player.money < quest.moneyRequirement) {
-//                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, red,false,-1);
-//            } else {
-//                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, green,false,-1);
-//            }
+            Quest quest = player.currentQuest;
+            std::string questTitle = quest.title;
+            int questTitleWidth = gui.getWidth(questTitle);
+            gui.renderText("Current Quest:", screenSize.x-questTitleWidth-50, screenSize.y-150, texture, shader, white, false, 1);
+            
+            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
+            gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, shader, white, false, 1);
+            int multilineOffset = gui.renderText(quest.description, screenSize.x-questTitleWidth-50, screenSize.y-250, texture, shader, grey, true, questTitleWidth);
+            count = 0;
+            for (const auto &[ore,requirement]: quest.blockRequirements) {
+                Block block = blockData[ore];
+                gui.renderQuad(screenSize.x-questTitleWidth-50-55, screenSize.y-312-count-multilineOffset, 50, 50, texture, shader, white, true, ore);
+                gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-300-count-multilineOffset, texture, shader,white,false,-1);
+                count += 50;
+            }
+            if (player.money < quest.moneyRequirement) {
+                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, red,false,-1);
+            } else {
+                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, shader, green,false,-1);
+            }
             
             gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,shader,white,false,-1);
             gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,shader,white,false,-1);
@@ -524,14 +540,16 @@ void runApplication() {
                 for (auto &[block,value]: player.blockCounts) {
                     int offset = count*50;
                     int xOffset = 0;
-                    gui.renderText(std::to_string(value), menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
-                    xOffset += 25;
-                    gui.renderQuad(menuX+xOffset, screenSize.y-100-offset, 25, 25, texture, shader, white, true, block.textureIndex);
-                    xOffset += 25;
-                    gui.renderText(block.name, menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
-                    xOffset += gui.getWidth(block.name) + 25;
-                    gui.renderText("$"+std::to_string(block.sellValue), menuX+25+xOffset, screenSize.y-100-offset, texture,shader,green,false,-1);
-                    count++;
+                    if (value > 0) {
+                        gui.renderText(std::to_string(value), menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
+                        xOffset += 25;
+                        gui.renderQuad(menuX+xOffset, screenSize.y-100-offset, 25, 25, texture, shader, white, true, block.textureIndex);
+                        xOffset += 25;
+                        gui.renderText(block.name, menuX+xOffset, screenSize.y-100-offset, texture,shader,white,false,-1);
+                        xOffset += gui.getWidth(block.name) + 25;
+                        gui.renderText("$"+std::to_string(block.sellValue), menuX+25+xOffset, screenSize.y-100-offset, texture,shader,green,false,-1);
+                        count++;
+                    }
                 }
             }
         }

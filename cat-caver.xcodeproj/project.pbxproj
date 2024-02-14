@@ -27,6 +27,7 @@
 		E262ABF32B1BBE9C002F988D /* terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF12B1BBE9B002F988D /* terrain.cpp */; };
 		E262ABF92B1BC059002F988D /* quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E262ABF72B1BC059002F988D /* quad.cpp */; };
 		E26B16592B2A094F00B2105B /* vertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E26B16572B2A094F00B2105B /* vertexArray.cpp */; };
+		E28602D82B7BBA800079A247 /* customQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E28602D72B7BBA800079A247 /* customQueue.cpp */; };
 		E2A1462F2B6BADBC0096024A /* dialogue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A1462A2B6BA23C0096024A /* dialogue.cpp */; };
 		E2A146302B6BADBC0096024A /* dialogueNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A1462C2B6BA31D0096024A /* dialogueNode.cpp */; };
 		E2A33FFF2B49DF0D004EA1E0 /* sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A33FFD2B49DF0D004EA1E0 /* sprite.cpp */; };
@@ -121,6 +122,9 @@
 		E279D2BD2B56CB7F005878B2 /* terrainFragmentShader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = terrainFragmentShader.glsl; sourceTree = "<group>"; };
 		E279D2F22B666C76005878B2 /* constants.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = constants.hpp; sourceTree = "<group>"; };
 		E279D2F52B694088005878B2 /* world.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = world.hpp; sourceTree = "<group>"; };
+		E28602D52B7BB94C0079A247 /* node.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = node.hpp; sourceTree = "<group>"; };
+		E28602D62B7BB94C0079A247 /* customQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = customQueue.hpp; sourceTree = "<group>"; };
+		E28602D72B7BBA800079A247 /* customQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = customQueue.cpp; sourceTree = "<group>"; };
 		E28CB4DA2B2F0B88009F09E1 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		E2A1462A2B6BA23C0096024A /* dialogue.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dialogue.cpp; sourceTree = "<group>"; };
 		E2A1462B2B6BA23C0096024A /* dialogue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dialogue.hpp; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				E262ABA22B1B6331002F988D /* main.cpp */,
+				E28602D42B7BB9360079A247 /* pathfinding */,
 				E2A1462E2B6BA4000096024A /* dialogue */,
 				E229AFB42B2F81C600BFBF60 /* gui */,
 				E275DADF2B2B8E5E00E2969D /* game */,
@@ -390,6 +395,16 @@
 			path = game;
 			sourceTree = "<group>";
 		};
+		E28602D42B7BB9360079A247 /* pathfinding */ = {
+			isa = PBXGroup;
+			children = (
+				E28602D62B7BB94C0079A247 /* customQueue.hpp */,
+				E28602D52B7BB94C0079A247 /* node.hpp */,
+				E28602D72B7BBA800079A247 /* customQueue.cpp */,
+			);
+			path = pathfinding;
+			sourceTree = "<group>";
+		};
 		E2A1462E2B6BA4000096024A /* dialogue */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,6 +496,7 @@
 				E262ABD92B1B6C07002F988D /* math.cpp in Sources */,
 				E225B0852B1C9E24003A5B17 /* glad.c in Sources */,
 				E2A340092B4EBB05004EA1E0 /* tile.cpp in Sources */,
+				E28602D82B7BBA800079A247 /* customQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

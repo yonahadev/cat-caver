@@ -375,14 +375,6 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
            player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
        }
    }
-//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-//        int x = floor(player.coordinates.x);
-//        int y = floor(-player.coordinates.y+1);
-//        const Tile &tile = terrain.tiles[x+y*terrainWidth];
-//        if (tile.textureIndex == 12) {
-//            player.platformCollision = false;
-//        }
-//   }
     
     player.accelerate(terrain.getRawBlockIndices());
     

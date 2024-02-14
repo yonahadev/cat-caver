@@ -29,6 +29,12 @@ int min(int number1,int number2) {
     }
 }
  
+float calculateDistance(const Vec2i &start,const Vec2i &end) {
+    int xDistance = start.x-end.x;
+    int yDistance = start.y-end.y;
+    return round(sqrt(pow(xDistance,2)+pow(yDistance, 2)));
+}
+
 int getHCF(int number1, int number2) {
     int HCF = 1;
     int currentNumber = 1;

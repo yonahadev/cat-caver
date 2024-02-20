@@ -43,7 +43,7 @@ public:
     std::unordered_map<Block,int> rewards;
     std::unordered_map<int,bool> visibleButtons;
     int getWidth(const std::string &string);
-    void renderButton(const Button &button, Texture &texture, Shader &shader);
+    void renderButton(const Button &button, Texture &texture, Shader &quadShader, Shader &textShader);
     void setVisibleButtons(const std::vector<int> &buttons);
     int renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth);
     void renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour, bool isTexture, int textureIndex);

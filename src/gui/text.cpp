@@ -74,7 +74,7 @@ std::vector<std::string> Text::generateMultiLineText(const std::string &string, 
 }
 
 void Text::generate(const std::string &string, int x, int y) {
-    std::vector<Vertex> vertices;
+    std::vector<float> vertices;
     
     TextData textData = generateCharacters(string, x, y);
     
@@ -86,8 +86,8 @@ void Text::generate(const std::string &string, int x, int y) {
     vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
-    vbo.bindData(vertices);
-    vao.enableAttributes();
+    vbo.bindData(vertices,4);
+    vao.enableAttributes(4);
     vao.unbindArray();
 }
 

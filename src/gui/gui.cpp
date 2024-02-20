@@ -7,31 +7,32 @@
 
 #include "gui.hpp"
 #include "quad.hpp"
-#include "vertex.hpp"
+
 #include "constants.hpp"
 #include <iostream>
 
-void GUI::renderButton(const Button &button, Texture &texture, Shader &shader) {
+void GUI::renderButton(const Button &button, Texture &texture, Shader &quadShader, Shader &textShader) {
     text.generate(button.text,button.x,button.y);
-    renderQuad(button.x,button.y,button.width,button.height, texture, shader, button.bgColour,false,1);
-    shader.loadUniform<int>(true, "u_IsTexture");
-    texture.setTexture("fontImg");
-    shader.loadUniform<Vec4f>(colourVector[button.textColour], "u_QuadColour");
-    text.draw();
+    renderQuad(button.x,button.y,button.width,button.height, texture, quadShader, button.bgColour,false,1);
+    texture.setTexture("fontImg",false);
+    textShader.loadUniform<Vec4f>(colourVector[button.textColour], "u_QuadColour");
+    renderText(button.text, button.x, button.y, texture, textShader, white, false, 0);
 }
 
 void GUI::renderQuad(int x, int y, int width, int height, Texture &texture, Shader &shader, int bgColour,bool isTexture, int textureIndex) {
-    std::vector<Vertex> vertices;
-    generateUIQuad(width, height, x, y, vertices,textureIndex);
+    std::vector<float> vertices;
+    generateUIQuad(width, height, x, y, vertices,textureIndex,isTexture);
     vao.genArrays();
     vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
-    vbo.bindData(vertices);
-    vao.enableAttributes();
-    shader.loadUniform<int>(isTexture, "u_IsTexture");
     if (isTexture) {
-        texture.setTexture("spritesheet");
+        vbo.bindData(vertices,5);
+        vao.enableAttributes(5);
+        texture.setTexture("spritesheet",true);
+    } else {
+        vbo.bindData(vertices,2);
+        vao.enableAttributes(2);
     }
     shader.loadUniform<Vec4f>(colourVector[bgColour], "u_QuadColour");
     vbo.draw();
@@ -53,8 +54,7 @@ void GUI::setVisibleButtons(const std::vector<int> &buttons) {
 }
 
 int GUI::renderText(const std::string &string, int x, int y, Texture &texture, Shader &shader,int colour, bool multiLine, int maxWidth) {
-    shader.loadUniform<int>(true, "u_IsTexture");
-    texture.setTexture("fontImg");
+    texture.setTexture("fontImg",false);
     shader.loadUniform<Vec4f>(colourVector[colour], "u_QuadColour");
     int count = 0;
     if (multiLine) {

@@ -21,28 +21,46 @@
 constexpr int terrainWidth = 20;
 constexpr int layerDepth = 20;
 
-constexpr int textureCount = 16.0f;
+constexpr int textureCount = 17.0f;
 constexpr float textureMultiplier = 1.0f/textureCount;
 
 enum sprites {
+    stone,
+    darkStone,
     copper,
+    iron,
+    dirt,
     coal,
     gold,
-    darkStone,
     diamond,
-    dirt,
-    stone,
-    iron,
     bedrock,
-    emerald,
     sapphire,
+    emerald,
     ruby,
+    searchBlock,
     tnt,
     chest,
     playerSprite,
-    shopkeeperSprite
+    shopkeeperSprite,
 };
 
+const std::vector<Block> blockData {
+    {stone,"stone",1,1000,1,false},
+    {darkStone,"darkStone",5,4000,2,false},
+    {copper,"copper",2,1500,5,false},
+    {iron,"iron",2,1500,5,false},
+    {dirt,"dirt",-1,1000,0,false},
+    {coal,"coal",2,1250,3,false},
+    {gold,"gold",3,2000,10,false},
+    {diamond,"diamond",5,4000,2,false},
+    {bedrock,"bedrock",99,1500,0,false},
+    {sapphire,"sapphire",4,7500,100,false},
+    {emerald,"emerald",4,7500,100,false},
+    {ruby,"ruby",4,7500,2,false},
+    {searchBlock,"searchBlock",1,5000,0,true},
+    {tnt,"tnt",1,3500,1,true},
+    {chest,"chest",1,10000,0,true}
+};
 
 const std::vector<World> worldData {
     {
@@ -54,7 +72,8 @@ const std::vector<World> worldData {
                 {0.095,iron},
                 {0.105,coal},
                 {0.145,tnt},
-                {0.155,chest}
+                {0.155,chest},
+                {0.165,searchBlock}
             },
         }
     },
@@ -82,7 +101,7 @@ const std::vector<Pickaxe> pickaxeData {
 };
 
 const std::vector<Backpack> backpackData {
-    {"pockets",3,0},
+    {"pockets",500,0},
     {"sack",15,0},
     {"crate",35,250},
     {"fat sack", 75, 500}
@@ -176,22 +195,7 @@ enum buttons {
 };
 
 
-const std::vector<Block> blockData {
-    {copper,"copper",2,1500,5},
-    {coal,"coal",2,1250,3},
-    {gold,"gold",3,2000,10},
-    {darkStone,"darkStone",5,4000,2},
-    {diamond,"diamond",5,4000,2},
-    {dirt,"dirt",-1,1000,0},
-    {stone,"stone",1,1000,1},
-    {iron,"iron",2,1500,5},
-    {bedrock,"bedrock",99,1500,0},
-    {emerald,"emerald",4,7500,100},
-    {sapphire,"sapphire",4,7500,100},
-    {ruby,"ruby",4,7500,2},
-    {tnt,"tnt",1,3500,1},
-    {chest,"chest",1,10000,0}
-};
+
 
 const std::vector<Vec4f> colourVector {
     {1.0f,1.0f,1.0f,1.0f},

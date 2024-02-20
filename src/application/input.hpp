@@ -16,7 +16,7 @@
 #include "vec2.hpp"
 #include "vec2.hpp"
 #include "terrain.hpp"
-#include "vertex.hpp"
+
 #include "mouse.hpp"
 #include "button.hpp"
 #include "backpack.hpp"

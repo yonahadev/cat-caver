@@ -16,23 +16,23 @@ void Mouse::generateBuffer() {
         float startX = tileX+reverse;
         float startY = tileY+reverse;
 
-        std::vector<Vertex> vertices;
-        generateUIQuad(mined,mined,startX,startY,vertices,1);
+        std::vector<float> vertices;
+        generateUIQuad(mined,mined,startX,startY,vertices,1,false);
         
         vao.bindArray();
         vbo.bindBuffer();
-        vbo.bindData(vertices);
-        vao.enableAttributes();
+        vbo.bindData(vertices,2);
+        vao.enableAttributes(2);
         vao.unbindArray();
     } else {
         bool isMineable = blockData[currentTile].level != -1 && blockData[currentTile].level != 99;
         if (currentTile != -1 && isMineable ) {
-            std::vector<Vertex> vertices;
-            generateQuad(tileX,tileY,4,vertices);
+            std::vector<float> vertices;
+            generateQuad(tileX,tileY,4,vertices,false);
             vao.bindArray();
             vbo.bindBuffer();
-            vbo.bindData(vertices);
-            vao.enableAttributes();
+            vbo.bindData(vertices,2);
+            vao.enableAttributes(2);
             vao.unbindArray();
         } else {
             vbo.verticesCount = 0;

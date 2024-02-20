@@ -19,6 +19,7 @@ struct Block {
     int level;
     int hp;
     int sellValue;
+    bool isSpecial;
     
     bool operator==(const Block &other) const = default; //c++20 equality operator for structs
     

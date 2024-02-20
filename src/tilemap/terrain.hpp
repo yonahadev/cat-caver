@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include <vector>
-#include "vertex.hpp"
 #include "vertexBuffer.hpp"
 #include "vertexArray.hpp"
 #include "vec2.hpp"
@@ -24,10 +23,10 @@ private:
 public:
     std::vector<Vec2i> path;
     int getRandomOre(int layer,int x, int y) const;
-    std::vector<Vec2i> getNeighbours(int x, int y) const;
-    std::vector<Node> getNeighbourNodes(const Node &startNode, const Vec2i &endPoint) const;
+    std::vector<Vec2i> getNeighbours(int x, int y,bool includesDiagonals) const;
     void calculatePath(const Vec2i &startPoint, const Vec2i &endPoint);
     void setupWorld(int worldIndex);
+    Vec2i getClosestTile(int Tile,int x, int y);
     VAO vao;
     VBO vertexVBO;
     VBO matrixVBO;

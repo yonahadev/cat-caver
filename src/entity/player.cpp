@@ -7,7 +7,7 @@
 
 #include "player.hpp"
 #include <iostream>
-#include "vertex.hpp"
+
 #include "quad.hpp"
 #include <string>
 #include "constants.hpp"

@@ -2,11 +2,11 @@
 
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in mat3 instanceMatrix;
-layout (location = 4) in vec2 texels;
+layout (location = 4) in vec3 texels;
 
 uniform mat3 u_Transformation;
 
-out vec2 v_TexCoords;
+out vec3 v_TexCoords;
 
 void main() {
     vec2 texCoords;
@@ -33,5 +33,5 @@ void main() {
 
     vec3 prePosition = u_Transformation * instanceMatrix * vec3(aPos.x, aPos.y, 1.0);
     gl_Position = vec4(prePosition.x, prePosition.y, 0.0, 1.0);
-    v_TexCoords = texCoords;
+    v_TexCoords = vec3(texCoords.x,texCoords.y,texels.z);
 }

@@ -11,7 +11,7 @@
 #include <iostream>
 #include "mat3.hpp"
 #include "math.hpp"
-#include "vertex.hpp"
+
 #include <sstream>
 #include <vector>
 #include "quad.hpp"
@@ -56,7 +56,7 @@ void handleMouseMove(GLFWwindow* window,const Vec2i &screenSize,const Vec2i &asp
     int playerX = round(player.coordinates.x);
     int playerY = round(player.coordinates.y);
     
-    std::vector<Vec2i> neighbours = terrain.getNeighbours(playerX, playerY);
+    std::vector<Vec2i> neighbours = terrain.getNeighbours(playerX,playerY,true);
     
     bool isMineable = false;
     for (Vec2i &block: neighbours) {
@@ -109,7 +109,8 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
                     int ore;
                     while (true) {
                         int randomOre = terrain.getRandomOre(terrain.oreLayer, i+getRandomInt(3, 10), i+getRandomInt(1, 9));
-                        if ( randomOre != chest && randomOre != tnt) {
+                        Block block = blockData[randomOre];
+                        if (block.isSpecial == false) {
                             ore = randomOre;
                             break;
                         }
@@ -123,6 +124,8 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
                 gui.rewardTimeSet = glfwGetTime();
                 gui.rewardDuration = 3;
                 
+            } else if (block.name == "searchBlock") {
+                terrain.getClosestTile(chest, mouse.tileX, mouse.tileY);
             } else {
                 player.blockCounts[block] += 1;
                 player.backpackCount += 1;

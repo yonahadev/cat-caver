@@ -7,7 +7,7 @@
 
 #include "sprite.hpp"
 #include <iostream>
-#include "vertex.hpp"
+
 #include "quad.hpp"
 #include <string>
 
@@ -134,14 +134,14 @@ void Sprite::update(const std::vector<int> &blockIndices,float xPos,float yPos) 
 }
 
 void Sprite::generateGLQuad() {
-    std::vector<Vertex> vertices;
-    generateQuad(0, 0, textureIndex, vertices);
+    std::vector<float> vertices;
+    generateQuad(0, 0, textureIndex, vertices, true);
     vao.genArrays();
     vbo.genBuffer();
     vao.bindArray();
     vbo.bindBuffer();
-    vao.enableAttributes();
-    vbo.bindData(vertices);
+    vbo.bindData(vertices,5);
+    vao.enableAttributes(5);
     vao.unbindArray();
 }
 

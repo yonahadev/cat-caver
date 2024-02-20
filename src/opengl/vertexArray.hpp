@@ -16,7 +16,7 @@ private:
 public:
     void bindArray() const;
     void unbindArray() const;
-    void enableAttributes() const;
+    void enableAttributes(int texelsCount) const;
     void genArrays();
     VAO();
     ~VAO();

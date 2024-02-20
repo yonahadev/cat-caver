@@ -18,11 +18,14 @@ void VAO::unbindArray() const {
 }
 
 
-void VAO::enableAttributes() const {
+void VAO::enableAttributes(int floatsPerVertex) const {
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, 4 * sizeof(float), static_cast<void*>(nullptr));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE, 4 * sizeof(float), reinterpret_cast<void*>(2 * sizeof(float)));
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, floatsPerVertex * sizeof(float), static_cast<void*>(nullptr));
+    if (floatsPerVertex > 2) {
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1,floatsPerVertex-2,GL_FLOAT,GL_FALSE, floatsPerVertex * sizeof(float), reinterpret_cast<void*>(2 * sizeof(float)));
+        
+    }
 }
 
 void VAO::genArrays() {

@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include <vector>
-#include "vertex.hpp"
 
 class VBO {
 private:
@@ -19,7 +18,7 @@ public:
     int verticesCount;
     void bindBuffer() const;
     void unbindBuffer() const ;
-    void bindData(const std::vector<Vertex> &vertices);
+    void bindData(const std::vector<float> &vertices, int floatsPerVertex);
     void genBuffer();
     void draw() const;
     VBO();

@@ -9,55 +9,96 @@
 #include <iostream>
 #include "constants.hpp"
 
-void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<Vertex> &vertices) {
-        float textureEnd = (textureIndex+1) * textureMultiplier;
-        float textureStart = textureIndex * textureMultiplier;
-    
+void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<float> &vertices, bool isTexture) {
 
-        vertices.emplace_back(0.0f+offsetX,0.0f+offsetY,          textureStart,0.0f);
-        vertices.emplace_back(1.0f+offsetX,0.0f+offsetY,         textureEnd,0.0f);
-        vertices.emplace_back(1.0f+offsetX,1.0f+offsetY,        textureEnd,1.0f);
-        
-        vertices.emplace_back(0.0f+offsetX,0.0f+offsetY,          textureStart,0.0f);
-        vertices.emplace_back(1.0f+offsetX,1.0f+offsetY,        textureEnd,1.0f);
-        vertices.emplace_back(0.0f+offsetX,1.0f+offsetY,         textureStart,1.0f); 
     
+    float texture = static_cast<float>(textureIndex);
+
+    std::vector<float> bottomLeft;
+    std::vector<float> bottomRight;
+    std::vector<float> topRight;
+    std::vector<float> topLeft;
+
+    if (isTexture) {
+        bottomLeft = {0.0f+offsetX,0.0f+offsetY,          0.0f,0.0f,texture};
+        bottomRight = {1.0f+offsetX,0.0f+offsetY,         1.0f,0.0f,texture};
+        topRight = {1.0f+offsetX,1.0f+offsetY,        1.0f,1.0f,texture};
+        topLeft = {0.0f+offsetX,1.0f+offsetY,         0.0f,1.0f,texture};
+    } else {
+        bottomLeft = {0.0f+offsetX,0.0f+offsetY};
+        bottomRight = {1.0f+offsetX,0.0f+offsetY};
+        topRight = {1.0f+offsetX,1.0f+offsetY};
+        topLeft = {0.0f+offsetX,1.0f+offsetY};
+    }
+    
+    
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), bottomRight.begin(),bottomRight.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+    
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+    vertices.insert(vertices.end(), topLeft.begin(),topLeft.end());
 }
 
-void generateTextQuad(const Character &ch, std::vector<Vertex> &vertices) {
+void generateTextQuad(const Character &ch, std::vector<float> &vertices) {
     float endX = (ch.x+ch.width)/199.0f;
     float startX = ch.x/199.0f;
     float endY = 1-(ch.y/199.0f);
     float startY = 1-((ch.y+ch.height)/199.0f);
-//    std::cout << "endx: " <<  endX  << " startX: "<< startX << " endY: " << endY << " startY: "  << startY << "\n";
     
     float posX = 0.0f + ch.xOffset;
     float endPosX = posX + ch.width;
     float posY = 0.0f + ch.yOffset;
     float endPosY = posY + ch.height;
     
-        vertices.emplace_back(posX,posY,          startX,startY);
-        vertices.emplace_back(endPosX,posY,         endX,startY);
-        vertices.emplace_back(endPosX,endPosY,        endX,endY);
-        vertices.emplace_back(posX,posY,          startX,startY);
-        vertices.emplace_back(endPosX,endPosY,        endX,endY);
-        vertices.emplace_back(posX,endPosY,         startX,endY);
+    std::vector<float> bottomLeft {posX,posY,          startX,startY};
+    std::vector<float> bottomRight {endPosX,posY,        endX,startY};
+    std::vector<float> topRight {endPosX,endPosY,       endX,endY};
+    std::vector<float> topLeft {posX,endPosY,           startX,endY};
+
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), bottomRight.begin(),bottomRight.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+    
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+    vertices.insert(vertices.end(), topLeft.begin(),topLeft.end());
 }
 
-void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<Vertex> &vertices, int textureIndex) {
-    
-    float textureEnd = (textureIndex+1) * textureMultiplier;
-    float textureStart = textureIndex * textureMultiplier;
+void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<float> &vertices, int textureIndex, bool isTexture) {
     
     float posX = 0.0f + offsetX;
     float endPosX = posX + width;
     float posY = 0.0f + offsetY;
     float endPosY = posY + height;
     
-        vertices.emplace_back(posX,posY,          textureStart,0.0f);
-        vertices.emplace_back(endPosX,posY,         textureEnd,0.0f);
-        vertices.emplace_back(endPosX,endPosY,        textureEnd,1.0f);
-        vertices.emplace_back(posX,posY,          textureStart,0.0f);
-        vertices.emplace_back(endPosX,endPosY,        textureEnd,1.0f);
-        vertices.emplace_back(posX,endPosY,         textureStart,1.0f);
+    float texture = static_cast<float>(textureIndex);
+    
+    std::vector<float> bottomLeft;
+    std::vector<float> bottomRight;
+    std::vector<float> topRight;
+    std::vector<float> topLeft;
+    
+    if (isTexture) {
+        bottomLeft = {posX,posY,          0.0f,0.0f,texture};
+        bottomRight = {endPosX,posY,        1.0f,0.0f,texture};
+        topRight = {endPosX,endPosY,       1.0f,1.0f,texture};
+        topLeft = {posX,endPosY,           0.0f,1.0f,texture};
+    } else {
+        std::cout << "Generating non textured ui quad" << "\n";
+        bottomLeft = {posX,posY};
+        bottomRight = {endPosX,posY};
+        topRight = {endPosX,endPosY};
+        topLeft = {posX,endPosY};
+
+    }
+    
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), bottomRight.begin(),bottomRight.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+     
+    vertices.insert(vertices.end(), bottomLeft.begin(),bottomLeft.end());
+    vertices.insert(vertices.end(), topRight.begin(),topRight.end());
+    vertices.insert(vertices.end(), topLeft.begin(),topLeft.end());
 }

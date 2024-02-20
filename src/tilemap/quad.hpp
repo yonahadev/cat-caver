@@ -8,13 +8,12 @@
 #ifndef quad_hpp
 #define quad_hpp
 
-#include "vertex.hpp"
 #include <vector>
 #include "character.hpp"
 
-void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<Vertex> &vertices);
-void generateTextQuad(const Character &currentChar, std::vector<Vertex> &vertices);
-void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<Vertex> &vertices, int textureIndex);
+void generateQuad(int offsetX,int offsetY, int textureIndex, std::vector<float> &vertices, bool isTexture);
+void generateTextQuad(const Character &currentChar, std::vector<float> &vertices);
+void generateUIQuad(float width, float height, float offsetX, float offsetY, std::vector<float> &vertices, int textureIndex, bool isTexture);
 
 #include <stdio.h>
 

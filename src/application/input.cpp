@@ -348,39 +348,21 @@ void handleKeyPress(GLFWwindow *window, Player &player, const Terrain &terrain, 
     
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
        player.moveSprite(-moveSpeed,0,terrain.getRawBlockIndices());
-        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            float currentTime = glfwGetTime();
-            if (currentTime - time > jumpDelay ) {
-                player.jump();
-                time = currentTime;
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
+    }
+    
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        float currentTime = glfwGetTime();
+        if (currentTime - time > jumpDelay ) {
+            if (player.airborne == 0) {
+                player.airborne += 80;
             }
+            time = currentTime;
         }
-   } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-       player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
-       if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-           float currentTime = glfwGetTime();
-           if (currentTime - time > jumpDelay ) {
-               player.jump();
-               time = currentTime;
-           }
-       }
-   } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-       float currentTime = glfwGetTime();
-       if (currentTime - time > jumpDelay ) {
-           player.jump();
-           time = currentTime;
-       }
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-           player.moveSprite(-moveSpeed,0,terrain.getRawBlockIndices());
-            
-            
-       } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-           player.moveSprite(moveSpeed,0,terrain.getRawBlockIndices());
-       }
-   }
-    
+    }
+
     player.accelerate(terrain.getRawBlockIndices());
-    
     player.collisions = {};
 }
         

@@ -9,15 +9,15 @@
 
 Tile::Tile(int x, int y, int textureIndex): Sprite(x, y, textureIndex), blockIndex(textureIndex) {}
 
-void Tile::checkCollisions(const std::vector<int> &blockIndices) {
+void Tile::checkCollisions(const std::vector<int> &blockIndices,const Hitbox &hitbox) {
     
     const int x = std::floor(coordinates.x);
     
     
-    for (int y = (std::floor(hitboxBottom)); y <= (std::floor(hitboxTop)); y++ ) {
+    for (int y = (std::floor(hitbox.bottom)); y <= (std::floor(hitbox.top)); y++ ) {
             int currentTile = blockIndices[x+(-y*terrainWidth)];
                 if (y < coordinates.y && currentTile != dirt) {
-                    collisions.push_back("bottom");
+                    collisions.bottom = true;
                 }
     }
 

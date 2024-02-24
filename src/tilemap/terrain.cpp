@@ -271,7 +271,7 @@ void Terrain::generateLayer(int depth) {
     generateBuffer(depth);
 
     
-    calculatePath({5,-12}, {15,-20});
+//    calculatePath({5,-12}, {15,-20});
 }
 
 void Terrain::generateBuffer(int depth) {
@@ -363,7 +363,6 @@ void Terrain::generateBuffer(int depth) {
             count++;
         }
     }
-    std::cout << "Background vertex count: " << count*6 << "\n";
     
     backgroundVAO.bindArray();
     backgroundVBO.bindBuffer();

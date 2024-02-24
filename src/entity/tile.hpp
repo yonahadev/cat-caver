@@ -17,7 +17,7 @@ public:
     int blockIndex;
     bool falling = false;
     Tile(int x,int y, int textureIndex);
-    void checkCollisions(const std::vector<int> &blockIndices) override;
+    void checkCollisions(const std::vector<int> &blockIndices, const Hitbox &hitbox) override;
 };
 
 #endif /* Tile_hpp */

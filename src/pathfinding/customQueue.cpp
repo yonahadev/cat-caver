@@ -37,7 +37,7 @@ Node CustomQueue::returnValue(const Vec2i &coordinates) const {
 void CustomQueue::printValues() const {
     std::priority_queue<Node> tempQueue = queue;
     while (tempQueue.empty() == false) {
-        std::cout << tempQueue.top().coordinates.x << "," << tempQueue.top().coordinates.y << "\n";
+//        std::cout << tempQueue.top().coordinates.x << "," << tempQueue.top().coordinates.y << "\n";
         tempQueue.pop();
     }
 }

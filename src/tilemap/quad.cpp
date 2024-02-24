@@ -86,7 +86,6 @@ void generateUIQuad(float width, float height, float offsetX, float offsetY, std
         topRight = {endPosX,endPosY,       1.0f,1.0f,texture};
         topLeft = {posX,endPosY,           0.0f,1.0f,texture};
     } else {
-        std::cout << "Generating non textured ui quad" << "\n";
         bottomLeft = {posX,posY};
         bottomRight = {endPosX,posY};
         topRight = {endPosX,endPosY};

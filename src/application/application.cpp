@@ -146,37 +146,26 @@ void runApplication() {
         
         bool terrainUpdated = false;
         
-        for (Tile &tile: terrain.tiles) {
-            
-            bool correctIndex = tile.blockIndex == coal;
-            bool inTerrain = tile.coordinates.y != 0 && tile.coordinates.x != 0 && tile.coordinates.x != terrainWidth -1;
-            
-            if (correctIndex && inTerrain) {
-                
-                tile.accelerate(terrain.getRawBlockIndices());
-                tile.collisions = {};
-//                terrainUpdated = tile.collisions.empty();
-                
-                if (tile.airborne < -20) {
-                    tile.falling = true;
-                }
-                
-                
-                if (tile.falling) {
-                    int x = std::floor(tile.coordinates.x);
-                    int y = std::floor(tile.coordinates.y);
-                    if (tile.airborne == 0.0f) {
-                        tile.falling = false;
-//                        std::cout << "tile stopped falling: " << x << "," << y << "\n";
-                        terrain.tiles[x+(-y*terrainWidth)] = Tile(x,y,tile.blockIndex);
-                        terrain.tiles[x+((-y-1)*terrainWidth)] = Tile(x,y+1,dirt);
-                    } else {
-//                        std::cout << "falling block: " << x << "," << y << "\n";
-                    }
-
-                }//using value greater than the -2.5 subtraced per frame to check for actually falling tiles
-            }
-        }
+//        for (Tile &tile: terrain.tiles) {
+//            
+//            if (tile.blockIndex == coal) {
+//                
+//                tile.accelerate(terrain.getRawBlockIndices());
+//                if (tile.airborne < 0) {
+//                    tile.falling = true;
+//                    terrainUpdated = true;
+//                    std::cout << "Tile falling" << "\n";
+//                }
+//                int x = std::floor(tile.coordinates.x);
+//                int y = std::floor(tile.coordinates.y);
+//                if (tile.collisions[bottom] == true && tile.falling) {
+//                    tile.falling = false;
+//                    terrain.tiles[x+(-y*terrainWidth)] = Tile(x,y,tile.blockIndex);
+//                    terrain.tiles[x+((-y-1)*terrainWidth)] = Tile(x,y+1,dirt);
+//                }
+//
+//            }
+//        }
         
         
         const int depth = int(abs(floor(player.coordinates.y)));
@@ -300,13 +289,16 @@ void runApplication() {
             count++;
         }
 
-        
-
+        Mat3 invertedMatrix = {
+            1.0f,0.0f,-player.matrix.matrix_Array[2],
+            0.0f,1.0f,-player.matrix.matrix_Array[5],
+            0.0f,0.0f,1.0f
+        };
         
         texture.setTexture("spritesheet",true);
         
         spriteShader.bind();
-        spriteShader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
+        spriteShader.loadUniform<Mat3>(orthoMatrix*invertedMatrix,"u_Transformation");
         
         terrain.backgroundVAO.bindArray();
         
@@ -315,16 +307,15 @@ void runApplication() {
         terrainShader.bind();
   
         
-        terrainShader.loadUniform<Mat3>(orthoMatrix*player.matrix, "u_Transformation");
+        terrainShader.loadUniform<Mat3>(orthoMatrix*invertedMatrix, "u_Transformation");
         
         terrain.vao.bindArray();
         
         glDrawArraysInstanced(GL_TRIANGLES,0,6,terrain.instanceCount);
         
 
-        
         quadShader.bind();
-        quadShader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
+        quadShader.loadUniform<Mat3>(orthoMatrix*invertedMatrix,"u_Transformation");
         
         if (terrain.path.empty() == false) {
             quadShader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
@@ -334,7 +325,7 @@ void runApplication() {
         }
         
         spriteShader.bind();
-        spriteShader.loadUniform<Mat3>(orthoMatrix*player.matrix*shopkeeper.matrix,"u_Transformation");
+        spriteShader.loadUniform<Mat3>(orthoMatrix*invertedMatrix*shopkeeper.matrix,"u_Transformation");
         shopkeeper.vao.bindArray();
         shopkeeper.vbo.draw();
         shopkeeper.accelerate(terrain.getRawBlockIndices());
@@ -348,7 +339,7 @@ void runApplication() {
         
         mouse.generateBuffer();
         if (mouse.vbo.verticesCount > 0) {
-            quadShader.loadUniform<Mat3>(orthoMatrix*player.matrix,"u_Transformation");
+            quadShader.loadUniform<Mat3>(orthoMatrix*invertedMatrix,"u_Transformation");
             quadShader.loadUniform<int>(false, "u_IsTexture");
             if (mouse.backpackFull && mouse.holding > 0) {
                 quadShader.loadUniform<Vec4f>(colourVector[red], "u_QuadColour");
@@ -423,8 +414,6 @@ void runApplication() {
             
             const bool validMouse = mouse.tileX == shopkeeperX  && mouse.tileY == shopkeeperY;
             
-            std::cout << shopkeeper.coordinates.x << "," << shopkeeper.coordinates.y << "\n";
-            std::cout << mouse.tileX << "," << mouse.tileY << "\n";
             
             
             if (mousePressed && validMouse && validPosition && gui.inDialogue == false) {

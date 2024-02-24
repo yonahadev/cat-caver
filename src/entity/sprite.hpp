@@ -18,35 +18,38 @@
 #include <unordered_map>
 #include "constants.hpp"
 
-class Sprite {  
+struct Hitbox {
+    float left;
+    float right;
+    float top;
+    float bottom;
+};
+
+struct Collisions {
+    bool left;
+    bool right;
+    bool top;
+    bool bottom;
+};
+
+class Sprite {
 public:
-    float hitboxLeft;
-    float hitboxRight;
-    float hitboxTop;
-    float hitboxBottom;
+    Hitbox hitbox;
+    Collisions collisions;
     float airborne = 0;
-    void adjustHitbox();
     int textureIndex;
     bool collisionsOn;
     Mat3 matrix;
     Vec2f coordinates;
     VBO vbo;
     VAO vao;
-    bool falling = false;
-    bool platformCollision = true;
-    std::vector<std::string> collisions;
+    Hitbox calculateHitbox(const Vec2f &coordinates);
     void generateGLQuad();
     void teleport(float x, float y,const std::vector<int> &blockIndices);
-    void update(const std::vector<int> &blockIndices,float xPos,float yPos);
-    bool getCollision(const std::string &search) const;
-    virtual void checkCollisions(const std::vector<int> &blockIndices);
-    void getCoordinates() const;
-    void getHitbox() const;
-    void getMatrix() const;
-    void jump();
+    virtual void checkCollisions(const std::vector<int> &blockIndices,const Hitbox &hitbox);
     bool accelerate(const std::vector<int> &blockIndices);
     void move(float x,float y);
-    virtual void moveSprite(float x,float y, const std::vector<int> &blockIndices);
+    void moveSprite(float x,float y, const std::vector<int> &blockIndices);
     Sprite(float offsetX,float offsetY, int textureIndex);
 };
 

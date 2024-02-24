@@ -94,7 +94,7 @@ const std::vector<World> worldData {
 //level -1 means you can't mine it / it isn't collideable
 
 const std::vector<Pickaxe> pickaxeData {
-    {"wooden",1,10,0},
+    {"wooden",10,10,0},
     {"Shovel",2,3,1},
     {"bare hands",3,5,275},
     {"Fork",3,8,500}

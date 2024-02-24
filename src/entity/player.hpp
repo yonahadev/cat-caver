@@ -34,7 +34,6 @@ public:
     int money;
     int backpackCount;
     std::vector<Vec2i> neighbours;
-    void moveSprite(float x,float y, const std::vector<int> &blockIndices) override;
     Player(float offsetX,float offsetY,int texIndex);
 };
 

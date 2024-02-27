@@ -49,7 +49,7 @@ const std::vector<Block> blockData {
     {darkStone,"darkStone",5,4000,2,false},
     {copper,"copper",2,1500,5,false},
     {iron,"iron",2,1500,5,false},
-    {dirt,"dirt",-1,1000,0,false},
+    {dirt,"dirt",-1,100,0,false},
     {coal,"coal",2,1250,3,false},
     {gold,"gold",3,2000,10,false},
     {diamond,"diamond",5,4000,2,false},

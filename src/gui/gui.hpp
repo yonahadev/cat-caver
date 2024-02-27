@@ -40,6 +40,9 @@ public:
     std::string rewardMessage;
     int rewardTimeSet;
     int rewardDuration;
+    std::string powerupMessage;
+    int powerupTimeSet;
+    int powerupDuration;
     std::unordered_map<Block,int> rewards;
     std::unordered_map<int,bool> visibleButtons;
     int getWidth(const std::string &string);

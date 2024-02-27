@@ -123,9 +123,16 @@ void handleMining(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &pla
                 gui.rewardMessage = "Chest found";
                 gui.rewardTimeSet = glfwGetTime();
                 gui.rewardDuration = 3;
+                Vec2i mouseCoordinates = {mouse.tileX,mouse.tileY};
+                if (mouseCoordinates == terrain.selectedChest) {
+                    gui.powerupDuration = 0;
+                }
                 
             } else if (block.name == "searchBlock") {
-                terrain.getClosestTile(chest, mouse.tileX, mouse.tileY);
+                terrain.selectedChest = terrain.getClosestTile(chest, mouse.tileX, mouse.tileY);
+                gui.powerupMessage = "Showing path to a chest";
+                gui.powerupDuration = 15;
+                gui.powerupTimeSet = glfwGetTime();
             } else {
                 player.blockCounts[block] += 1;
                 player.backpackCount += 1;

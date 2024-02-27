@@ -27,6 +27,7 @@ public:
     void calculatePath(const Vec2i &startPoint, const Vec2i &endPoint);
     void setupWorld(int worldIndex);
     Vec2i getClosestTile(int Tile,int x, int y);
+    Vec2i selectedChest;
     VAO vao;
     VBO vertexVBO;
     VBO matrixVBO;
@@ -48,6 +49,7 @@ public:
     int getTileIndex(int x,int y) const;
     void mineBlock(int x,int y);
     void generateBuffer(int depth);
+    void generatePathBuffer();
     void generateLayer(int depth);
     Terrain();
 };

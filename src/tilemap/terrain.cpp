@@ -50,7 +50,13 @@ void Terrain::calculatePath(const Vec2i &startPoint, const Vec2i &endPoint) {
             
             Block block = blockData[tile];
             
-            float nodeTravelCost = block.hp/1000; //gives a more reasonable value of seconds to mine
+            float nodeTravelCost;
+            
+            if (block.textureIndex != chest) {
+                nodeTravelCost = block.hp/1000;
+            } else {
+                nodeTravelCost = 200;
+            }
             
             if (unvisited.findValue(neighbour) && nodeTravelCost < neighbourNode.gCost) {
                 unvisited = unvisited.removeValue(neighbour);
@@ -71,6 +77,7 @@ void Terrain::calculatePath(const Vec2i &startPoint, const Vec2i &endPoint) {
 
     Node currentNode = unvisited.queue.top();
 //    std::cout << "x: " << currentNode.coordinates.x << " y: " << currentNode.coordinates.y << "\n";
+    path.push_back(currentNode.coordinates);
     while (currentNode.coordinates != startCoordinates) {
         currentNode = visited.returnValue(currentNode.parent);
         path.push_back(currentNode.coordinates);
@@ -127,29 +134,29 @@ std::vector<Vec2i> Terrain::getNeighbours(int x,int y,bool includesDiagonals) co
 }
 
 
-Vec2i Terrain::getClosestTile(int currentTile,int x, int y) {
+Vec2i Terrain::getClosestTile(int searchedTile,int x, int y) {
     
     int startingIndex = getTileIndex(x,y);
     int count = 0;
     
     std::vector<int> potentialTiles;
     
-    while (true) {
+    while (count < 1000) {
         int leftIndex = startingIndex -= count;
         int rightIndex = startingIndex += count;
         
         if (leftIndex >= 0) {
             int leftTile = tiles[leftIndex].blockIndex;
             
-            if (leftTile == currentTile) {
+            if (leftTile == searchedTile) {
                 potentialTiles.push_back(leftIndex);
             }
             
         }
         
-        if (rightIndex < height*terrainWidth) {
+        if (rightIndex < height*terrainWidth-1) {
             int rightTile = tiles[rightIndex].blockIndex;
-            if (rightTile == currentTile) {
+            if (rightTile == searchedTile) {
                 potentialTiles.push_back(rightIndex);
             }
         }
@@ -163,11 +170,17 @@ Vec2i Terrain::getClosestTile(int currentTile,int x, int y) {
     }
     
     for (int &potentialTile: potentialTiles) {
-        std::cout << currentTile << " tile at index: " << potentialTile << "\n";
+        std::cout << searchedTile << " tile at index: " << potentialTile << "\n";
     }
     
+
+    Vec2i chestCoordinates = tiles[potentialTiles[0]].coordinates;
     
-    return {0,0};
+    std::cout << "Chest's coordinates: " << std::string(chestCoordinates) << "\n";
+    
+//    calculatePath(chestCoordinates, {x,y});
+    
+    return chestCoordinates;
 }
  
 
@@ -370,25 +383,21 @@ void Terrain::generateBuffer(int depth) {
     backgroundVBO.bindData(vertices,5);
     backgroundVAO.enableAttributes(5);
     
-    if (path.empty() == false) {
-        
-//        std::cout << "generating path" << "\n";
-        
-        std::vector<float> pathVertices;
-        
-        for (Vec2i &tile: path) {
-            generateQuad(tile.x, tile.y, -1, pathVertices,false);
-        }
-        
-        pathVAO.bindArray();
-        pathVBO.bindBuffer();
-        pathVBO.bindData(pathVertices,2);
-        pathVAO.enableAttributes(2);
+}
 
+void Terrain::generatePathBuffer() {
+    std::vector<float> pathVertices;
+    
+    for (Vec2i &tile: path) {
+        generateQuad(tile.x, tile.y, -1, pathVertices,false);
     }
     
-    
+    pathVAO.bindArray();
+    pathVBO.bindBuffer();
+    pathVBO.bindData(pathVertices,2);
+    pathVAO.enableAttributes(2);
 }
+
 
 void Terrain::setupWorld(int worldIndex) {
     currentWorld = worldIndex;
@@ -412,7 +421,7 @@ void Terrain::setupWorld(int worldIndex) {
     generateBuffer(0);
 };
 
-Terrain::Terrain(): layerCount(0),tiles(),currentWorld(0) {
+Terrain::Terrain(): layerCount(0),tiles(),currentWorld(0),selectedChest(0, 0) {
     
     std::vector<float> instanceVertices = {
         0.0f,0.0f,

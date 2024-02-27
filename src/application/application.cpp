@@ -480,8 +480,28 @@ void runApplication() {
                 }
             }
             
-            if (gui.errorDuration != 0 && gui.inDialogue == false) {
-                if (glfwGetTime() - gui.errorTimeSet < gui.errorDuration) {
+            
+            double powerupTime = glfwGetTime() - gui.powerupTimeSet;
+            if (gui.inDialogue == false && powerupTime < gui.powerupDuration) {
+                Vec2i roundedCoordinates = {static_cast<int>(std::round(player.coordinates.x)),static_cast<int>(std::round(player.coordinates.y))};
+                terrain.calculatePath(terrain.selectedChest, player.coordinates);
+                terrain.generatePathBuffer();
+                const int time = static_cast<int>(15-powerupTime);
+                std::string timeString = "Time remaining : " + std::to_string(time);
+                int width = gui.getWidth(gui.powerupMessage);
+                int maxWidth = screenSize.x*(0.5);
+                if (width > maxWidth) {
+                    gui.renderText(gui.powerupMessage, screenSize.x*(0.25), screenSize.y*(0.25), texture, textShader, blue, true, screenSize.x*(0.5));
+                } else {
+                    gui.renderText(gui.powerupMessage, screenSize.x*(0.5)-width*(0.5), screenSize.y*(0.25), texture, textShader, blue, false, screenSize.x*(0.5));
+                }
+                gui.renderText(timeString, screenSize.x*(0.25), screenSize.y*(0.25)-50, texture, textShader, white, true, screenSize.x*(0.5));
+                
+            } else {
+                terrain.path = {};
+            }
+            
+            if (gui.errorDuration != 0 && gui.inDialogue == false && glfwGetTime() - gui.errorTimeSet < gui.errorDuration) {
                     int width = gui.getWidth(gui.errorMessage);
                     int maxWidth = screenSize.x*(0.5);
                     if (width > maxWidth) {
@@ -489,7 +509,6 @@ void runApplication() {
                     } else {
                         gui.renderText(gui.errorMessage, screenSize.x*(0.5)-width*(0.5), screenSize.y*(0.25), texture, textShader, red, false, screenSize.x*(0.5));
                     }
-                }
             }
         }
         

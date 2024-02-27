@@ -57,25 +57,42 @@ void Sprite::teleport(float x, float y,const std::vector<int> &blockIndices) {
 }
 
 void Sprite::moveSprite(float x,float y, const std::vector<int> &blockIndices) {
-    const Vec2f updatedCoordinates = {coordinates.x+x,coordinates.y+y};
-    const Hitbox updatedHitbox = calculateHitbox(updatedCoordinates);
-    checkCollisions(blockIndices, updatedHitbox);
+    
+    Vec2f coordX = {coordinates.x+x,coordinates.y};
+    Hitbox hitboxX = calculateHitbox(coordX);
+    checkCollisions(blockIndices, hitboxX);
+    
     if (collisions.left == false && collisions.right == false) {
         move(x,0);
         coordinates.x = matrix.matrix_Array[2];
     }
+    collisions = {};
+    
+    Vec2f coordY = {coordinates.x,coordinates.y+y};
+    Hitbox hitboxY = calculateHitbox(coordY);
+    checkCollisions(blockIndices, hitboxY);
+    
     if (collisions.top == false && collisions.bottom == false) {
         move(0,y);
         coordinates.y = matrix.matrix_Array[5];
     }
+    
+    if (collisions.top) {
+        std::cout << collisions.top << "\n";
+    }
+    
     if (collisions.bottom == true) {
         airborne = 0;
     }
-//    std::cout << "Airborne: " << airborne << " Bottom  Collision status: " << collisions[bottom] << "\n";
+        Hitbox finalHitbox = calculateHitbox(coordinates);
+        checkCollisions(blockIndices, finalHitbox);
+
+    checkCollisions(blockIndices, finalHitbox);
+    
 }
 
 Hitbox Sprite::calculateHitbox(const Vec2f &coordinates) {
-    return {coordinates.x+0.25f,coordinates.x+0.8f,coordinates.y+0.2f,coordinates.y};
+    return {coordinates.x+0.25f,coordinates.x+0.8f,coordinates.y+1.0f,coordinates.y};
 }
 
 

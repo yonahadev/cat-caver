@@ -77,10 +77,6 @@ void Sprite::moveSprite(float x,float y, const std::vector<int> &blockIndices) {
         coordinates.y = matrix.matrix_Array[5];
     }
     
-    if (collisions.top) {
-        std::cout << collisions.top << "\n";
-    }
-    
     if (collisions.bottom == true) {
         airborne = 0;
     }
@@ -92,7 +88,7 @@ void Sprite::moveSprite(float x,float y, const std::vector<int> &blockIndices) {
 }
 
 Hitbox Sprite::calculateHitbox(const Vec2f &coordinates) {
-    return {coordinates.x+0.25f,coordinates.x+0.8f,coordinates.y+1.0f,coordinates.y};
+    return {coordinates.x+0.25f,coordinates.x+0.8f,coordinates.y+0.99f,coordinates.y};
 }
 
 

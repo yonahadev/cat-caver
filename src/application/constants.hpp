@@ -110,22 +110,21 @@ const std::vector<Backpack> backpackData {
 const std::vector<Quest> questList {
     {"Talk to the shopkeeper",
         "See what bro has to say",
-        0,
         {}
     },
     {"Good ol' digging",
-        "Collect 3 stone blocks and 10 coins",
-        10,
+        "Collect 3 stone blocks",
         {
             {0,3}
-        }
+        },
+        "WORLD 1"
     },
     {"Copper collector",
         "Collect 5 copper",
-        0,
         {
             {1,5}
-        }
+        },
+        "MONEY 100"
     }
 };
 

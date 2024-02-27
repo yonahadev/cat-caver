@@ -200,7 +200,7 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                     gui.setVisibleButtons({worldSelect,closeButton});
                                 }
                                 if (button.text == "teleport") {
-                                    gui.setVisibleButtons({closeButton,teleport});
+                                    gui.setVisibleButtons({closeButton,teleport,worldSelect});
                                 }
                                 
                             break;
@@ -259,15 +259,10 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                         } case worldSelect: {
                             int worldIndex = std::stoi(button.metaInfo);
                             World world = worldData[worldIndex];
-//                            if (button.text == "equip") {
-//                                terrain.setupWorld(worldIndex);
-//                                std::cout << "Selected" << world.name << "\n";
-//                            } else if (player.money >= world.cost) {
-//                                std::cout << "Selected" << world.name << "\n";
-//                                player.ownedWorlds.push_back(world.name);
-//                                player.money -= world.cost;
-//                                terrain.setupWorld(worldIndex);
-//                            }
+                            if (button.text == "teleport") {
+                                terrain.setupWorld(worldIndex);
+                                std::cout << "Selected" << world.name << "\n";
+                            }
                             break;
                         }
                         case closeButton: {
@@ -303,20 +298,23 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                         questCompleted = false;
                                     }
                                 }
-                                if (player.money < quest.moneyRequirement) {
-                                    std::cout << "Insufficient money" << "\n";
-                                    questCompleted = false;
-                                }
                                 
                                 if (questCompleted) {
                                     player.currentQuest = questList[0];
                                     gui.inDialogue = false;
                                     gui.setVisibleButtons({menuToggles,sell});
-                                    player.money -= quest.moneyRequirement;
                                     for (auto &[block,blockCount]: quest.blockRequirements) {
                                         Block currentBlock = blockData[block];
                                         player.blockCounts[currentBlock] -= blockCount;
                                     }
+                                    
+                                    if (quest.reward.substr(0,5) == "WORLD") {
+                                        std::string worldNumber = quest.reward.substr(6,choice.size());
+                                        std::string worldName = worldData[std::stoi(worldNumber)].name;
+                                        player.ownedWorlds.push_back(worldName);
+                                    }
+                                    
+                                    
                                 } else {
                                     gui.dialogue.setDialogue(3);
                                 }

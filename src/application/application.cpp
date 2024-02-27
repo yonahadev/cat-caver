@@ -261,33 +261,6 @@ void runApplication() {
         }
         
         count = 0;
-        for (int i = 0; i < static_cast<int>(worldData.size()); i++) {
-            
-            World world = worldData[i];
-            const int offset = count*50;
-            bool worldOwned = false;
-            for (std::string &worldName: player.ownedWorlds) {
-                if(worldName == world.name) {
-                    worldOwned = true;
-                }
-            }
-            if (worldOwned) {
-                if (terrain.currentWorld == i) {
-                    const int width = gui.getWidth("equipped");
-                    buttons.emplace_back(worldSelect,"equipped",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,grey,white,std::to_string(count));
-                } else {
-                    const int width = gui.getWidth("equip");
-                    buttons.emplace_back(worldSelect,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
-                }
-            } else {
-//                std::string text = "$"+std::to_string(world.cost);
-//                const int width = gui.getWidth(text);
-//                buttons.emplace_back(worldSelect,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
-                    
-            }
-
-            count++;
-        }
 
         Mat3 invertedMatrix = {
             1.0f,0.0f,-player.matrix.matrix_Array[2],
@@ -437,11 +410,6 @@ void runApplication() {
                 gui.renderText(std::to_string(player.blockCounts[block])+"/"+std::to_string(requirement), screenSize.x-questTitleWidth-50, screenSize.y-300-count-multilineOffset, texture, textShader,white,false,-1);
                 count += 50;
             }
-            if (player.money < quest.moneyRequirement) {
-                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, textShader, red,false,-1);
-            } else {
-                gui.renderText("$" + std::to_string(player.money)+ "/"+std::to_string(quest.moneyRequirement), screenSize.x-questTitleWidth-50, screenSize.y-250-multilineOffset, texture, textShader, green,false,-1);
-            }
             
             gui.renderText(timeString, screenSize.x-width-50, screenSize.y-50, texture,textShader,white,false,-1);
             gui.renderText("Depth: " + std::to_string(depth), 50, screenSize.y-50, texture,textShader,white,false,-1);
@@ -535,10 +503,46 @@ void runApplication() {
                 int textColour = red;
                 if (owned) {
                     textColour = white;
+                    
+                    const int width = gui.getWidth("teleport");
+                    
+                    buttons.emplace_back(worldSelect,"teleport",width,30,menuX+50+count*300,menuHeight-150,green,white,std::to_string(count));
+                    
                 }
                 gui.renderText(world.name, menuX+50+count*300, menuHeight-100, texture, textShader, textColour, false, -1);
+                
                 count++;
             }
+            
+            count = 0;
+//            for (int i = 0; i < static_cast<int>(worldData.size()); i++) {
+//                
+//                World world = worldData[i];
+//                const int offset = count*50;
+//                bool worldOwned = false;
+//                for (std::string &worldName: player.ownedWorlds) {
+//                    if(worldName == world.name) {
+//                        worldOwned = true;
+//                    }
+//                }
+//                if (worldOwned) {
+//                    if (terrain.currentWorld == i) {
+//                        const int width = gui.getWidth("equipped");
+//                        buttons.emplace_back(worldSelect,"equipped",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,grey,white,std::to_string(count));
+//                    } else {
+//                        const int width = gui.getWidth("equip");
+//                        buttons.emplace_back(worldSelect,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
+//                    }
+//                } else {
+//    //                std::string text = "$"+std::to_string(world.cost);
+//    //                const int width = gui.getWidth(text);
+//    //                buttons.emplace_back(worldSelect,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
+//                        
+//                }
+//
+//                count++;
+//            }
+
  
         } else if (gui.openMenu == "shop") {
             gui.renderText("$" + std::to_string(player.money), 50, screenSize.y-50, texture, textShader, green,false,-1);

@@ -178,7 +178,6 @@ Vec2i Terrain::getClosestTile(int searchedTile,int x, int y) {
     
     std::cout << "Chest's coordinates: " << std::string(chestCoordinates) << "\n";
     
-//    calculatePath(chestCoordinates, {x,y});
     
     return chestCoordinates;
 }
@@ -240,18 +239,24 @@ int Terrain::getRandomOre(int layer,int x,int y) const { //only works for sets w
     
     const double distanceFromCenter = abs(0.5-noise);
     
-//    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
-//    std::cout << "Noise value: " << std::to_string(noise) << " deviation: "  << std::to_string(distanceFromCenter) << "\n";
-        
+    int baseOre = 0;
+    
+    //    std::cout << "X position: " << xPos << " Y position: " << yPos << "\n";
+    //    std::cout << "Noise value: " << std::to_string(noise) << " deviation: "  << std::to_string(distanceFromCenter) << "\n";
+    int count = 0;
     for (auto &[magnitude,ore]:worldData[currentWorld].layerInfo[layer]) {
-//        std::cout << "Ore: " << ore << " Magnitude: " << magnitude << "\n";
+        if (count == 0) {
+            baseOre = ore;
+        }
+        //        std::cout << "Ore: " << ore << " Magnitude: " << magnitude << "\n";
         if (distanceFromCenter <= magnitude) {
-//            std::cout << "Deviation: " << distanceFromCenter  << " tile: " << ore << "\n";
+            //            std::cout << "Deviation: " << distanceFromCenter  << " tile: " << ore << "\n";
             return ore;
         }
+        count++;
     }
-//    std::cout << "VALUE OUT OF RANGE" << "\n"; //cases with magnitude greater than the largest provided in the range of ores
-    return 0;
+    //    std::cout << "VALUE OUT OF RANGE" << "\n"; //cases with magnitude greater than the largest provided in the range of ores
+    return baseOre;
 }
 
 void Terrain::generateLayer(int depth) {

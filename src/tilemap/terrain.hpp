@@ -42,6 +42,7 @@ public:
     int layerCount;
     int instanceCount;
     int oreLayer;
+    std::unordered_map<std::string, std::vector<int>> savedWorlds;
     std::vector<Tile> tiles;
     std::vector<Block> triggerExplosion(int x,int y);
     std::vector<int> getRawBlockIndices() const;

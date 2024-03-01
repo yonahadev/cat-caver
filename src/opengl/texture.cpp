@@ -55,15 +55,13 @@ void Texture::parseURLS(const std::vector<TextureURL> &urls) {
             if (textureData) {
                 
                 if (url.isArrayTexture) {
-                    std::cout << "Generated: " << url.path << " as array texture" << "\n";
                     glTexImage3D(GL_TEXTURE_2D_ARRAY,0,GL_RGBA,imageWidth,imageWidth,imageHeight/imageWidth,0,GL_RGBA,GL_UNSIGNED_BYTE,textureData);
                     glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
                 } else {
-                    std::cout << "Generated: " << url.path << " as non array texture" << "\n";
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
                     glGenerateMipmap(GL_TEXTURE_2D);
                 }
-                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
+//                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
                 textures[matches[1]] = texture;
                 textureNames.push_back(matches[1]);
             } else {

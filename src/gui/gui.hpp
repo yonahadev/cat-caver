@@ -43,6 +43,7 @@ public:
     std::string powerupMessage;
     int powerupTimeSet;
     int powerupDuration;
+    int saveTime = 0;
     std::unordered_map<Block,int> rewards;
     std::unordered_map<int,bool> visibleButtons;
     int getWidth(const std::string &string);

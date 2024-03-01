@@ -13,6 +13,7 @@
 #include <string>
 
 struct World {
+    int worldIndex;
     std::string name;
     std::vector<std::map<double, int>> layerInfo;
 };

@@ -64,6 +64,7 @@ const std::vector<Block> blockData {
 
 const std::vector<World> worldData {
     {
+        0,
         "Surface Layer", //name
         {
             { //map of ore index to magnitude from center on height map to be generated
@@ -78,6 +79,7 @@ const std::vector<World> worldData {
         }
     },
     {
+        1,
         "Lower Surface", //name
         {
             { //map of ore index to magnitude from center on height map to be generated

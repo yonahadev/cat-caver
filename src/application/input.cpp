@@ -257,12 +257,51 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                             }
                             break;
                         } case worldSelect: {
+
+                            
                             int worldIndex = std::stoi(button.metaInfo);
-                            World world = worldData[worldIndex];
-                            if (button.text == "teleport") {
-                                terrain.setupWorld(worldIndex);
-                                std::cout << "Selected" << world.name << "\n";
+                            World nextWorld = worldData[worldIndex];
+                            World currentWorld = worldData[terrain.currentWorld];
+                            
+                            if (nextWorld.name == currentWorld.name) {
+                                break;
                             }
+                            
+                            if (button.text == "teleport") {
+                                
+                                std::cout << "Saved: " << currentWorld.name << "\n";
+                                std::vector<int> existingTiles = terrain.getRawBlockIndices();
+                                terrain.savedWorlds[currentWorld.name] = existingTiles;
+                                
+                                if (terrain.savedWorlds.find(nextWorld.name) != terrain.savedWorlds.end()) {
+                                    
+                                    std::cout << "Loading existing world: " << nextWorld.name << "\n";
+                                    
+                                    terrain.tiles = std::vector<Tile>{};
+                                    
+                                    const std::vector<int> tempTiles = terrain.savedWorlds.at(nextWorld.name);
+
+                                    
+                                    for (int i = 0; i < tempTiles.size()/terrainWidth; i++) {
+                                        for (int j = 0; j < terrainWidth; j++) {
+                                            int ore = tempTiles[i*terrainWidth+j];
+                                            terrain.tiles.emplace_back(j,-i,ore);
+                                        }
+                                    }
+                                    
+                                    terrain.currentWorld = nextWorld.worldIndex;
+                                } else {
+                                    
+                                    std::cout << "Loading new world: " << nextWorld.name << "\n";
+                                    terrain.setupWorld(nextWorld.worldIndex);
+                                    
+                                }
+                                
+                                player.teleport(1, -2, terrain.getRawBlockIndices());
+                                terrain.generateBuffer(2);
+                            }
+                            
+
                             break;
                         }
                         case closeButton: {

@@ -31,7 +31,6 @@
 #include "pickaxe.hpp"
 #include "backpack.hpp"
 #include "PerlinNoise.hpp"
-#include "NPC.hpp"
 #include "constants.hpp"
 
 const char *WINDOW_NAME = "Cat Caver";
@@ -99,7 +98,7 @@ void runApplication() {
     Player player(1,-2,playerSprite);
     player.generateGLQuad();
     
-    NPC shopkeeper(1,-2,shopkeeperSprite);
+    Sprite shopkeeper(1,-2,shopkeeperSprite);
     shopkeeper.generateGLQuad();
     
     Terrain terrain;
@@ -146,26 +145,25 @@ void runApplication() {
         
         bool terrainUpdated = false;
         
-//        for (Tile &tile: terrain.tiles) {
-//            
-//            if (tile.blockIndex == coal) {
-//                
-//                tile.accelerate(terrain.getRawBlockIndices());
-//                if (tile.airborne < 0) {
-//                    tile.falling = true;
-//                    terrainUpdated = true;
-//                    std::cout << "Tile falling" << "\n";
-//                }
-//                int x = std::floor(tile.coordinates.x);
-//                int y = std::floor(tile.coordinates.y);
-//                if (tile.collisions[bottom] == true && tile.falling) {
-//                    tile.falling = false;
-//                    terrain.tiles[x+(-y*terrainWidth)] = Tile(x,y,tile.blockIndex);
-//                    terrain.tiles[x+((-y-1)*terrainWidth)] = Tile(x,y+1,dirt);
-//                }
-//
-//            }
-//        }
+        for (Tile &tile: terrain.tiles) {
+            
+            if (tile.blockIndex == coal) {
+                
+                tile.accelerate(terrain.getRawBlockIndices());
+                if (tile.airborne < 0) {
+                    Vec2i roundedCoordinates = {static_cast<int>(std::round(tile.coordinates.x)),static_cast<int>(std::round(tile.coordinates.y))};
+                    int x = roundedCoordinates.x;
+                    int y = roundedCoordinates.y;
+                    if (roundedCoordinates != tile.lastUpdatedCoordinates) {
+                        terrain.tiles[x+(-y*terrainWidth)] = Tile(x,y,tile.blockIndex,tile.airborne);
+                        terrain.tiles[x+((-y-1)*terrainWidth)] = Tile(x,y+1,dirt,0);
+                        tile.lastUpdatedCoordinates = roundedCoordinates;
+                    }
+                    terrainUpdated = true;
+                }
+
+            }
+        }
         
         
         const int depth = int(abs(floor(player.coordinates.y)));

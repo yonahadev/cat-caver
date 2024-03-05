@@ -7,7 +7,11 @@
 
 #include "tile.hpp"
 
+Tile::Tile(int x, int y, int textureIndex, float previousAirborne): Sprite(x, y, textureIndex), blockIndex(textureIndex) {
+    previousAirborne = airborne;
+}
 Tile::Tile(int x, int y, int textureIndex): Sprite(x, y, textureIndex), blockIndex(textureIndex) {}
+
 
 void Tile::checkCollisions(const std::vector<int> &blockIndices,const Hitbox &hitbox) {
     

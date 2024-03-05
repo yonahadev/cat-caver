@@ -15,7 +15,8 @@ class Tile: public Sprite {
 private:
 public:
     int blockIndex;
-    bool falling = false;
+    Vec2i lastUpdatedCoordinates = {0,0};
+    Tile(int x,int y, int textureIndex, float airborne);
     Tile(int x,int y, int textureIndex);
     void checkCollisions(const std::vector<int> &blockIndices, const Hitbox &hitbox) override;
 };

@@ -37,7 +37,7 @@ void Sprite::move(float x,float y) {
 }
 
 bool Sprite::accelerate(const std::vector<int> &blockIndices) {
-    if (collisions.bottom == false & airborne > -350) {
+    if (airborne > -350) {
         airborne -= 2.5;
     }
 

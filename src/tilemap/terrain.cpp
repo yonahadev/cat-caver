@@ -318,17 +318,12 @@ void Terrain::generateBuffer(int depth) {
             
             instanceCount += 1;
             
-//            float textureStart = textureIndex * textureMultiplier;
-//            float textureEnd = (textureIndex+1) * textureMultiplier;
-            
-            
             if (tile.blockIndex != dirt) {
                 matrices.push_back(tile.matrix);
                 texels.push_back(0.0f); //0,0 tex coords
                 texels.push_back(1.0f); //1,0 tex coords
                 texels.push_back(tile.textureIndex); //index
                 
-//                std::cout << tile.textureIndex << "\n";
             }
         }
     }

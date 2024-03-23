@@ -22,9 +22,7 @@ void VBO::bindData(const std::vector<float> &vertices, int floatsPerVertex) {
     int floatCount = static_cast<int>(vertices.size());
     
     verticesCount = floatCount/floatsPerVertex;
-    
-//    std::cout << "Binding vertices count: " << verticesCount << " Total floats: " << floatCount << "\n";
-    
+
     glBufferData(GL_ARRAY_BUFFER,floatCount * sizeof(float),vertices.data(),GL_DYNAMIC_DRAW);
 }
 

@@ -41,8 +41,8 @@ public:
     bool collisionsOn;
     Mat3 matrix;
     Vec2f coordinates;
-    VBO vbo;
-    VAO vao;
+    VBO vbo = VBO();
+    VAO vao = VAO();
     Hitbox calculateHitbox(const Vec2f &coordinates);
     void generateGLQuad();
     void teleport(float x, float y,const std::vector<int> &blockIndices);

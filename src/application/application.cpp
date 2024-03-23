@@ -160,6 +160,7 @@ void runApplication() {
                         tile.lastUpdatedCoordinates = roundedCoordinates;
                     }
                     terrainUpdated = true;
+                    std::cout << "updating terrain" << "\n";
                 }
 
             }
@@ -258,7 +259,6 @@ void runApplication() {
             }
         }
         
-        count = 0;
 
         Mat3 invertedMatrix = {
             1.0f,0.0f,-player.matrix.matrix_Array[2],

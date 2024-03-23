@@ -111,7 +111,7 @@ const std::vector<Backpack> backpackData {
 
 const std::vector<Quest> questList {
     {"Talk to the shopkeeper",
-        "See what bro has to say",
+        "Find out more about the expedition",
         {}
     },
     {"Good ol' digging",
@@ -122,15 +122,16 @@ const std::vector<Quest> questList {
         "WORLD 1"
     },
     {"Copper collector",
-        "Collect 5 copper",
+        "Collect 5 copper and 5 gold",
         {
-            {1,5}
+            {copper,5},
+            {gold,5}
         },
         "MONEY 100"
     }
 };
 
-const std::vector<DialogueNode> dialogueList { //this is the max justifiable line length
+const std::vector<DialogueNode> dialogueList {
     {
         { //dialogue 0
         "Welcome to cat caver - you're stuck here I'm afraid...",
@@ -138,7 +139,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "I'm gonna need a lot of materials to get to the next area, but,",
         "I think with your help we can do it.",
     },
-        {{"Dialogue 1","1"},{"Quest status","QUEST COMPLETE"},{"Open shop","SHOP"}} //choices
+        {{"Tell me more","1"},{"Quest status","QUEST COMPLETE"},{"Open shop","SHOP"}} //choices
     },
     {
         { //dialogue 1
@@ -147,7 +148,7 @@ const std::vector<DialogueNode> dialogueList { //this is the max justifiable lin
         "As you might expect that requires a lot of digging power.",
         "So you might wanna get a better pickaxe",
     },
-        {{"Give me my first quest","QUEST 1"},{"More info pls","2"},{"Cheers boss","EXIT"}} //choices
+        {{"Give me my first quest","QUEST 1"},{"What should I do now?","2"},{"Cheers","EXIT"}} //choices
     },
     {
         { //dialogue 2

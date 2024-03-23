@@ -27,8 +27,6 @@ TextData Text::generateCharacters(const std::string &string,int x, int y) {
     for (int i = 0; i < string.size(); i++) {
         const char ch = string[i];
         Character current = getCharacter(ch);
-        //        std::cout << char(current.id) << " is current letter with id: " << current.id << "\n";
-        //for some reason data set y offsets is not properly accounting for text offset? - manual implementation
         int yOffset = 0;
         if (ch == 'q' || ch == 'j' || ch == 'p' || ch == 'y' || ch == 'g' || ch == 'Q') {
             yOffset = -6;

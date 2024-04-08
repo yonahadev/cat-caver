@@ -21,17 +21,12 @@ unsigned char * Texture::loadImage(const char *filePath) {
     imageWidth = width;
     imageHeight = height;
     stbi_image_free(textureData);
-//    std::cout << "Image width: " << width << " Image height: " << height << "\n";
     return textureData;
 };
 
 void Texture::setTexture(const std::string &texture, bool isArrayTexture) {
     
     int textureID = textures[texture];
-//    std::cout << "Switching to texture: " << texture << " id: " << textureID << "\n";
-
-    
-//            std::cout << "set texture: " << texture << "\n";
     if (isArrayTexture) {
         glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
         glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -53,7 +48,6 @@ void Texture::parseURLS(const std::vector<TextureURL> &urls) {
         if (std::regex_search(url.path,matches,expression)) {
             unsigned char * textureData = loadImage(url.path.c_str());
             if (textureData) {
-                
                 if (url.isArrayTexture) {
                     glTexImage3D(GL_TEXTURE_2D_ARRAY,0,GL_RGBA,imageWidth,imageWidth,imageHeight/imageWidth,0,GL_RGBA,GL_UNSIGNED_BYTE,textureData);
                     glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
@@ -61,7 +55,6 @@ void Texture::parseURLS(const std::vector<TextureURL> &urls) {
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,textureData);
                     glGenerateMipmap(GL_TEXTURE_2D);
                 }
-//                std::cout << "Loading texture: " << matches[1] << " id: " << texture << "\n";
                 textures[matches[1]] = texture;
                 textureNames.push_back(matches[1]);
             } else {

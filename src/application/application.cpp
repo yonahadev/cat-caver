@@ -70,11 +70,11 @@ void handleMouseButton(GLFWwindow* window, int button, int action, int mods ) {
 }
 
 void resizeWindow(GLFWwindow* window, int width, int height) {
-    glfwGetWindowContentScale(window, &windowScale.x, &windowScale.y);
-    screenSize = {width,height};
-    guiMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
-    glViewport(0, 0, width, height);
-}
+        glfwGetWindowContentScale(window, &windowScale.x, &windowScale.y);
+        screenSize = {width,height};
+        guiMatrix = Mat3::Orthographic(0, screenSize.x, 0, screenSize.y);
+        glViewport(0, 0, width, height);
+    }
 
 
 void runApplication() {
@@ -134,7 +134,7 @@ void runApplication() {
     
     gui.setVisibleButtons({menuToggles});
     
-
+    gui.dialogue.setDialogue(0);
     
     
     while (!glfwWindowShouldClose(window.ptr)) {
@@ -180,24 +180,25 @@ void runApplication() {
      
         const bool atSurface = depth <= 4;
         
-        std::vector<Button> buttons = {}; //atm have to redefine per frame to account for changes to screen size
+        std::vector<Button> buttons = {};
         buttons.emplace_back(menuToggles,"teleport",gui.getWidth("teleport"),40,50,screenSize.y-200,red,white,"");
         buttons.emplace_back(dialogueButton,"dialogue",screenSize.x+200,screenSize.y,-200,0,transparent,transparent,"");
-        
-//        buttons.emplace_back(menuToggles,"ores",gui.getWidth("ores"),40,50,screenSize.y-250,green,white,"");
-//        buttons.emplace_back(menuToggles,"progress",gui.getWidth("progress"),40,50,screenSize.y-300,grey,white,"");
+
         
         int menuWidth = screenSize.x*(0.75);
         int menuHeight = screenSize.y*(0.75);
         int menuY = screenSize.y/2-(menuHeight/2);
         int menuX = screenSize.x/2-(menuWidth/2);
         
+        int menuYStart = menuY+menuHeight-50;
+        int menuXEnd = menuX+menuWidth;
+        
         const int pickaxeButtonWidth = gui.getWidth("pickaxes");
         const int backpackButtonWidth = gui.getWidth("backpacks");
         
-        buttons.emplace_back(tabSelector,"backpacks",gui.getWidth("backpacks"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+20,screenSize.y-400,red,white,"");
-        buttons.emplace_back(tabSelector,"pickaxes",pickaxeButtonWidth,30,screenSize.x/2-(300/2),screenSize.y-400,red,white,"");
-        buttons.emplace_back(tabSelector,"sell",gui.getWidth("sell"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+backpackButtonWidth+40,screenSize.y-400,red,white,"");
+        buttons.emplace_back(tabSelector,"backpacks",gui.getWidth("backpacks"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+20,menuY,red,white,"");
+        buttons.emplace_back(tabSelector,"pickaxes",pickaxeButtonWidth,30,screenSize.x/2-(300/2),menuY,red,white,"");
+        buttons.emplace_back(tabSelector,"sell",gui.getWidth("sell"),30,screenSize.x/2-(300/2)+pickaxeButtonWidth+backpackButtonWidth+40,menuY,red,white,"");
         
         buttons.emplace_back(teleport,"surface",gui.getWidth("surface"),40,menuX+200,menuHeight-50,red,white,"");
         buttons.emplace_back(teleport,"mine",gui.getWidth("mine"),40,menuX+400,menuHeight-50,red,white,"");
@@ -212,15 +213,15 @@ void runApplication() {
             if (owned) {
                 if (player.equippedPickaxe == pickaxe) {
                     int width = gui.getWidth("equipped");
-                    buttons.emplace_back(pickaxeEquip,"equipped",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,grey,white,std::to_string(count));
+                    buttons.emplace_back(pickaxeEquip,"equipped",width,30,menuXEnd-width,menuYStart-offset,grey,white,std::to_string(count));
                 } else {
                     int width = gui.getWidth("equip");
-                    buttons.emplace_back(pickaxeEquip,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
+                    buttons.emplace_back(pickaxeEquip,"equip",width,30,menuXEnd-width,menuYStart-offset,blue,white,std::to_string(count));
                 }
             } else {
                 std::string text = "$"+std::to_string(pickaxe.cost);
                 int width = gui.getWidth(text);
-                buttons.emplace_back(pickaxeEquip,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
+                buttons.emplace_back(pickaxeEquip,text,width,30,menuXEnd-width,menuYStart-offset,green,white,std::to_string(count));
                     
             }
 
@@ -232,15 +233,15 @@ void runApplication() {
             if (player.ownedBackpacks[backpack]) {
                 if (player.equippedBackpack == backpack) {
                     const int width = gui.getWidth("equipped");
-                    buttons.emplace_back(backpackEquip,"equipped",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,grey,white,std::to_string(count));
+                    buttons.emplace_back(backpackEquip,"equipped",width,30,menuXEnd-width,menuYStart-offset,grey,white,std::to_string(count));
                 } else {
                     const int width = gui.getWidth("equip");
-                    buttons.emplace_back(backpackEquip,"equip",width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,blue,white,std::to_string(count));
+                    buttons.emplace_back(backpackEquip,"equip",width,30,menuXEnd-width,menuYStart-offset,blue,white,std::to_string(count));
                 }
             } else {
                 std::string text = "$"+std::to_string(backpack.cost);
                 const int width = gui.getWidth(text);
-                buttons.emplace_back(backpackEquip,text,width,30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(count));
+                buttons.emplace_back(backpackEquip,text,width,30,menuXEnd-width,menuYStart-offset,green,white,std::to_string(count));
                     
             }
 
@@ -253,7 +254,7 @@ void runApplication() {
             int offset = count*50;
             int width = gui.getWidth("sell");
             if (value > 0) {
-                buttons.emplace_back(oreSell,"sell",gui.getWidth("sell"),30,screenSize.x/2+(300/2)-width,screenSize.y-100-offset,green,white,std::to_string(block.textureIndex));
+                buttons.emplace_back(oreSell,"sell",gui.getWidth("sell"),30,menuXEnd-width,menuYStart-offset,green,white,std::to_string(block.textureIndex));
                 count++;
                 
             }
@@ -338,8 +339,6 @@ void runApplication() {
         quadShader.bind();
         
         if (lightingOn) {
-//            
-//            std::cout << "Outputting light" << "\n";
             
             Vec2f size = {static_cast<float>(screenSize.x*windowScale.x),static_cast<float>(screenSize.y*windowScale.y)};
             
@@ -389,7 +388,7 @@ void runApplication() {
             
             if (mousePressed && validMouse && validPosition && gui.inDialogue == false) {
                 gui.setVisibleButtons({dialogueButton});
-                gui.dialogue.setDialogue(0);
+                gui.dialogue.currentLine = 0;
                 interactionTriggered = true;
             }
             
@@ -400,7 +399,7 @@ void runApplication() {
             
             gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, textShader, white, false, 1);
             gui.renderText(questTitle, screenSize.x-questTitleWidth-50, screenSize.y-200, texture, textShader, white, false, 1);
-            int multilineOffset = gui.renderText(quest.description, screenSize.x-questTitleWidth-50, screenSize.y-250, texture, textShader, grey, true, questTitleWidth);
+            int multilineOffset = gui.renderText(quest.description, screenSize.x-questTitleWidth-50, screenSize.y-250, texture, textShader, white, true, questTitleWidth);
             count = 0;
             for (const auto &[ore,requirement]: quest.blockRequirements) {
                 Block block = blockData[ore];
@@ -441,7 +440,7 @@ void runApplication() {
                 for (auto &[block,blockCount]: gui.rewards) {
                     int y = screenSize.y*(0.4)-count*60;
                     gui.renderQuad(screenSize.x*(0.25), y, 50, 50, texture, spriteShader, white, true, block.textureIndex);
-                    gui.renderText(std::to_string(blockCount), screenSize.x*(0.25)+60,y, texture, textShader, green, false, 0);
+                    gui.renderText(std::to_string(blockCount)+ "   " + block.name, screenSize.x*(0.25)+60,y, texture, textShader, green, false, 0);
                     count++;
                 }
             }
@@ -450,6 +449,7 @@ void runApplication() {
             double powerupTime = glfwGetTime() - gui.powerupTimeSet;
             if (gui.inDialogue == false && powerupTime < gui.powerupDuration) {
                 Vec2i roundedCoordinates = {static_cast<int>(std::round(player.coordinates.x)),static_cast<int>(std::round(player.coordinates.y))};
+                std::cout << "calcing shit" << "\n";
                 terrain.calculatePath(terrain.selectedChest, player.coordinates);
                 terrain.generatePathBuffer();
                 const int time = static_cast<int>(15-powerupTime);
@@ -483,7 +483,7 @@ void runApplication() {
             int count = 0;
             for (auto &[block,value]: player.blockCounts) {
                 int offset = count*50;
-                gui.renderText(block.name+ ": " + std::to_string(value), menuX, screenSize.y-100-offset, texture,textShader,white,false,-1);
+                gui.renderText(block.name+ ": " + std::to_string(value), menuX, menuYStart-offset, texture,textShader,white,false,-1);
                 count++;
             }
         }
@@ -530,17 +530,15 @@ void runApplication() {
             if (gui.selectedTab == "pickaxes") {
                 int count = 0;
                 for (const Pickaxe &pickaxe: pickaxeData) {
-                    int offset = count*100;
-                    gui.renderText(pickaxe.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, menuX, screenSize.y-50-offset, texture,textShader,white,false,-1);
-                    gui.renderText("level:"+ std::to_string(pickaxe.level), menuX, screenSize.y-100-offset, texture,textShader,white,false,-1);
+                    int offset = count*50;
+                    gui.renderText(pickaxe.name+"       level:"+ std::to_string(pickaxe.level) + "      power:" + std::to_string(pickaxe.power), menuX, menuYStart-offset, texture,textShader,white,false,-1);
                     count++;
                 }
             } else if (gui.selectedTab == "backpacks") {
                 int count = 0;
                 for (const Backpack &backpack: backpackData) {
-                    int offset = count*100;
-                    gui.renderText(backpack.name/*+" level:"+ std::to_string(pickaxe.level) + " power:" + std::to_string(pickaxe.power)+ " cost:$" + std::to_string(pickaxe.cost)*/, menuX, screenSize.y-50-offset, texture,textShader,white,false,-1);
-                    gui.renderText("capacity:"+ std::to_string(backpack.capacity), menuX, screenSize.y-100-offset, texture,textShader,white,false,-1);
+                    int offset = count*50;
+                    gui.renderText(backpack.name+"       capacity:"+ std::to_string(backpack.capacity), menuX, menuYStart-offset, texture,textShader,white,false,-1);
                     count++;
                 }
             } else if (gui.selectedTab == "sell") {
@@ -549,13 +547,13 @@ void runApplication() {
                     int offset = count*50;
                     int xOffset = 0;
                     if (value > 0) {
-                        gui.renderText(std::to_string(value), menuX+xOffset, screenSize.y-100-offset, texture,textShader,white,false,-1);
+                        gui.renderText(std::to_string(value), menuX+xOffset, menuYStart-offset, texture,textShader,white,false,-1);
                         xOffset += 25;
-                        gui.renderQuad(menuX+xOffset, screenSize.y-100-offset, 25, 25, texture, spriteShader, white, true, block.textureIndex);
+                        gui.renderQuad(menuX+xOffset, menuYStart-offset, 25, 25, texture, spriteShader, white, true, block.textureIndex);
                         xOffset += 25;
-                        gui.renderText(block.name, menuX+xOffset, screenSize.y-100-offset, texture,textShader,white,false,-1);
+                        gui.renderText(block.name, menuX+xOffset, menuYStart-offset, texture,textShader,white,false,-1);
                         xOffset += gui.getWidth(block.name) + 25;
-                        gui.renderText("$"+std::to_string(block.sellValue), menuX+25+xOffset, screenSize.y-100-offset, texture,textShader,green,false,-1);
+                        gui.renderText("$"+std::to_string(block.sellValue), menuX+25+xOffset, menuYStart-offset, texture,textShader,green,false,-1);
                         count++;
                     }
                 }
@@ -565,12 +563,13 @@ void runApplication() {
         if (gui.inDialogue) {
             gui.renderQuad(0,25, 200, 200, texture, spriteShader, white, true, shopkeeperSprite);
             gui.renderQuad(200, 25, screenSize.x*(0.75), screenSize.y*(0.25), texture, quadShader, red, false, 1);
+            gui.renderText("Sir James Worthius Cathington XIV", 250, screenSize.y*(0.25)+50, texture, textShader, white, false, 0);
             
             int lineIndex = gui.dialogue.currentLine;
             if (lineIndex < gui.dialogue.lineCount) {
                 gui.setVisibleButtons({dialogueButton});
                 std::string currentLine = gui.dialogue.currentNode.dialogue[gui.dialogue.currentLine];
-                gui.renderText(currentLine, 225, screenSize.y*(0.25)-25, texture, textShader, white,true,screenSize.x*(0.75)-75);
+                gui.renderText(currentLine, 225, screenSize.y*(0.25)-25, texture, textShader, white,true,screenSize.x*(0.75)-150);
             } else {
                 gui.setVisibleButtons({dialogueChoice});
                 int count = 0;

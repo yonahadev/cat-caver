@@ -44,8 +44,6 @@ void Terrain::calculatePath(const Vec2i &startPoint, const Vec2i &endPoint) {
             
             int tile = getTile(neighbour.x, neighbour.y);
             
-//            std::cout << "Neighbour coordinates: " << neighbour.x  << "," << neighbour.y << " Tile: " << tile << "\n";
-            
             Node neighbourNode = {neighbour,{0,0},0,calculateDistance(neighbour, endPoint)};
             
             Block block = blockData[tile];
@@ -69,7 +67,6 @@ void Terrain::calculatePath(const Vec2i &startPoint, const Vec2i &endPoint) {
                 neighbourNode.parent = currentNode.coordinates;
                 unvisited.queue.push(neighbourNode);
             }
-//            std::cout << "Node: " << std::string(neighbour.coordinates) << " Parent: " << std::string(neighbour.parent) << "\n";
         }
     }
 
@@ -261,7 +258,6 @@ int Terrain::getRandomOre(int layer,int x,int y) const { //only works for sets w
 
 void Terrain::generateLayer(int depth) {
     
-//    std::cout << "Current world: " << worldData[currentWorld].name << "\n";
 
     
     for (int y = 0; y < layerDepth; y++) {
@@ -275,7 +271,6 @@ void Terrain::generateLayer(int depth) {
                 if (layerCount > lastLayer) {
                     oreLayer = lastLayer;
                 }
-//                std::cout << "Current layer: " << layer << "\n";
                 int blockIndex = getRandomOre(oreLayer,x,y);
                 tiles.emplace_back(x,-height-y,blockIndex);
             }
@@ -288,8 +283,6 @@ void Terrain::generateLayer(int depth) {
 
     generateBuffer(depth);
 
-    
-//    calculatePath({5,-12}, {15,-20});
 }
 
 void Terrain::generateBuffer(int depth) {

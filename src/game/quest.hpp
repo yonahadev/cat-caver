@@ -17,6 +17,7 @@ struct Quest {
     std::string description; 
     std::map<int,int> blockRequirements;
     std::string reward;
+    int nextDialogue;
 };
 
 #endif /* quest_hpp */

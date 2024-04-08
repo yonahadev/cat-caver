@@ -352,10 +352,14 @@ void handleGUI(GLFWwindow* window,Terrain &terrain, Mouse &mouse, Player &player
                                         std::string worldName = worldData[std::stoi(worldNumber)].name;
                                         player.ownedWorlds.push_back(worldName);
                                     }
-                                    
+                                    if (quest.reward.substr(0,5) == "MONEY") {
+                                        std::string moneyCount = quest.reward.substr(6,choice.size());
+                                        player.money += std::stoi(moneyCount);
+                                    }
+                                    gui.dialogue.setDialogue(quest.nextDialogue);
                                     
                                 } else {
-                                    gui.dialogue.setDialogue(3);
+                                    gui.dialogue.setDialogue(2);
                                 }
                                 
                             } else if (questNumber != "") {

@@ -106,3 +106,4 @@ void Sprite::generateGLQuad() {
 
 Sprite::Sprite(float offsetX,float offsetY, int textureIndex): textureIndex(textureIndex),collisionsOn(true),matrix(1,0,offsetX,0,1,offsetY,0,0,1),coordinates(offsetX,offsetY) {}
 
+
